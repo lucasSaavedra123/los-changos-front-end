@@ -1,6 +1,7 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import { AUTH0_CLIENT_ID, AUTH0_DOMAIN_URL, AUTH0_DATABASE_CONNECTION } from '../CONSTANTS'
 import auth0 from 'auth0-js'
+import LoginButton from './loginButton.component'
 
 
 const SignUp = () => {
@@ -41,9 +42,9 @@ const SignUp = () => {
     webAuth.signup({
       connection: AUTH0_DATABASE_CONNECTION,
       email: email,
+      username: email,
       password: password,
       user_metadata: { first_name: firstName, last_name: lastName },
-      password: password
     }, function (error) {
       if (error) return alert('Something went wrong: ' + error.message);
       return alert('success signup without login!')
@@ -81,8 +82,9 @@ const SignUp = () => {
         </button>
       </div>
       <p className="forgot-password text-right">
-        Already registered <a href="/sign-in">sign in?</a>
+        Already registered <LoginButton></LoginButton>
       </p>
+      
     </form>
   )
 
