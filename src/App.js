@@ -1,38 +1,19 @@
-import React from 'react'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import './App.css'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Login from "./components/views/Login";
+import Register from "./components/views/Register";
+import Forgot from "./components/views/Forgot";
 
-import Login from './components/login.component'
-import SignUp from './components/signup.component'
-
-
-function App() {
+const Auth = () => {
   return (
     <Router>
-      <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-          <div className="container">
-            <Link className="navbar-brand" to={'/sign-in'}>
-              Walletify
-            </Link>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-              <ul className="navbar-nav ml-auto">
-              </ul>
-            </div>
-          </div>
-        </nav>
-
-        <div className="auth-wrapper">
-          <div className="auth-inner">
-            <Routes>
-              <Route exact path="/" element={<SignUp />} />
-            </Routes>
-          </div>
-        </div>
-      </div>
+      <Switch>
+        <Route path='/login' component={Login} />
+        <Route path='/register' component={Register} />
+        <Route path='/forgot-password' component={Forgot} />
+        <Route path='/' component={Login} />
+      </Switch>
     </Router>
-  )
+  );
 }
 
-export default App
+export default Auth;
