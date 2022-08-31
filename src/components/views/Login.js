@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { LEMMA } from "../../CONSTANTS";
 import Form from '../../utilities/Forms'
 
 const Login = () => {
@@ -61,7 +62,7 @@ const Login = () => {
         <div className="row g-0 auth-wrapper">
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
                 <div className="auth-background-holder"></div>
-                <div className="auth-background-mask"></div>
+                <div className="auth-background-mask">{LEMMA}</div>
             </div>
 
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
