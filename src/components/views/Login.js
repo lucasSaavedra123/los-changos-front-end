@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { AUTH0_DATABASE_CONNECTION, LEMMA , AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID} from "../../CONSTANTS";
+import { AUTH0_DATABASE_CONNECTION, LEMMA, AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../CONSTANTS";
 import auth0 from "auth0-js"
 import Form from '../../utilities/Forms'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
 
@@ -11,6 +12,7 @@ const Login = () => {
     const [remember, setRemember] = useState(false);
     const [validate, setValidate] = useState({});
     const [showPassword, setShowPassword] = useState(false);
+    const { loginWithRedirect } = useAuth0();
 
     const validateLogin = () => {
         let isValid = true;
@@ -79,66 +81,14 @@ const Login = () => {
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
-                        <p>Login to your account</p>
+                        <p>Login to your account or Sign Up</p>
                         <div className="auth-form-container text-start">
-                            <form className="auth-form" method="POST" onSubmit={authenticate} autoComplete={'off'}>
-                                <div className="email mb-3">
-                                    <input type="email"
-                                        className={`form-control ${validate.validate && validate.validate.email ? 'is-invalid ' : ''}`}
-                                        id="email"
-                                        name="email"
-                                        value={email}
-                                        placeholder="Email"
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-
-                                    <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.email) ? 'd-block' : 'd-none'}`} >
-                                        {(validate.validate && validate.validate.email) ? validate.validate.email[0] : ''}
-                                    </div>
-                                </div>
-
-                                <div className="password mb-3">
-                                    <div className="input-group">
-                                        <input type={showPassword ? 'text' : 'password'}
-                                            className={`form-control ${validate.validate && validate.validate.password ? 'is-invalid ' : ''}`}
-                                            name="password"
-                                            id="password"
-                                            value={password}
-                                            placeholder="Password"
-                                            onChange={(e) => setPassword(e.target.value)}
-                                        />
-
-                                        <button type="button" className="btn btn-outline-primary btn-sm" onClick={(e) => togglePassword(e)} ><i className={showPassword ? 'far fa-eye' : 'far fa-eye-slash'} ></i> </button>
-
-                                        <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.password) ? 'd-block' : 'd-none'}`} >
-                                            {(validate.validate && validate.validate.password) ? validate.validate.password[0] : ''}
-                                        </div>
-                                    </div>
-
-
-                                    <div className="extra mt-3 row justify-content-between">
-                                        <div className="col-6">
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="remember" checked={remember} onChange={(e) => setRemember(e.currentTarget.checked)} />
-                                                <label className="form-check-label" htmlFor="remember">
-                                                    Remember me
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="forgot-password text-end">
-                                                <Link to="/forgot-password">Forgot password?</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="text-center">
-                                    <button type="submit" className="btn btn-primary w-100 theme-btn mx-auto">Log In</button>
-                                </div>
-                            </form>
+                            <div className="text-center">
+                                <button type="submit" className="btn btn-primary w-100 theme-btn mx-auto" onClick={() => loginWithRedirect()}>Log In</button>
+                                <button type="submit" className="btn btn-primary w-100 theme-btn mx-auto" onClick={() => window.location.href = "./register"}>Sign Up</button>
+                            </div>
 
                             <hr />
-                            <div className="auth-option text-center pt-2">No Account? <Link className="text-link" to="/register" >Sign up </Link></div>
                         </div>
                     </div>
                 </div>
@@ -148,4 +98,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default Login

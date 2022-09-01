@@ -192,7 +192,7 @@ const Register = () => {
                             </form>
 
                             <hr />
-                            <div className="auth-option text-center pt-2">Have an account? <Link className="text-link" to="/login" >Sign in</Link></div>
+                            <div className="auth-option text-center pt-2"><Link className="text-link" to="./" >Go Back</Link></div>
                         </div>
                     </div>
                 </div>
