@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { LEMMA } from "../../CONSTANTS";
+import { AUTH0_DATABASE_CONNECTION, LEMMA , AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID} from "../../CONSTANTS";
+import auth0 from "auth0-js"
 import Form from '../../utilities/Forms'
 
 const Login = () => {
@@ -38,15 +39,25 @@ const Login = () => {
     }
 
     const authenticate = (e) => {
+        var webAuth = new auth0.WebAuth({
+            domain: AUTH0_DOMAIN_URL,
+            clientID: AUTH0_CLIENT_ID
+        });
+
         e.preventDefault();
 
         const validate = validateLogin();
 
         if (validate) {
-            setValidate({});
-            setEmail('');
-            setPassword('');
-            alert('Successfully Login');
+
+            webAuth.login({
+                realm: AUTH0_DATABASE_CONNECTION,
+                username: email,
+                password: password,
+            });
+
+            console.log("Hola")
+
         }
     }
 
