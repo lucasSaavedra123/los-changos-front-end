@@ -7,13 +7,15 @@ import './assets/scss/auth.scss'
 import { Auth0Provider } from "@auth0/auth0-react";
 
 ReactDOM.render(
+  <React.StrictMode>
   <Auth0Provider
     domain={AUTH0_DOMAIN_URL}
     clientId={AUTH0_CLIENT_ID}
     redirectUri={window.location.origin}
   >
     <App />
-  </Auth0Provider>,
+  </Auth0Provider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
