@@ -6,11 +6,16 @@ import LandingPage from "./LandingPage";
 
 export const Profile = () => {
   const { user } = useAuth0();
-  const {logout} = useAuth0();
-  const {isAuthenticated} = useAuth0();
+  const { logout } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+
+  console.log(isAuthenticated)
+
+  /*if (!isAuthenticated) {
+    window.location.href = window.location.origin
+  }*/
 
   console.log(user)
-  console.log(isAuthenticated)
 
   return (
     <div className="mb-5">
