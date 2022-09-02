@@ -19,7 +19,6 @@ export const Profile = () => {
 
   return (
     <div className="mb-5">
-        Logeado crack!!!
         <button onClick={()=>logout({returnTo: window.location.origin})}>Logout</button>
     </div>
   );
