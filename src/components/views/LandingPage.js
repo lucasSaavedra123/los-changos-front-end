@@ -1,4 +1,4 @@
-import { LEMMA } from "../../CONSTANTS";
+import { LEMMA } from "../../Constants";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { Spinner } from "reactstrap"

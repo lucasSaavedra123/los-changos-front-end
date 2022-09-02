@@ -10,7 +10,7 @@ const Auth = () => {
       <Switch>
         <Route path='/register' component={Register} />
         <Route path='/forgot-password' component={Forgot} />
-        <Route path='/profile' component={Profile} />
+        {/* <Route path='/profile' component={Profile} /> */}
         <Route path='/' component={LandingPage} />
       </Switch>
     </Router>
