@@ -6,9 +6,12 @@ import { SidebarData } from './SidebarData';
 import '../assets/scss/navbar.scss';
 import { IconContext } from 'react-icons';
 
+import { useAuth0 } from "@auth0/auth0-react";
+
+
 function SideBar() {
   const [sidebar, setSidebar] = useState(false);
-
+  const { logout } = useAuth0();
   const showSidebar = () => setSidebar(!sidebar);
 
   return (
@@ -36,6 +39,14 @@ function SideBar() {
                 </li>
               );
             })}
+
+            <li className="logout">
+              <Link onClick={()=>{logout()}}>
+                {/* {item.icon} */}
+                <span>Cerrar Sesión</span>
+              </Link>
+            </li>
+
           </ul>
         </nav>
       </IconContext.Provider>

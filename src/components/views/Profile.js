@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LandingPage from "./LandingPage";
 
 import Home from './Sections/Home';
-import Reports from './Sections/Reports';
-import Products from './Sections/Products';
+import Settings from './Sections/Settings';
+import Transactions from './Sections/Transactions';
 
 import SideBar from '../Sidebar';
 
@@ -30,8 +30,8 @@ export const Profile = () => {
         <SideBar />
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/reports' component={Reports} />
-          <Route path='/products' component={Products} />
+          <Route path='/transactions' component={Transactions} />
+          <Route path='/settings' component={Settings} />
         </Switch>
       </Router>
     </>
