@@ -1,3 +1,14 @@
+@font-face {
+  font-family: Gotham-Bold;
+  src: url(../fonts/Gotham-Bold.otf);
+}
+
+@font-face {
+  font-family: Gotham-Light;
+  src: url(../fonts/Gotham-Light.otf);
+}
+
+
 $MAIN_COLOR: #9CE37D;
 $PRIMARY_COLOR: #87B37A;
 $THIRD_COLOR: #77867F;
@@ -28,3 +39,11 @@ $theme-colors: (
   "warning": $theme-warning-color,
   "info": $theme-info-color,
 );
+
+.custom-font-bold{
+  font-family: Gotham-Bold;
+}
+
+.custom-font-light{
+  font-family: Gotham-Light;
+}

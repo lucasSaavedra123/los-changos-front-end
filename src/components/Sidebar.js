@@ -6,6 +6,8 @@ import { SidebarData } from './SidebarData';
 import '../assets/scss/navbar.scss';
 import { IconContext } from 'react-icons';
 
+import * as MdIcons from 'react-icons/md';
+
 import { useAuth0 } from "@auth0/auth0-react";
 
 
@@ -40,10 +42,10 @@ function SideBar() {
               );
             })}
 
-            <li className="logout">
-              <Link onClick={()=>{logout()}}>
-                {/* {item.icon} */}
-                <span>Cerrar Sesión</span>
+            <li className={'nav-text'} onClick={() => { logout() }}>
+              <Link to={'/'}>
+                {<MdIcons.MdLogout />}
+                <span>{'Log out'}</span>
               </Link>
             </li>
 
