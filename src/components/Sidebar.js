@@ -10,7 +10,6 @@ import * as MdIcons from 'react-icons/md';
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-
 function SideBar() {
   const [sidebar, setSidebar] = useState(false);
   const { logout } = useAuth0();

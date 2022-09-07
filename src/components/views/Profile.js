@@ -13,10 +13,6 @@ export const Profile = () => {
   const { user } = useAuth0();
   const { isAuthenticated } = useAuth0();
 
-  console.log("autenticado:", isAuthenticated)
-  console.log("usuario:", user)
-
-
   return (
     <>
       <Router>
