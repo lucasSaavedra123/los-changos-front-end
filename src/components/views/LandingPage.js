@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Spinner } from "reactstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "../../assets/scss/constants.scss"
-import {Navigator} from "../Navigator"
+import { Navigator } from "../Navigator"
+import { LandingPageFront } from "../LandingPageFront"
 import Profile from "./Profile";
 /*import mainLogo from "../../../public/logo192.png";*/
 
@@ -22,12 +23,13 @@ const LandingPage = () => {
     } else {
         return (
             <>
-                <Navigator />
+                <div class="landing-page">
+                    <Navigator />
+                    <LandingPageFront />
+                </div>
             </>
         );
     }
-
-
 
 
 }

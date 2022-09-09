@@ -1,13 +1,12 @@
 @font-face {
-  font-family: Gotham-Bold;
-  src: url(../fonts/Gotham-Bold.otf);
+  font-family: UnB-Bold;
+  src: url(../fonts/unb-office_bold.ttf);
 }
 
 @font-face {
-  font-family: Gotham-Light;
-  src: url(../fonts/Gotham-Light.otf);
+  font-family: UnB-Light;
+  src: url(../fonts/unb-office_regular.ttf);
 }
-
 
 $MAIN_COLOR: #9CE37D;
 $PRIMARY_COLOR: #87B37A;
@@ -41,9 +40,9 @@ $theme-colors: (
 );
 
 .custom-font-bold{
-  font-family: Gotham-Bold;
+  font-family: UnB-Bold;
 }
 
 .custom-font-light{
-  font-family: Gotham-Light;
+  font-family: UnB-Light;
 }
