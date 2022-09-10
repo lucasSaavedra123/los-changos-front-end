@@ -8,19 +8,21 @@
   src: url(../fonts/unb-office_regular.ttf);
 }
 
+/*
 $MAIN_COLOR: #9CE37D;
 $PRIMARY_COLOR: #87B37A;
 $THIRD_COLOR: #77867F;
 $FOURTH_COLOR: #4C2C72;
 $FIFTH_COLOR: #4B296B;
+*/
 
-/*
+
 $MAIN_COLOR: #14453D;
 $PRIMARY_COLOR: #3D7068;
 $THIRD_COLOR: #43C59E;
 $FOURTH_COLOR: #3DFAFF;
 $FIFTH_COLOR: #48BEFF;
-*/
+
 
 $theme-text-color-primary: $MAIN_COLOR;
 $theme-text-color-secondary: lighten($PRIMARY_COLOR, 20%);

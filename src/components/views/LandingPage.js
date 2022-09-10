@@ -1,9 +1,7 @@
-import { LEMMA } from "../../CONSTANTS";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState } from "react";
-import { Spinner } from "reactstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "../../assets/scss/constants.scss"
+import "../../assets/scss/landingPage.scss"
 import { Navigator } from "../Navigator"
 import { LandingPageFront } from "../LandingPageFront"
 import Profile from "./Profile";
@@ -11,10 +9,7 @@ import Profile from "./Profile";
 
 const LandingPage = () => {
 
-    const { loginWithRedirect } = useAuth0();
     const { isAuthenticated } = useAuth0();
-    const { signUpWithRedirect } = useAuth0();
-    const { isLoading, setLoading } = useState(true);
 
     if (isAuthenticated) {
         return (
@@ -23,7 +18,7 @@ const LandingPage = () => {
     } else {
         return (
             <>
-                <div class="landing-page">
+                <div class="landing-page" >
                     <Navigator />
                     <LandingPageFront />
                 </div>
