@@ -8,21 +8,21 @@
   src: url(../fonts/unb-office_regular.ttf);
 }
 
-/*
+
 $MAIN_COLOR: #9CE37D;
 $PRIMARY_COLOR: #87B37A;
 $THIRD_COLOR: #77867F;
 $FOURTH_COLOR: #4C2C72;
 $FIFTH_COLOR: #4B296B;
-*/
 
 
+/*
 $MAIN_COLOR: #14453D;
 $PRIMARY_COLOR: #3D7068;
 $THIRD_COLOR: #43C59E;
 $FOURTH_COLOR: #3DFAFF;
 $FIFTH_COLOR: #48BEFF;
-
+*/
 
 $theme-text-color-primary: $MAIN_COLOR;
 $theme-text-color-secondary: lighten($PRIMARY_COLOR, 20%);
@@ -33,18 +33,37 @@ $theme-danger-color: #EC575B;
 
 //override bootstrap
 $theme-colors: (
-  "primary":  $MAIN_COLOR, 
-  "secondary": $theme-text-color-secondary, 
+  "primary": $MAIN_COLOR,
+  "secondary": $theme-text-color-secondary,
   "success": $theme-success-color,
   "danger": $theme-danger-color,
   "warning": $theme-warning-color,
   "info": $theme-info-color,
 );
 
-.custom-font-bold{
+.custom-font-bold {
   font-family: UnB-Bold;
 }
 
-.custom-font-light{
+.custom-font-light {
   font-family: UnB-Light;
+}
+
+.black-font {
+  color: #000000;
+}
+
+/*
+Generate this with https://codepen.io/sosuke/pen/Pjoqq
+*/
+.logo {
+  filter: invert(92%) sepia(34%) saturate(640%) hue-rotate(39deg) brightness(90%) contrast(98%);
+}
+
+:export {
+  primaryColor: $MAIN_COLOR;
+  secondaryColor: $PRIMARY_COLOR;
+  thirdColor: $THIRD_COLOR;
+  fourthColor: $FOURTH_COLOR;
+  fifthColor: $FIFTH_COLOR;
 }

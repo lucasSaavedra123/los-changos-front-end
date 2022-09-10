@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Button from '@mui/material/Button';
 import Stack from 'react-bootstrap/Stack';
 
-import {LEMMA} from "../CONSTANTS"
+import {LEMMA, THEME} from "../CONSTANTS"
 
 
 export const LandingPageFront = () => {
@@ -27,10 +27,10 @@ export const LandingPageFront = () => {
             }>
 
                 <Stack gap={1} style={{ textAlign: "center"}}>
-                    <div><img src="/logo192.png"></img></div>
+                    <div><img class="logo" src="/logo512.png" width="250" height="250"></img></div>
                     <div><h1 class="custom-font-bold">Walletify</h1></div>
                     <div class="custom-font-light"><p>{LEMMA}</p></div>
-                    <div><Button variant="contained" className="custom-font-light" onClick={() => loginWithRedirect()}>Empezar ahora</Button></div>
+                    <div><Button theme={THEME} variant="contained" className="custom-font-light" onClick={() => loginWithRedirect()}><span class="black-font">Empezar ahora</span></Button></div>
                 </Stack>
                 
             </Container>
