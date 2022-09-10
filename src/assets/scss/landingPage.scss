@@ -2,20 +2,18 @@ html,
 body,
 #root {
     height: 100%;
+    background-image: url("../../../public/wallpaper.jpg");
+    background-size: cover;
 }
-
 
 .landing-page{
-    background-color: black;
+    background: rgba(0, 0, 0, 0.8);
     height: 100%;
 }
 
-.landing-page-navbar{
-    height: 5em;
-    background-color: green;
-}
-
-.landing-page-screen{
-    height: 100%;
-    background-color: red;
-}
+@media (max-width: 750px) {
+    .landing-page{
+        background: rgba(0, 0, 0, 1);
+        height: 100%;
+    }
+  }
