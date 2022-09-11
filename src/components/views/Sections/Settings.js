@@ -65,7 +65,7 @@ function Settings() {
 
 
   return (
-    <div className='settings'>
+    <div className='settings section'>
       <h1>Settings</h1>
       <div class="settings-form">
         <BasicCard />

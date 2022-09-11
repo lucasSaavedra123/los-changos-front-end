@@ -4,7 +4,7 @@ import "../../../assets/scss/profile.scss"
 
 function Home() {
   return (
-    <div className='home'>
+    <div className='home section'>
       <div class="banner">
         <h1 class="banner-child">¡Bienvenido a Walletify!</h1>
         <br></br>
