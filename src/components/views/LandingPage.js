@@ -13,7 +13,9 @@ const LandingPage = () => {
 
     if (isAuthenticated) {
         return (
-            <Profile></Profile>
+            <Profile>
+                
+            </Profile>
         )
     } else {
         return (

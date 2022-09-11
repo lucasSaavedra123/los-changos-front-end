@@ -11,11 +11,17 @@ import ProfileNavigator from '../ProfileNavigator';
 import * as React from 'react';
 
 
-export default function TemporaryDrawer() {
+export default function Profile() {
 
   return (
     <div>
       <ProfileNavigator />
+      <Router>
+      <Switch>
+        <Route path='/' component={Home}/>
+        <Route path='/forgot-password' component={Settings} />
+      </Switch>
+    </Router>
     </div>
   );
 }
