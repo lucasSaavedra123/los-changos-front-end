@@ -7,25 +7,34 @@ import { LandingPageFront } from "../LandingPageFront"
 import Profile from "./Profile";
 /*import mainLogo from "../../../public/logo192.png";*/
 
+import { SpinnerDiamond } from 'spinners-react';
+
+
 const LandingPage = () => {
 
     const { isAuthenticated } = useAuth0();
+    const isLoading = useAuth0().isLoading;
 
-    if (isAuthenticated) {
-        return (
-            <Profile></Profile>
+    const conditionalView = isAuthenticated ?
+        <Profile></Profile>
+        :
+        <>
+            <div class="landing-page" >
+                <Navigator />
+                <LandingPageFront />
+            </div>
+        </>
+
+
+    if(isLoading){
+        return(
+            <div className="center">
+            <SpinnerDiamond size={80} enabled={true} secondaryColor="#000000" color="#A6FF00"/>
+            </div>
         )
-    } else {
-        return (
-            <>
-                <div class="landing-page" >
-                    <Navigator />
-                    <LandingPageFront />
-                </div>
-            </>
-        );
+    }else{
+        return(conditionalView)
     }
-
 
 }
 

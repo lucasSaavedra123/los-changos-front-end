@@ -26,6 +26,7 @@
     "react-scripts": "^5.0.1",
     "reactstrap": "^9.1.4",
     "sass": "^1.43.4",
+    "spinners-react": "^1.0.7",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
