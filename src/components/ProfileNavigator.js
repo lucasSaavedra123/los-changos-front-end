@@ -13,19 +13,16 @@ import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
+
+import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
+import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
+
 
 export const ProfileNavigator = () => {
-    const [sidebar, setSidebar] = React.useState(false);
     const { logout } = useAuth0();
-    const showSidebar = () => setSidebar(!sidebar);
     const { loginWithRedirect } = useAuth0();
 
     const [state, setState] = React.useState({
@@ -40,11 +37,6 @@ export const ProfileNavigator = () => {
         setState({ ...state, [anchor]: open });
     };
 
-    var iconList = [
-        <HomeIcon />,
-        <SettingsIcon />
-    ]
-
     const list = (anchor) => (
         <Box
             sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -53,30 +45,15 @@ export const ProfileNavigator = () => {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {['Home', 'Settings'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {iconList[index]}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                <ProfileNavigatorItem name={"Home"} icon={<HomeIcon />} path={"/"}/>
+                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon />} path={"/settings"}/>
             </List>
-            <List>
-                {['Log Out'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <LogoutIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
+
             <Divider />
+
+            <List>
+                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon />} action={() => { logout() }} path={"/"}/>
+            </List>
         </Box>
     );
 

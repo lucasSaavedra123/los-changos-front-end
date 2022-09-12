@@ -3,14 +3,13 @@ import React from 'react';
 import { AUTH0_DATABASE_CONNECTION, AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-function Settings() {
+export const Settings = () => {
   var axios = require("axios").default;
   const { user } = useAuth0();
 
@@ -47,7 +46,7 @@ function Settings() {
 
   const BasicCard = () => {
     return (
-      <Card sx={{ minWidth: 250 ,minHeight:100, margin:20}}>
+      <Card sx={{ minWidth: 250, minHeight: 100, margin: 20 }}>
         <CardContent>
           <Typography variant="h5" component="div">
             Cambiar Contraseña
@@ -65,13 +64,13 @@ function Settings() {
 
 
   return (
-    <div className='settings section'>
-      <h1>Settings</h1>
-      <div class="settings-form">
-        <BasicCard />
+    <>
+      <div className='settings section'>
+        <h1>Settings</h1>
+        <div class="settings-form">
+          <BasicCard />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
-
-export default Settings;

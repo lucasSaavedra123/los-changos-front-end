@@ -2,7 +2,7 @@ import React from 'react';
 
 import "../../../assets/scss/profile.scss"
 
-function Home() {
+const Home = () => {
   return (
     <div className='home section'>
       <div class="banner">

@@ -4,8 +4,7 @@ import "../../assets/scss/constants.scss"
 import "../../assets/scss/landingPage.scss"
 import { Navigator } from "../Navigator"
 import { LandingPageFront } from "../LandingPageFront"
-import Profile from "./Profile";
-/*import mainLogo from "../../../public/logo192.png";*/
+import {Profile} from "./Profile";
 
 import { SpinnerDiamond } from 'spinners-react';
 
@@ -28,7 +27,7 @@ const LandingPage = () => {
     if(isLoading){
         return(
             <div className="center">
-            <SpinnerDiamond size={80} enabled={true} secondaryColor="#000000" color="#A6FF00"/>
+            <SpinnerDiamond size={80} enabled={true} secondaryColor="#FFFFFF" color="#A6FF00"/>
             </div>
         )
     }else{
