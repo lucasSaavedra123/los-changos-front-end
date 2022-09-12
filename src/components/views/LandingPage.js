@@ -15,7 +15,7 @@ const LandingPage = () => {
     const isLoading = useAuth0().isLoading;
 
     const conditionalView = isAuthenticated ?
-        <Profile></Profile>
+        <Profile/>
         :
         <>
             <div class="landing-page" >

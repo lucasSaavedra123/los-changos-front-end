@@ -23,7 +23,6 @@ import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
 
 export const ProfileNavigator = () => {
     const { logout } = useAuth0();
-    const { loginWithRedirect } = useAuth0();
 
     const [state, setState] = React.useState({
         left: false,

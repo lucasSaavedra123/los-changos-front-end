@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LandingPage from "./LandingPage";
 
 import Home from './Sections/Home';
-import {Settings} from './Sections/Settings';
+import { Settings } from './Sections/Settings';
 
 import ProfileNavigator from '../ProfileNavigator';
 
@@ -15,19 +15,17 @@ export const Profile = () => {
 
   return (
 
-      <Router>
-        <ProfileNavigator />
-        <Switch>
-          <Route path='/' component={Home} />
-          <Route path='/settings' component={Settings} />
-        </Switch>
-      </Router>
+    <Router>
+      <ProfileNavigator />
+      <Switch>
+        <Route exact path='/'><Home/></Route>
+        <Route path='/settings'><Settings/></Route>
+      </Switch>
+    </Router>
 
   );
 
 }
-
-
 
 /*
 export default withAuthenticationRequired(Profile, {
