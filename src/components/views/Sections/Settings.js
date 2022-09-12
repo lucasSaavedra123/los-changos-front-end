@@ -49,7 +49,7 @@ export const Settings = () =>{
 
   const BasicCard = () => {
     return (
-      <Card style={{borderRadius:5 ,margin:30, backgroundColor:"black"}}>
+      <Card style={{borderRadius:5, border: "1px solid #9CE37D" ,margin:30, backgroundColor:"black"}}>
         <CardContent style={{color:"black"}}>
           <Typography variant="h5" component="div" style={{color:"white"}}>
             Cambiar Contraseña
@@ -59,7 +59,7 @@ export const Settings = () =>{
           </Typography>
         </CardContent>
         <CardActions style={{display: 'flex'}}>
-          <Button  style={{marginLeft:'auto', backgroundColor:"black", color:"white"}} size="small" onclick={() => { send_email() }} variant="outlined">Mandar mail</Button>
+          <Button  style={{marginLeft:'auto',border: "1px solid #9CE37D" ,backgroundColor:"black", color:"white"}} size="small" onclick={() => { send_email() }} variant="outlined">Mandar mail</Button>
         </CardActions>
       </Card>
     );
