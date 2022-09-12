@@ -59,7 +59,7 @@ export const Settings = () =>{
           </Typography>
         </CardContent>
         <CardActions style={{display: 'flex'}}>
-          <Button  style={{marginLeft:'auto',border: "1px solid #9CE37D" ,backgroundColor:"black", color:"white"}} size="small" onclick={() => { send_email() }} variant="outlined">Mandar mail</Button>
+          <Button  style={{marginLeft:'auto',border: "1px solid #9CE37D" ,backgroundColor:"black", color:"white"}} size="small" onClick={() => { send_email() }} variant="outlined">Mandar mail</Button>
         </CardActions>
       </Card>
     );
