@@ -12,7 +12,7 @@ import { SpinnerDiamond } from 'spinners-react';
 const LandingPage = () => {
 
     const { isAuthenticated } = useAuth0();
-    const isLoading = useAuth0().isLoading;
+    const isLoading = false ;//useAuth0().isLoading;
 
     const conditionalView = isAuthenticated ?
         <Profile/>

@@ -3,13 +3,16 @@ import React from 'react';
 import { AUTH0_DATABASE_CONNECTION, AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
 import { useAuth0 } from "@auth0/auth0-react";
 
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { borderRadius } from '@mui/system';
+import "../../../assets/scss/settings.scss"
 
-export const Settings = () => {
+export const Settings = () =>{
   var axios = require("axios").default;
   const { user } = useAuth0();
 
@@ -46,17 +49,17 @@ export const Settings = () => {
 
   const BasicCard = () => {
     return (
-      <Card sx={{ minWidth: 250, minHeight: 100, margin: 20 }}>
-        <CardContent>
-          <Typography variant="h5" component="div">
+      <Card style={{borderRadius:5 ,margin:30, backgroundColor:"black"}}>
+        <CardContent style={{color:"black"}}>
+          <Typography variant="h5" component="div" style={{color:"white"}}>
             Cambiar Contraseña
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          <Typography sx={{ mb: 1.5 }} color="white">
             Si queres cambiar la contraseña, clickea abajo que te mandamos un mail para cambiarla.
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small" onclick={() => { send_email() }} variant="outlined">Mandar mail</Button>
+        <CardActions style={{display: 'flex'}}>
+          <Button  style={{marginLeft:'auto', backgroundColor:"black", color:"white"}} size="small" onclick={() => { send_email() }} variant="outlined">Mandar mail</Button>
         </CardActions>
       </Card>
     );
@@ -64,13 +67,8 @@ export const Settings = () => {
 
 
   return (
-    <>
-      <div className='settings section'>
-        <h1>Settings</h1>
-        <div class="settings-form">
-          <BasicCard />
-        </div>
-      </div>
-    </>
+    <div className='settings'>
+        <BasicCard class='child'/>
+    </div>
   );
 }
