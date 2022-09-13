@@ -44,15 +44,16 @@ export const ProfileNavigator = () => {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                <ProfileNavigatorItem name={"Home"} icon={<HomeIcon />} path={"/"}/>
+                <ProfileNavigatorItem style={{width:100}} name={"Home"} icon={<HomeIcon />} path={"/"}/>
                 <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon />} path={"/settings"}/>
+                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon />} action={() => { logout() }} path={"/"}/>
             </List>
 
-            <Divider />
+            {/* <Divider />
 
             <List>
                 <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon />} action={() => { logout() }} path={"/"}/>
-            </List>
+            </List> */}
         </Box>
     );
 
@@ -60,12 +61,12 @@ export const ProfileNavigator = () => {
     return (
         <>
             <Navbar bg="black" variant="dark">
-                <Container>
+                <Container >
 
-                    <React.Fragment key={"left"}>
+                    <React.Fragment key={"left"} >
                         <Button className="custom-font-light" variant="outlined" theme={THEME} onClick={toggleDrawer("left", true)}><MenuIcon /></Button>
 
-                        <Drawer
+                        <Drawer 
                             anchor={"left"}
                             open={state["left"]}
                             onClose={toggleDrawer("left", false)}
