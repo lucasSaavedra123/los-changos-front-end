@@ -38,22 +38,37 @@ export const ProfileNavigator = () => {
 
     const list = (anchor) => (
         <Box
-            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250, backgroundColor: 'black', height: "100%" }}
             role="presentation"
             onClick={toggleDrawer(anchor, false)}
             onKeyDown={toggleDrawer(anchor, false)}
         >
+
+            <div style={{ "width": "100%", "margin-top": "25px", "text-align": "center" }}>
+
+                <img
+                    src="/logo192.png"
+                    width="75"
+                    height="75"
+                    className="d-inline-block align-top logo"
+                    style={{ "margin": "auto" }}
+                /><br />
+                <span className="custom-font-light" style={{ "color": "white", "font-size": "25px" }}>Walletify</span>
+            </div>
+
             <List>
-                <ProfileNavigatorItem style={{width:100}} name={"Home"} icon={<HomeIcon />} path={"/"}/>
-                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon />} path={"/settings"}/>
-                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon />} action={() => { logout() }} path={"/"}/>
+
+                <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/"} />
+                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/settings"} />
+
             </List>
 
-            {/* <Divider />
+            <Divider sx={{ color: "white" }} />
 
             <List>
-                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon />} action={() => { logout() }} path={"/"}/>
-            </List> */}
+                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { logout() }} path={"/"} />
+            </List>
+
         </Box>
     );
 
@@ -66,7 +81,7 @@ export const ProfileNavigator = () => {
                     <React.Fragment key={"left"} >
                         <Button className="custom-font-light" variant="outlined" theme={THEME} onClick={toggleDrawer("left", true)}><MenuIcon /></Button>
 
-                        <Drawer 
+                        <Drawer
                             anchor={"left"}
                             open={state["left"]}
                             onClose={toggleDrawer("left", false)}

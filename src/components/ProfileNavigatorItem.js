@@ -12,7 +12,7 @@ export const ProfileNavigatorItem = (props) => {
         <>
                 
                 <ListItem  style={{width:"100%", padding:0}} key={props.name} onClick={props.action} disablePadding>
-                    <Link style={{color:"black",textDecoration:"none" }} href={props.path}>
+                    <Link style={{color:"white",textDecoration:"none" }} href={props.path}>
                     <ListItemButton>
                         <ListItemIcon>
                             {props.icon}

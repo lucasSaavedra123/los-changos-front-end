@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { AUTH0_DATABASE_CONNECTION, AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
+import { AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -23,6 +22,7 @@ export const Settings = () => {
 
   const [openError, setOpenError] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [openWarning, setOpenWarning] = React.useState(false);
 
   const showSuccessMessage = () => {
     setOpenSuccess(true);
@@ -30,6 +30,10 @@ export const Settings = () => {
 
   const showErrorMessage = () => {
     setOpenError(true);
+  };
+
+  const showWarningMessage = () => {
+    setOpenWarning(true);
   };
 
   const closeSuccessMessage = (event, reason) => {
@@ -40,35 +44,36 @@ export const Settings = () => {
     setOpenError(false);
   };
 
-  const send_email = (e) => {
-
-    var options = {
-      method: 'POST',
-      url: 'https://' + AUTH0_DOMAIN_URL + '/dbconnections/change_password',
-      headers: { 'content-type': 'application/json' },
-      data: {
-        client_id: AUTH0_CLIENT_ID,
-        email: user.email,
-        connection: 'Username-Password-Authentication'
-      }
-    };
-
-    axios.request(options).then(function (response) {
-      console.log(response);
-      showSuccessMessage();
-    }).catch(function (error) {
-      console.error(error);
-
-    });
-
-  }
-
-  const style = {
-    width: '100%',
-    maxWidth: 360,
-    bgcolor: 'background.paper',
+  const closeWarningMessage = () => {
+    setOpenWarning(false);
   };
 
+  const send_email = (e) => {
+
+    if (user.sub.includes("auth0")) {
+
+      var options = {
+        method: 'POST',
+        url: 'https://' + AUTH0_DOMAIN_URL + '/dbconnections/change_password',
+        headers: { 'content-type': 'application/json' },
+        data: {
+          client_id: AUTH0_CLIENT_ID,
+          email: user.email,
+          connection: 'Username-Password-Authentication'
+        }
+      };
+
+      axios.request(options).then(function (response) {
+        console.log(response);
+        showSuccessMessage();
+      }).catch(function (error) { showErrorMessage() });
+
+    }
+    else {
+      showWarningMessage();
+    }
+
+  }
 
   const BasicCard = () => {
     return (
@@ -93,6 +98,12 @@ export const Settings = () => {
       <BasicCard class='child' />
       <Snackbar open={openSuccess} autoHideDuration={3000} onClose={closeSuccessMessage}>
         <Alert onClose={closeSuccessMessage} severity="success">Se ha enviado un email de cambio de contraseña!</Alert>
+      </Snackbar>
+      <Snackbar open={openError} autoHideDuration={3000} onClose={closeErrorMessage}>
+        <Alert onClose={closeErrorMessage} severity="error">Hubo un error. Intenta nuevamente mas tarde.</Alert>
+      </Snackbar>
+      <Snackbar open={openWarning} autoHideDuration={3000} onClose={closeWarningMessage}>
+        <Alert onClose={closeWarningMessage} severity="warning">Estas logeado con Google. Para cambiar tu contraseña, hacelo desde Google.</Alert>
       </Snackbar>
     </div>
   );
