@@ -1,0 +1,27 @@
+html,
+body,
+#root {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    background-size: cover;
+}
+
+.landing-page{
+    background: rgba(0, 0, 0, 0.9);
+    height: 100%;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    height: 80%;
+}
+
+@media (max-width: 750px) {
+    .landing-page{
+        background: rgba(0, 0, 0, 1);
+        height: 100%;
+    }
+  }
