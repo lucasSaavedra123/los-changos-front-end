@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import "../../assets/scss/constants.scss"
 import "../../assets/scss/landingPage.scss"
+import "bootstrap/dist/css/bootstrap.min.css"
 import { Navigator } from "../Navigator"
 import { NavigatorLoading } from "../NavigatorLoading"
 import { LandingPageFront } from "../LandingPageFront"
