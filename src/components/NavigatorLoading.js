@@ -6,8 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import Button from '@mui/material/Button';
-import { THEME } from "../CONSTANTS"
+
 
 export const NavigatorLoading = () => {
     const { loginWithRedirect } = useAuth0();
