@@ -1,6 +1,5 @@
 import LandingPage from "./components/views/LandingPage";
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Profile from "./components/views/Profile";
 import Home from "./components/views/Sections/Home";
 import ProfileNavigator from "./components/ProfileNavigator";
 import { Settings } from "./components/views/Sections/Settings";
