@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { Navigator } from "../Navigator"
 import { NavigatorLoading } from "../NavigatorLoading"
 import { LandingPageFront } from "../LandingPageFront"
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { SpinnerDiamond } from 'spinners-react';
 import { Redirect } from 'react-router-dom';
@@ -41,4 +42,6 @@ const LandingPage = () => {
 
 }
 
-export default LandingPage
+export default withAuthenticationRequired(LandingPage, {
+    onRedirecting: () => <Redirect to="/profile/home" />,
+});

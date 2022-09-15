@@ -1,5 +1,4 @@
 import React from 'react';
-import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 import "../../../assets/scss/profile.scss"
 import LandingPage from '../LandingPage';
@@ -16,6 +15,4 @@ const Home = () => {
   );
 }
 
-export default withAuthenticationRequired(Home, {
-  onRedirecting: () => <LandingPage />,
-});
+export default Home

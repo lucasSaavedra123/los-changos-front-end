@@ -2,8 +2,6 @@ import React from 'react';
 
 import { AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
 import { useAuth0 } from "@auth0/auth0-react";
-import { withAuthenticationRequired } from "@auth0/auth0-react";
-import LandingPage from '../LandingPage';
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -112,6 +110,4 @@ const Settings = () => {
   );
 }
 
-export default withAuthenticationRequired(Settings, {
-  onRedirecting: () => <LandingPage />,
-});
+export default Settings
