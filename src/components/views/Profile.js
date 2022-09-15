@@ -16,7 +16,6 @@ export const Profile = () => {
   return (
 
     <Router>
-      <ProfileNavigator />
       <Switch>
         <Route exact path='/profile/home'><Home/></Route>
         <Route path='/profile/settings'><Settings/></Route>
