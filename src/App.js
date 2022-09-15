@@ -2,7 +2,7 @@ import LandingPage from "./components/views/LandingPage";
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Home from "./components/views/Sections/Home";
 import ProfileNavigator from "./components/ProfileNavigator";
-import { Settings } from "./components/views/Sections/Settings";
+import Settings from "./components/views/Sections/Settings";
 
 const Auth = () => {
   return (
