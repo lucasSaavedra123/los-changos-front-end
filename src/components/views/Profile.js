@@ -18,8 +18,8 @@ export const Profile = () => {
     <Router>
       <ProfileNavigator />
       <Switch>
-        <Route exact path='/'><Home/></Route>
-        <Route path='/settings'><Settings/></Route>
+        <Route exact path='/profile/home'><Home/></Route>
+        <Route path='/profile/settings'><Settings/></Route>
       </Switch>
     </Router>
 

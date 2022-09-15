@@ -59,8 +59,8 @@ export const ProfileNavigator = () => {
 
             <List>
 
-                <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/"} />
-                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/settings"} />
+                <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/profile/home"} />
+                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/profile/settings"} />
 
             </List>
 
