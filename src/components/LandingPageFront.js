@@ -28,10 +28,10 @@ export const LandingPageFront = () => {
             }>
 
                 <Stack gap={1} style={{ textAlign: "center" }}>
-                    <div><img class="logo" src="/logo512.png" width="250" height="250"></img></div>
-                    <div><h1 class="custom-font-bold">Walletify</h1></div>
-                    <div class="custom-font-light"><p>{LEMMA}</p></div>
-                    <div><Button theme={THEME} variant="contained" className="custom-font-light" onClick={() => loginWithRedirect()}><span class="black-font">Empezar ahora</span></Button></div>
+                    <div><img className="logo" src="/logo512.png" width="250" height="250"></img></div>
+                    <div><h1 className="custom-font-bold">Walletify</h1></div>
+                    <div className="custom-font-light"><p>{LEMMA}</p></div>
+                    <div><Button theme={THEME} variant="contained" className="custom-font-light" onClick={() => loginWithRedirect()}><span className="black-font">Empezar ahora</span></Button></div>
                 </Stack>
 
             </Container>

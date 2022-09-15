@@ -22,7 +22,7 @@ export const Navigator = () => {
                             width="30"
                             height="30"
                             className="d-inline-block align-top logo"
-                            style={{"margin-right": "15px", "margin-left": "15px"}}
+                            style={{"marginRight": "15px", "marginLeft": "15px"}}
                         />
                         <span className="custom-font-light">Walletify</span>
                     </Navbar.Brand>

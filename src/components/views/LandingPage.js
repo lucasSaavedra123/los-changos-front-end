@@ -19,7 +19,7 @@ const LandingPage = () => {
         <Profile/>
         :
         <>
-            <div class="landing-page" >
+            <div className="landing-page" >
                 <Navigator />
                 <LandingPageFront />
             </div>

@@ -27,8 +27,7 @@ export const Profile = () => {
 
 }
 
-/*
+
 export default withAuthenticationRequired(Profile, {
   onRedirecting: () => <LandingPage />,
 });
-*/

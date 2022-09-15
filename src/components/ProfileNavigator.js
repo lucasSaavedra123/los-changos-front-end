@@ -44,7 +44,7 @@ export const ProfileNavigator = () => {
             onKeyDown={toggleDrawer(anchor, false)}
         >
 
-            <div style={{ "width": "100%", "margin-top": "25px", "text-align": "center" }}>
+            <div style={{ "width": "100%", "marginTop": "25px", "textAlign": "center" }}>
 
                 <img
                     src="/logo192.png"
@@ -52,8 +52,9 @@ export const ProfileNavigator = () => {
                     height="75"
                     className="d-inline-block align-top logo"
                     style={{ "margin": "auto" }}
+                    alt="logo"
                 /><br />
-                <span className="custom-font-light" style={{ "color": "white", "font-size": "25px" }}>Walletify</span>
+                <span className="custom-font-light" style={{ "color": "white", "fontSize": "25px" }}>Walletify</span>
             </div>
 
             <List>
@@ -96,7 +97,8 @@ export const ProfileNavigator = () => {
                             width="30"
                             height="30"
                             className="d-inline-block align-top logo"
-                            style={{ "margin-right": "15px", "margin-left": "15px" }}
+                            style={{ "marginRight": "15px", "marginLeft": "15px" }}
+                            alt="logo"
                         />
                         <span className="custom-font-light">Walletify</span>
                     </Navbar.Brand>

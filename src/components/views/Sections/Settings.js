@@ -94,7 +94,7 @@ export const Settings = () => {
 
   return (
     <div className='settings'>
-      <BasicCard class='child' />
+      <BasicCard className='child' />
       <Snackbar open={openSuccess} autoHideDuration={3000} onClose={closeSuccessMessage}>
         <Alert onClose={closeSuccessMessage} severity="success">Se ha enviado un email de cambio de contraseña!</Alert>
       </Snackbar>
