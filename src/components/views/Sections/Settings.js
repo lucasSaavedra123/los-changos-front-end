@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import "../../../assets/scss/settings.scss"
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -50,7 +51,9 @@ const Settings = () => {
     setOpenWarning(false);
   };
 
-  const send_email = (e) => {
+  const send_email = () => {
+
+    console.log("The user:", user)
 
     if (user.sub.includes("auth0")) {
 
@@ -110,4 +113,6 @@ const Settings = () => {
   );
 }
 
-export default Settings
+export default withAuthenticationRequired(Settings, {
+  onRedirecting: () => <Redirect to="/" />,
+});

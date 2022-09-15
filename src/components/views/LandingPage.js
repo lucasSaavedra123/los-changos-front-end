@@ -42,6 +42,4 @@ const LandingPage = () => {
 
 }
 
-export default withAuthenticationRequired(LandingPage, {
-    onRedirecting: () => <Redirect to="/profile/home" />,
-});
+export default LandingPage

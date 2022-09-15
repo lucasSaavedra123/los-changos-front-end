@@ -1,7 +1,8 @@
+import { withAuthenticationRequired } from '@auth0/auth0-react';
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import "../../../assets/scss/profile.scss"
-import LandingPage from '../LandingPage';
 
 const Home = () => {
   return (
@@ -15,4 +16,6 @@ const Home = () => {
   );
 }
 
-export default Home
+export default withAuthenticationRequired(Home, {
+  onRedirecting: () => <Redirect to="/" />,
+});
