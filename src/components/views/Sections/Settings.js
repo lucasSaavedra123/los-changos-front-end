@@ -64,7 +64,6 @@ export const Settings = () => {
       };
 
       axios.request(options).then(function (response) {
-        console.log(response);
         showSuccessMessage();
       }).catch(function (error) { showErrorMessage() });
 
