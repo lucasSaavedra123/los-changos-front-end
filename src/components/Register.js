@@ -1,19 +1,16 @@
 import React from "react";
-//import "../assets/scss/landingPage.scss"
+import "../assets/scss/landingPage.scss"
 import "../assets/scss/constants.scss"
 import "../assets/scss/login.scss"
-import { LEMMA, THEME } from "../CONSTANTS"
-import Button from '@mui/material/Button';
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase"
 import { Link } from "react-router-dom";
 import Form from "../assets/Forms.js";
 import CurrencyList from 'currency-list'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 
 
@@ -26,8 +23,8 @@ const Register = () => {
     const [validate, setValidate] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(false);
-    const[currency, setCurrency]= useState('');
-    const currencies= CurrencyList.getAll('en_US');
+    const [currency, setCurrency] = useState('ARS');
+    const currencies = CurrencyList.getAll('en_US');
 
 
 
@@ -90,7 +87,7 @@ const Register = () => {
     }
     const handleChange = (event) => {
         setCurrency(event.target.value);
-      };
+    };
 
     return (
         <div className="row g-0 auth-wrapper background-color:white" >
@@ -103,98 +100,43 @@ const Register = () => {
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <p>Create your Account</p>
-                        <div className="auth-form-container text-start">
-                            <form className="auth-form" method="POST" onSubmit={register} autoComplete={'off'}>
-
-                                <div className="name mb-3">
-                                    <input type="text"
-                                        className={`form-control ${validate.validate && validate.validate.name ? 'is-invalid ' : ''}`}
-                                        id="name"
-                                        name="name"
-                                        value={name}
-                                        placeholder="Name"
-                                        onChange={(e) => setName(e.target.value)}
-                                    />
-
-                                    <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.name) ? 'd-block' : 'd-none'}`} >
-                                        {(validate.validate && validate.validate.name) ? validate.validate.name[0] : ''}
-                                    </div>
-                                </div>
-
-                                <div className="name mb-3">
-                                    <input type="text"
-                                        className={`form-control ${validate.validate && validate.validate.lastname ? 'is-invalid ' : ''}`}
-                                        id="lastname"
-                                        name="lastname"
-                                        value={lastname}
-                                        placeholder="Lastname"
-                                        onChange={(e) => setLastName(e.target.value)}
-                                    />
-
-                                    <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.name) ? 'd-block' : 'd-none'}`} >
-                                        {(validate.validate && validate.validate.name) ? validate.validate.name[0] : ''}
-                                    </div>
-                                </div>
-
-                                <div className=" name mb-3">
-                                    <InputLabel id="demo-simple-select-label">Currency</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={currency}
-                                        label="Currency"
-                                        onChange={handleChange}
-                                    >
-                                        {Object.keys(currencies).map((currency)=> {
-                                            return(
-                                            <MenuItem value={currencies[currency].code}>{currencies[currency].symbol_native} {currencies[currency].code}</MenuItem>
-                                            )
-                                        })
-                                    }
-                                    </Select>
-                                </div>
-                                <div className="email mb-3">
-                                    <input type="email"
-                                        className={`form-control ${validate.validate && validate.validate.email ? 'is-invalid ' : ''}`}
-                                        id="email"
-                                        name="email"
-                                        value={email}
-                                        placeholder="Email"
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-
-                                    <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.email) ? 'd-block' : 'd-none'}`} >
-                                        {(validate.validate && validate.validate.email) ? validate.validate.email[0] : ''}
-                                    </div>
-                                </div>
-
-                                <div className="password mb-3">
-                                    <div className="input-group">
-                                        <input type={showPassword ? 'text' : 'password'}
-                                            className={`form-control ${validate.validate && validate.validate.password ? 'is-invalid ' : ''}`}
-                                            name="password"
-                                            id="password"
-                                            value={password}
-                                            placeholder="Password"
-                                            onChange={(e) => setPassword(e.target.value)}
-                                        />
-
-                                        <button type="button" className="btn btn-outline-primary btn-sm" onClick={(e) => togglePassword(e)} ><i className={showPassword ? 'far fa-eye' : 'far fa-eye-slash'} ></i> </button>
-
-                                        <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.password) ? 'd-block' : 'd-none'}`} >
-                                            {(validate.validate && validate.validate.password) ? validate.validate.password[0] : ''}
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div className="text-center">
-                                    <button type="submit" className="btn btn-primary w-100 theme-btn mx-auto">Sign Up</button>
-                                </div>
-                            </form>
-
-                            <hr />
+                        <Box
+                            component="form"
+                            sx={{
+                                '& > :not(style)': { m: 1, width: '25ch' },
+                            }}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <TextField label="First Name" color="primary" focused fullWidth />
+                            <TextField label="Last Name" color="primary" focused fullWidth />
+                            <TextField label="Email" color="primary" focused fullWidth />
+                            <TextField label="Password" color="primary" type="password" focused fullWidth />
+                            <TextField
+                                id="outlined-select-currency"
+                                select
+                                label="Select"
+                                value={currency}
+                                onChange={handleChange}
+                                helperText="Please select your currency"
+                            >
+                                {Object.keys(currencies).map((currency) => {
+                                    return (
+                                        <MenuItem
+                                            value={currencies[currency].symbol}
+                                            key={currencies[currency].symbol}>
+                                            {currencies[currency].code}
+                                        </MenuItem>
+                                    )
+                                })
+                                }
+                            </TextField>
+                            <div className="text-center">
+                                <button className="btn btn-primary w-100 theme-btn mx-auto">Sign Up</button>
+                            </div>
                             <div className="auth-option text-center pt-2">Have an account? <Link className="text-link" to="/login" >Sign in</Link></div>
-                        </div>
+
+                        </Box>
                     </div>
                 </div>
             </div>

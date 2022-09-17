@@ -1,10 +1,10 @@
-import "../assets/scss/constants.scss"
+import "../../assets/scss/constants.scss"
 
 
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import { THEME } from "../CONSTANTS"
-import '../assets/scss/navbar.scss';
+import { THEME } from "../../CONSTANTS"
+import '../../assets/scss/navbar.scss';
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -18,10 +18,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
-import { auth } from "../firebase"
+import { auth } from "../../firebase"
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 
 export const ProfileNavigator = () => {

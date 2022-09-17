@@ -5,6 +5,8 @@ import React from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"
 import '../assets/scss/auth.scss'
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -44,19 +46,7 @@ const Login = () => {
         return isValid;
     }
 
-    /*const authenticate = (e) => {
-        e.preventDefault();
-
-        const validate = validateLogin();
-
-        if (validate) {
-            setValidate({});
-            setEmail('');
-            setPassword('');
-            alert('Successfully Login');
-        }
-    }*/
-    const {dispatch} = useContext(AuthContext);
+    const { dispatch } = useContext(AuthContext);
 
     const handleLogin = (e) => {
         e.preventDefault()
@@ -64,7 +54,7 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user
-                dispatch({type:"LOGIN", payload:user})
+                dispatch({ type: "LOGIN", payload: user })
                 window.location.href = "/profile/home"
             })
             .catch((error) => {
@@ -93,61 +83,22 @@ const Login = () => {
                     <div className="auth-body mx-auto">
                         <p>Login to your account</p>
                         <div className="auth-form-container text-start">
-                            <form className="auth-form" method="POST" onSubmit={handleLogin} autoComplete={'off'}>
-                                <div className="email mb-3">
-                                    <input type="email"
-                                        className={`form-control ${validate.validate && validate.validate.email ? 'is-invalid ' : ''}`}
-                                        id="email"
-                                        name="email"
-                                        value={email}
-                                        placeholder="Email"
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
+                        <Box
+                            component="form"
+                            sx={{
+                                '& > :not(style)': { m: 1, width: '25ch' },
+                            }}
+                            noValidate
+                            autoComplete="off"
+                        >
 
-                                    <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.email) ? 'd-block' : 'd-none'}`} >
-                                        {(validate.validate && validate.validate.email) ? validate.validate.email[0] : ''}
-                                    </div>
-                                </div>
+                            <TextField label="Email" color="primary" focused fullWidth />
+                            <TextField label="Password" color="primary" type="password" focused fullWidth />
 
-                                <div className="password mb-3">
-                                    <div className="input-group">
-                                        <input type={showPassword ? 'text' : 'password'}
-                                            className={`form-control ${validate.validate && validate.validate.password ? 'is-invalid ' : ''}`}
-                                            name="password"
-                                            id="password"
-                                            value={password}
-                                            placeholder="Password"
-                                            onChange={(e) => setPassword(e.target.value)}
-                                        />
-
-                                        <button type="button" className="btn btn-outline-primary btn-sm" onClick={(e) => togglePassword(e)} ><i className={showPassword ? 'far fa-eye' : 'far fa-eye-slash'} ></i> </button>
-
-                                        <div className={`invalid-feedback text-start ${(validate.validate && validate.validate.password) ? 'd-block' : 'd-none'}`} >
-                                            {(validate.validate && validate.validate.password) ? validate.validate.password[0] : ''}
-                                        </div>
-                                    </div>
-
-
-                                    <div className="extra mt-3 row justify-content-between">
-                                        <div className="col-6">
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="remember" checked={remember} onChange={(e) => setRemember(e.currentTarget.checked)} />
-                                                <label className="form-check-label" htmlFor="remember">
-                                                    Remember me
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="forgot-password text-end">
-                                                <Link to="/forgot-password">Forgot password?</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </Box>
                                 <div className="text-center">
                                     <button type="submit" className="btn btn-primary w-100 theme-btn mx-auto">Log In</button>
                                 </div>
-                            </form>
 
                             <hr />
                             <div className="auth-option text-center pt-2">No Account? <Link className="text-link" to="/register" >Sign up </Link></div>
