@@ -18,9 +18,25 @@ import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
+import { auth } from "../firebase"
+import { signOut } from "firebase/auth";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 
 export const ProfileNavigator = () => {
+
+    const { dispatch } = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
+
+    const logOut = () => {
+        signOut(auth).then(() => {
+            dispatch({ type: "LOGOUT", payload: null })
+            window.location.href = "/"
+        }).catch((error) => {
+            alert("FallO!!!!")
+        });
+    }
 
     const [state, setState] = React.useState({
         left: false,
@@ -65,7 +81,7 @@ export const ProfileNavigator = () => {
             <Divider sx={{ color: "white" }} />
 
             <List>
-                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => {}} path={"/"} />
+                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { logOut() }} path={"/"} />
             </List>
 
         </Box>

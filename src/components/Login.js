@@ -8,20 +8,23 @@ import Button from '@mui/material/Button';
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"
-
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
     const [error, setError] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const {dispatch} = useContext(AuthContext);
 
     const handleLogin = (e) => {
         e.preventDefault()
 
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                setError(false)
+                const user = userCredential.user
+                dispatch({type:"LOGIN", payload:user})
                 window.location.href = "/profile/home"
             })
             .catch((error) => {

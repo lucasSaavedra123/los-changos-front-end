@@ -1,9 +1,9 @@
-import "../../assets/scss/constants.scss"
-import "../../assets/scss/landingPage.scss"
+import "../assets/scss/constants.scss"
+import "../assets/scss/landingPage.scss"
 import "bootstrap/dist/css/bootstrap.min.css"
-import { Navigator } from "../Navigator"
-import { NavigatorLoading } from "../NavigatorLoading"
-import { LandingPageFront } from "../LandingPageFront"
+import { Navigator } from "./Navigator"
+import { NavigatorLoading } from "./NavigatorLoading"
+import { LandingPageFront } from "./LandingPageFront"
 
 import { SpinnerDiamond } from 'spinners-react';
 import { Redirect } from 'react-router-dom';
