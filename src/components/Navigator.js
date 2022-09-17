@@ -2,7 +2,6 @@ import React from "react";
 import "../assets/scss/landingPage.scss"
 import "../assets/scss/constants.scss"
 
-import { useAuth0 } from "@auth0/auth0-react";
 
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -10,7 +9,7 @@ import Button from '@mui/material/Button';
 import { THEME } from "../CONSTANTS"
 
 export const Navigator = () => {
-    const { loginWithRedirect } = useAuth0();
+
 
     return (
         <>
@@ -26,7 +25,7 @@ export const Navigator = () => {
                         />
                         <span className="custom-font-light">Walletify</span>
                     </Navbar.Brand>
-                    <Button className="custom-font-light" variant="outlined" theme={THEME} onClick={() => loginWithRedirect()}>Iniciar Sesion</Button>
+                    <Button className="custom-font-light" variant="outlined" theme={THEME} onClick={ () => window.location.href = "/login"  }><a>Iniciar Sesion</a></Button>
                 </Container>
 
             </Navbar>

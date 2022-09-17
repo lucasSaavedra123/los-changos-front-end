@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -20,9 +17,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const Settings = () => {
-  var axios = require("axios").default;
-  const { user } = useAuth0();
-
   const [openError, setOpenError] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openWarning, setOpenWarning] = React.useState(false);
@@ -51,33 +45,6 @@ const Settings = () => {
     setOpenWarning(false);
   };
 
-  const send_email = () => {
-
-    console.log("The user:", user)
-
-    if (user.sub.includes("auth0")) {
-
-      var options = {
-        method: 'POST',
-        url: 'https://' + AUTH0_DOMAIN_URL + '/dbconnections/change_password',
-        headers: { 'content-type': 'application/json' },
-        data: {
-          client_id: AUTH0_CLIENT_ID,
-          email: user.email,
-          connection: 'Username-Password-Authentication'
-        }
-      };
-
-      axios.request(options).then(function (response) {
-        showSuccessMessage();
-      }).catch(function (error) { showErrorMessage() });
-
-    }
-    else {
-      showWarningMessage();
-    }
-
-  }
 
   const BasicCard = () => {
     return (
@@ -91,7 +58,7 @@ const Settings = () => {
           </Typography>
         </CardContent>
         <CardActions style={{ display: 'flex' }}>
-          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "black", color: "white" }} size="small" onClick={() => { send_email() }} variant="outlined">Mandar mail</Button>
+          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "black", color: "white" }} size="small" onClick={() => { }} variant="outlined">Mandar mail</Button>
         </CardActions>
       </Card>
     );
@@ -113,6 +80,4 @@ const Settings = () => {
   );
 }
 
-export default withAuthenticationRequired(Settings, {
-  onRedirecting: () => <Redirect to="/" />,
-});
+export default Settings

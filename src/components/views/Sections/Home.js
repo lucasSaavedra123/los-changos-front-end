@@ -1,4 +1,3 @@
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
@@ -16,6 +15,4 @@ const Home = () => {
   );
 }
 
-export default withAuthenticationRequired(Home, {
-  onRedirecting: () => <Redirect to="/" />,
-});
+export default Home

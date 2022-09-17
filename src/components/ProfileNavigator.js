@@ -1,6 +1,5 @@
 import "../assets/scss/constants.scss"
 
-import { useAuth0 } from "@auth0/auth0-react";
 
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -22,7 +21,6 @@ import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
 
 
 export const ProfileNavigator = () => {
-    const { logout } = useAuth0();
 
     const [state, setState] = React.useState({
         left: false,
@@ -67,7 +65,7 @@ export const ProfileNavigator = () => {
             <Divider sx={{ color: "white" }} />
 
             <List>
-                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { console.log("Log Out!!!"); logout() }} path={"/"} />
+                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => {}} path={"/"} />
             </List>
 
         </Box>
