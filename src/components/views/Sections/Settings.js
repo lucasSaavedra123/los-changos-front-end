@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AUTH0_DOMAIN_URL, AUTH0_CLIENT_ID } from "../../../CONSTANTS";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,12 +11,15 @@ import Typography from '@mui/material/Typography';
 import "../../../assets/scss/settings.scss"
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { Redirect } from 'react-router-dom';
+
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-export const Settings = () => {
+const Settings = () => {
   var axios = require("axios").default;
   const { user } = useAuth0();
 
@@ -48,7 +51,9 @@ export const Settings = () => {
     setOpenWarning(false);
   };
 
-  const send_email = (e) => {
+  const send_email = () => {
+
+    console.log("The user:", user)
 
     if (user.sub.includes("auth0")) {
 
@@ -107,3 +112,7 @@ export const Settings = () => {
     </div>
   );
 }
+
+export default withAuthenticationRequired(Settings, {
+  onRedirecting: () => <Redirect to="/" />,
+});

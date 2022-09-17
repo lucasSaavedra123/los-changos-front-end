@@ -59,15 +59,15 @@ export const ProfileNavigator = () => {
 
             <List>
 
-                <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/"} />
-                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/settings"} />
+                <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/profile/home"} />
+                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/profile/settings"} />
 
             </List>
 
             <Divider sx={{ color: "white" }} />
 
             <List>
-                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { logout() }} path={"/"} />
+                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { console.log("Log Out!!!"); logout() }} path={"/"} />
             </List>
 
         </Box>

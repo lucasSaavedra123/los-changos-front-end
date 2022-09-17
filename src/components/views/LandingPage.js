@@ -5,9 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { Navigator } from "../Navigator"
 import { NavigatorLoading } from "../NavigatorLoading"
 import { LandingPageFront } from "../LandingPageFront"
-import {Profile} from "./Profile";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 import { SpinnerDiamond } from 'spinners-react';
+import { Redirect } from 'react-router-dom';
 
 
 const LandingPage = () => {
@@ -15,8 +16,9 @@ const LandingPage = () => {
     const { isAuthenticated } = useAuth0();
     const isLoading = useAuth0().isLoading;
 
+
     const conditionalView = isAuthenticated ?
-        <Profile/>
+        <Redirect to="/profile/home" />
         :
         <>
             <div className="landing-page" >
