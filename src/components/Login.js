@@ -55,20 +55,14 @@ const Login = () => {
             .then((userCredential) => {
                 const user = userCredential.user
                 dispatch({ type: "LOGIN", payload: user })
+                console.log("Se pudo")
                 window.location.href = "/profile/home"
             })
             .catch((error) => {
                 setError(true)
+                console.log("No se pudo:", error)
             });
 
-    }
-
-    const togglePassword = (e) => {
-        if (showPassword) {
-            setShowPassword(false);
-        } else {
-            setShowPassword(true)
-        }
     }
 
     return (
@@ -81,26 +75,40 @@ const Login = () => {
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
+                        <img
+                            src="/logo192.png"
+                            className="d-inline-block align-top logo"
+                        />
                         <p>Login to your account</p>
                         <div className="auth-form-container text-start">
-                        <Box
-                            component="form"
-                            sx={{
-                                '& > :not(style)': { m: 1, width: '25ch' },
-                            }}
-                            noValidate
-                            autoComplete="off"
-                        >
+                            <Box
+                                component="form"
+                                sx={{
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                }}
+                                noValidate
+                                autoComplete="off"
 
-                            <TextField label="Email" color="primary" focused fullWidth />
-                            <TextField label="Password" color="primary" type="password" focused fullWidth />
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center"
+                                }}
+                            >
 
-                        </Box>
-                                <div className="text-center">
-                                    <button type="submit" className="btn btn-primary w-100 theme-btn mx-auto">Log In</button>
+                                <div>
+                                    <TextField label="Email" color="primary" style={{ width: "100%" }} onChange={(e)=>{setEmail(e.target.value)}} />
+                                </div>
+                                <div>
+                                    <TextField label="Password" color="primary" type="password" style={{ width: "100%" }} onChange={(e)=>{setPassword(e.target.value)}} />
                                 </div>
 
-                            <hr />
+                                <div className="text-center">
+                                    <button onClick={handleLogin} className="btn btn-primary w-100 theme-btn mx-auto">Log In</button>
+                                </div>
+
+                            </Box>
+
                             <div className="auth-option text-center pt-2">No Account? <Link className="text-link" to="/register" >Sign up </Link></div>
                         </div>
                     </div>

@@ -6,13 +6,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Form from "../assets/Forms.js";
 import CurrencyList from 'currency-list'
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import {auth} from '../firebase'
 
-
+import {createUserWithEmailAndPassword} from 'firebase/auth'
 
 const Register = () => {
 
@@ -25,7 +24,6 @@ const Register = () => {
     const [error, setError] = useState(false);
     const [currency, setCurrency] = useState('ARS');
     const currencies = CurrencyList.getAll('en_US');
-
 
 
     const validateRegister = () => {
@@ -66,6 +64,12 @@ const Register = () => {
     const register = (e) => {
         e.preventDefault();
 
+        console.log(name)
+        console.log(lastname)
+        console.log(email)
+        console.log(password)
+        console.log(currency)
+
         const validate = validateRegister();
 
         if (validate) {
@@ -74,7 +78,14 @@ const Register = () => {
             setLastName('');
             setEmail('');
             setPassword('');
-            alert('Successfully Register User');
+            
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((res) => {
+                console.log(res.user)
+                alert('Successfully Register User');
+              })
+            .catch(err => setError(err.message))
+
         }
     }
 
@@ -107,23 +118,29 @@ const Register = () => {
                             }}
                             noValidate
                             autoComplete="off"
+
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center"
+                            }}
                         >
-                            <TextField label="First Name" color="primary" focused fullWidth />
-                            <TextField label="Last Name" color="primary" focused fullWidth />
-                            <TextField label="Email" color="primary" focused fullWidth />
-                            <TextField label="Password" color="primary" type="password" focused fullWidth />
+                            <TextField label="First Name" color="primary" fullWidth onChange={(e)=>setName(e.target.value)}/>
+                            <TextField label="Last Name" color="primary" fullWidth onChange={(e)=>setLastName(e.target.value)}/>
+                            <TextField label="Email" color="primary" fullWidth onChange={(e)=>setEmail(e.target.value)}/>
+                            <TextField label="Password" color="primary" type="password" fullWidth onChange={(e)=>setPassword(e.target.value)}/>
                             <TextField
                                 id="outlined-select-currency"
                                 select
                                 label="Select"
                                 value={currency}
-                                onChange={handleChange}
+                                onChange={(e)=>setCurrency(e.target.value)}
                                 helperText="Please select your currency"
                             >
                                 {Object.keys(currencies).map((currency) => {
                                     return (
                                         <MenuItem
-                                            value={currencies[currency].symbol}
+                                            value={currencies[currency].code}
                                             key={currencies[currency].symbol}>
                                             {currencies[currency].code}
                                         </MenuItem>
@@ -132,12 +149,13 @@ const Register = () => {
                                 }
                             </TextField>
                             <div className="text-center">
-                                <button className="btn btn-primary w-100 theme-btn mx-auto">Sign Up</button>
+                                <button className="btn btn-primary w-100 theme-btn mx-auto" onClick={register}>Sign Up</button>
                             </div>
                             <div className="auth-option text-center pt-2">Have an account? <Link className="text-link" to="/login" >Sign in</Link></div>
 
                         </Box>
                     </div>
+
                 </div>
             </div>
 
