@@ -1,9 +1,10 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-
-import "../../../assets/scss/profile.scss"
+import "../../assets/scss/profile.scss"
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 const Home = () => {
+
   return (
     <div className='home section'>
       <div className="banner">

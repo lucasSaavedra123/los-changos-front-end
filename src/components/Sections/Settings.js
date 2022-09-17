@@ -1,14 +1,14 @@
 import React from 'react';
 
+import "../../assets/scss/settings.scss"
+
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import "../../../assets/scss/settings.scss"
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { Redirect } from 'react-router-dom';
 
 
 

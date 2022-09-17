@@ -6,6 +6,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"
 import '../assets/scss/auth.scss'
 
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
 
@@ -54,13 +56,15 @@ const Login = () => {
             alert('Successfully Login');
         }
     }*/
+    const {dispatch} = useContext(AuthContext);
 
     const handleLogin = (e) => {
         e.preventDefault()
 
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                setError(false)
+                const user = userCredential.user
+                dispatch({type:"LOGIN", payload:user})
                 window.location.href = "/profile/home"
             })
             .catch((error) => {
