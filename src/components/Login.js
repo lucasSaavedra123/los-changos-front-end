@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import NavigatorWithoutButton from "./NavigatorWithoutButton";
 
 const Login = () => {
 
@@ -67,6 +68,15 @@ const Login = () => {
 
     return (
         <div className="row g-0 auth-wrapper">
+
+            
+
+
+                <NavigatorWithoutButton/>
+
+            
+
+
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
                 <div className="auth-background-holder"></div>
                 <div className="auth-background-mask"></div>
@@ -110,6 +120,7 @@ const Login = () => {
                             </Box>
 
                             <div className="auth-option text-center pt-2">No Account? <Link className="text-link" to="/register" >Sign up </Link></div>
+                            <div className="auth-option text-center pt-2"><Link className="text-link" to="/forgotPassword">Forgot Password? </Link></div>
                         </div>
                     </div>
                 </div>

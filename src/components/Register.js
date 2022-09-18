@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import {auth} from '../firebase'
 
 import {createUserWithEmailAndPassword} from 'firebase/auth'
+import NavigatorWithoutButton from "./NavigatorWithoutButton";
 
 const Register = () => {
 
@@ -102,6 +103,9 @@ const Register = () => {
 
     return (
         <div className="row g-0 auth-wrapper background-color:white" >
+            <div>
+                <NavigatorWithoutButton/>
+            </div>
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
                 <div className="auth-background-holder"></div>
                 <div className="auth-background-mask"></div>

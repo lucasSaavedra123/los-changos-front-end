@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
+import Forgot from "./components/Forgot";
 
 const App = () => {
 
@@ -22,6 +23,7 @@ const App = () => {
         <Route exact path='/'><LandingPage /></Route>
         <Route path='/login'><Login /></Route>
         <Route path='/register'><Register /></Route>
+        <Route path='/forgotPassword'><Forgot/> </Route>
         <Route path='/profile/home'><RequireAuth><ProfileNavigator /><Home /></RequireAuth></Route>
         <Route path='/profile/settings'><RequireAuth><ProfileNavigator /><Settings /></RequireAuth></Route>
         <Redirect to="/" />
