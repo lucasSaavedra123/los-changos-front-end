@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
+import { border } from "@mui/system";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 
 const Login = () => {
 
@@ -72,24 +75,22 @@ const Login = () => {
             
 
 
-                <NavigatorWithoutButton/>
-
-            
-
-
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-                <div className="auth-background-holder"></div>
+                <div className="auth-background-holder" ></div>
                 <div className="auth-background-mask"></div>
             </div>
 
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
+                
+                <Link className="text-link" to="/" style={{color:"grey", float:"left", marginLeft:10}}><ArrowBackIcon></ArrowBackIcon> </Link>
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <img
                             src="/logo192.png"
                             className="d-inline-block align-top logo"
                         />
-                        <p>Login to your account</p>
+                        <p style={{fontWeight:"bold"}}>Walletify</p>
+                        <p>Ingresa a tu cuenta</p>
                         <div className="auth-form-container text-start">
                             <Box
                                 component="form"
@@ -107,20 +108,19 @@ const Login = () => {
                             >
 
                                 <div>
-                                    <TextField label="Email" color="primary" style={{ width: "100%" }} onChange={(e)=>{setEmail(e.target.value)}} />
+                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} onChange={(e)=>{setEmail(e.target.value)}} />
                                 </div>
                                 <div>
-                                    <TextField label="Password" color="primary" type="password" style={{ width: "100%" }} onChange={(e)=>{setPassword(e.target.value)}} />
+                                    <TextField label="Contraseña" color="primary" type="password" style={{ width: "100%" }} onChange={(e)=>{setPassword(e.target.value)}} />
                                 </div>
 
                                 <div className="text-center">
-                                    <button onClick={handleLogin} className="btn btn-primary w-100 theme-btn mx-auto">Log In</button>
+                                    <button onClick={handleLogin} className="btn btn-primary w-100 theme-btn mx-auto" style={{backgroundColor:"#9CE37D",border:"none", color:"black"}}>Iniciar Sesion</button>
                                 </div>
 
                             </Box>
-
-                            <div className="auth-option text-center pt-2">No Account? <Link className="text-link" to="/register" >Sign up </Link></div>
-                            <div className="auth-option text-center pt-2"><Link className="text-link" to="/forgotPassword">Forgot Password? </Link></div>
+                            <div className="auth-option text-center pt-2">¿No tenes cuenta? <Link className="text-link" to="/register" >Registrate </Link></div>
+                            <div className="auth-option text-center pt-2"><Link className="text-link" to="/forgotPassword">Olvide mi contraseña </Link></div>
                         </div>
                     </div>
                 </div>

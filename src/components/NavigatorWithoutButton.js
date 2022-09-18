@@ -13,7 +13,7 @@ export const NavigatorWithoutButton = () => {
 
     return (
         <>
-            <Navbar bg="black" variant="dark">
+            <Navbar bg="black" variant="dark" style={{width:"100%"}}>
                 <Container>
                     <Navbar.Brand>
                         <img

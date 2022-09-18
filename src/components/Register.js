@@ -13,6 +13,7 @@ import {auth} from '../firebase'
 
 import {createUserWithEmailAndPassword} from 'firebase/auth'
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Register = () => {
 
@@ -103,18 +104,16 @@ const Register = () => {
 
     return (
         <div className="row g-0 auth-wrapper background-color:white" >
-            <div>
-                <NavigatorWithoutButton/>
-            </div>
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
                 <div className="auth-background-holder"></div>
                 <div className="auth-background-mask"></div>
             </div>
 
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
+            <Link className="text-link" to="/" style={{color:"grey", float:"left", marginLeft:10}}><ArrowBackIcon></ArrowBackIcon> </Link>
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
-                        <p>Create your Account</p>
+                        <p>Crea tu cuenta</p>
                         <Box
                             component="form"
                             sx={{
@@ -129,17 +128,16 @@ const Register = () => {
                                 alignItems: "center"
                             }}
                         >
-                            <TextField label="First Name" color="primary" fullWidth onChange={(e)=>setName(e.target.value)}/>
-                            <TextField label="Last Name" color="primary" fullWidth onChange={(e)=>setLastName(e.target.value)}/>
-                            <TextField label="Email" color="primary" fullWidth onChange={(e)=>setEmail(e.target.value)}/>
-                            <TextField label="Password" color="primary" type="password" fullWidth onChange={(e)=>setPassword(e.target.value)}/>
+                            <TextField label="Nombre" color="primary" fullWidth onChange={(e)=>setName(e.target.value)}/>
+                            <TextField label="Apellido" color="primary" fullWidth onChange={(e)=>setLastName(e.target.value)}/>
+                            <TextField label="Correo electronico" color="primary" fullWidth onChange={(e)=>setEmail(e.target.value)}/>
+                            <TextField label="Contraseña" color="primary" type="password" fullWidth onChange={(e)=>setPassword(e.target.value)}/>
                             <TextField
                                 id="outlined-select-currency"
                                 select
-                                label="Select"
+                                label="Moneda"
                                 value={currency}
                                 onChange={(e)=>setCurrency(e.target.value)}
-                                helperText="Please select your currency"
                             >
                                 {Object.keys(currencies).map((currency) => {
                                     return (
@@ -153,9 +151,9 @@ const Register = () => {
                                 }
                             </TextField>
                             <div className="text-center">
-                                <button className="btn btn-primary w-100 theme-btn mx-auto" onClick={register}>Sign Up</button>
+                                <button className="btn btn-primary w-100 theme-btn mx-auto" onClick={register} style={{backgroundColor:"#9CE37D",border:"none", color:"black"}}>Registrarse</button>
                             </div>
-                            <div className="auth-option text-center pt-2">Have an account? <Link className="text-link" to="/login" >Sign in</Link></div>
+                            <div className="auth-option text-center pt-2">¿Ya tenes cuenta? <Link className="text-link" to="/login" >Iniciar Sesion</Link></div>
 
                         </Box>
                     </div>

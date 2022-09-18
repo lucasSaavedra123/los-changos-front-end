@@ -8,6 +8,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from '@mui/material/Button';
 import { THEME } from "../CONSTANTS"
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 
@@ -54,10 +55,6 @@ const Forgot = () => {
 
         
         <div className="row g-0 auth-wrapper">
-            <div>
-                <NavigatorWithoutButton/>
-
-            </div>
 
 
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
@@ -66,6 +63,10 @@ const Forgot = () => {
             </div>
 
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
+
+            <Link className="text-link" to="/" style={{color:"grey", float:"left", marginLeft:10}}><ArrowBackIcon></ArrowBackIcon> </Link>
+
+            
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <p>Forgot Password</p>
@@ -97,7 +98,7 @@ const Forgot = () => {
 
 
                                 <div className="text-center">
-                                    <button onClick={forgotPassword} className="btn btn-primary w-100 theme-btn mx-auto">Forgot Password</button>
+                                    <button onClick={forgotPassword} style={{backgroundColor:"#9CE37D",border:"none", color:"black"}} className="btn btn-primary w-100 theme-btn mx-auto">Forgot Password</button>
                                 </div>
 
 
