@@ -9,6 +9,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 
 
@@ -16,10 +20,14 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+
+
 const Settings = () => {
   const [openError, setOpenError] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openWarning, setOpenWarning] = React.useState(false);
+
+  const { currentUser } = useContext(AuthContext);
 
   const showSuccessMessage = () => {
     setOpenSuccess(true);
@@ -45,6 +53,17 @@ const Settings = () => {
     setOpenWarning(false);
   };
 
+  const forgotPassword = (e) => {
+
+        sendPasswordResetEmail(auth, currentUser.email)
+        .then(() => {
+            showSuccessMessage();
+        })
+        .catch((error) => {
+            showErrorMessage();
+        });
+    }
+
 
   const BasicCard = () => {
     return (
@@ -58,7 +77,7 @@ const Settings = () => {
           </Typography>
         </CardContent>
         <CardActions style={{ display: 'flex' }}>
-          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "black", color: "white" }} size="small" onClick={() => { }} variant="outlined">Mandar mail</Button>
+          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "black", color: "white" }} size="small" onClick={() => { forgotPassword() }} variant="outlined">Mandar mail</Button>
         </CardActions>
       </Card>
     );
