@@ -9,7 +9,8 @@ import Button from '@mui/material/Button';
 import { THEME } from "../CONSTANTS"
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../firebase";
 
 
 const Forgot = () => {
@@ -44,29 +45,28 @@ const Forgot = () => {
         const validate = validateforgotPassword();
 
         if (validate) {
-            alert('Reset password link is sent to ' + email);
-            setValidate({});
-            setEmail('');
+
+            sendPasswordResetEmail(auth, email)
+            .then(() => {
+                alert('Reset password link is sent to ' + email);
+                setValidate({});
+                setEmail('');
+            })
+            .catch((error) => {
+                alert("Algo fallo!");
+            });
         }
     }
 
     return (
-        
-
-        
         <div className="row g-0 auth-wrapper">
-
-
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
                 <div className="auth-background-holder"></div>
                 <div className="auth-background-mask"></div>
             </div>
 
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
-
-            <Link className="text-link" to="/" style={{color:"grey", float:"left", marginLeft:10}}><ArrowBackIcon></ArrowBackIcon> </Link>
-
-            
+                <Link className="text-link" to="/" style={{ color: "grey", float: "left", marginLeft: 10 }}><ArrowBackIcon></ArrowBackIcon> </Link>
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <p>Forgot Password</p>
@@ -87,27 +87,13 @@ const Forgot = () => {
                                 }}
 
                             >
-
-
-
-
-
                                 <div>
                                     <TextField label="Email" color="primary" style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }} />
                                 </div>
-
-
                                 <div className="text-center">
-                                    <button onClick={forgotPassword} style={{backgroundColor:"#9CE37D",border:"none", color:"black"}} className="btn btn-primary w-100 theme-btn mx-auto">Forgot Password</button>
+                                    <button onClick={forgotPassword} style={{ backgroundColor: "#9CE37D", border: "none", color: "black" }} className="btn btn-primary w-100 theme-btn mx-auto">Forgot Password</button>
                                 </div>
-
-
-
-
                             </Box>
-
-
-
                             <div className="auth-option text-center pt-2"><Link className="text-link" to="/login" >Back to Login</Link></div>
                         </div>
                     </div>

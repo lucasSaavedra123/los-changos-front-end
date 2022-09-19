@@ -58,13 +58,19 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user
-                dispatch({ type: "LOGIN", payload: user })
-                console.log("Se pudo")
-                window.location.href = "/profile/home"
+
+                if (user.emailVerified) {
+                    console.log("Usuario:", user)
+                    dispatch({ type: "LOGIN", payload: user })
+                    window.location.href = "/profile/home"
+                }
+                else{
+                    alert("Verifica tu mail primero!")
+                }
+
             })
             .catch((error) => {
                 setError(true)
-                console.log("No se pudo:", error)
             });
 
     }
@@ -72,7 +78,7 @@ const Login = () => {
     return (
         <div className="row g-0 auth-wrapper">
 
-            
+
 
 
             <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
@@ -81,15 +87,15 @@ const Login = () => {
             </div>
 
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
-                
-                <Link className="text-link" to="/" style={{color:"grey", float:"left", marginLeft:10}}><ArrowBackIcon></ArrowBackIcon> </Link>
+
+                <Link className="text-link" to="/" style={{ color: "grey", float: "left", marginLeft: 10 }}><ArrowBackIcon></ArrowBackIcon> </Link>
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <img
                             src="/logo192.png"
                             className="d-inline-block align-top logo"
                         />
-                        <p style={{fontWeight:"bold"}}>Walletify</p>
+                        <p style={{ fontWeight: "bold" }}>Walletify</p>
                         <p>Ingresa a tu cuenta</p>
                         <div className="auth-form-container text-start">
                             <Box
@@ -108,14 +114,14 @@ const Login = () => {
                             >
 
                                 <div>
-                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} onChange={(e)=>{setEmail(e.target.value)}} />
+                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }} />
                                 </div>
                                 <div>
-                                    <TextField label="Contraseña" color="primary" type="password" style={{ width: "100%" }} onChange={(e)=>{setPassword(e.target.value)}} />
+                                    <TextField label="Contraseña" color="primary" type="password" style={{ width: "100%" }} onChange={(e) => { setPassword(e.target.value) }} />
                                 </div>
 
                                 <div className="text-center">
-                                    <button onClick={handleLogin} className="btn btn-primary w-100 theme-btn mx-auto" style={{backgroundColor:"#9CE37D",border:"none", color:"black"}}>Iniciar Sesion</button>
+                                    <button onClick={handleLogin} className="btn btn-primary w-100 theme-btn mx-auto" style={{ backgroundColor: "#9CE37D", border: "none", color: "black" }}>Iniciar Sesion</button>
                                 </div>
 
                             </Box>
