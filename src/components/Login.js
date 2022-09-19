@@ -23,7 +23,15 @@ const Login = () => {
     const [validate, setValidate] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(false);
+    const initialValues= {email:"",password:""};
+    const [formValues, setFormValues] = useState(initialValues);
 
+    const validateMail= () =>{
+
+
+
+
+    }
     const validateLogin = () => {
         let isValid = true;
 
@@ -78,17 +86,8 @@ const Login = () => {
     return (
         <div className="row g-0 auth-wrapper">
 
-
-
-
-            <div className="col-12 col-md-5 col-lg-6 h-100 auth-background-col">
-                <div className="auth-background-holder" ></div>
-                <div className="auth-background-mask"></div>
-            </div>
-
+            <NavigatorWithoutButton/>
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
-
-                <Link className="text-link" to="/" style={{ color: "grey", float: "left", marginLeft: 10 }}><ArrowBackIcon></ArrowBackIcon> </Link>
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <img
