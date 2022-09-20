@@ -27,12 +27,10 @@ const Register = () => {
     const [lastname, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [validate, setValidate] = useState({});
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState(false);
 
     const [openCompleteAllFieldsError, setopenCompleteAllFieldsError] = React.useState(false);
     const [openRepeatedEmailMessage, setopenRepeatedEmailMessage] = React.useState(false);
+    const [openSuccessfulRegister, setOpenSuccessfulRegister] = React.useState(false);
 
     const showCompleteAllFieldMessage = () => {
         setopenCompleteAllFieldsError(true);
@@ -50,54 +48,21 @@ const Register = () => {
         setopenRepeatedEmailMessage(false);
     };
 
-    const validateRegister = () => {
-        let isValid = true;
+    const showSuccessfulRegister = (event, reason) => {
+        setOpenSuccessfulRegister(true);
+    };
 
-        let validator = Form.validator({
-            name: {
-                value: name,
-                isRequired: true,
-            },
-            lastname: {
-                value: lastname,
-                isRequired: true,
-
-            },
-            email: {
-                value: email,
-                isRequired: true,
-                isEmail: true
-            },
-            password: {
-                value: password,
-                isRequired: true,
-                minLength: 6
-            }
-        });
-
-        if (validator !== null) {
-            setValidate({
-                validate: validator.errors
-            })
-
-            isValid = false
-        }
-        return isValid;
-    }
+    const closeSuccessfulRegister = (event, reason) => {
+        setOpenSuccessfulRegister(false);
+    };
 
     const register = (e) => {
         e.preventDefault();
 
-        const validate = validateRegister();
-
-        showRepeatedEmailMessage()
-
-        if (validate) {
-            setValidate({});
-            setFirstName('');
-            setLastName('');
-            setEmail('');
-            setPassword('');
+        if(email=='' || password==''|| name==''|| lastname==''){
+            showCompleteAllFieldMessage()
+        }
+        else{
             createUserWithEmailAndPassword(auth, email, password)
                 .then((res) => {
                     const updated_auth = getAuth();
@@ -107,17 +72,22 @@ const Register = () => {
 
                         sendEmailVerification(updated_auth.currentUser)
                             .then(() => {
-                                alert('Successfully Register User');
+                                showSuccessfulRegister()
                             });
 
 
                     }).catch((error) => {
-                        console.log(error);
-                        alert("Algo fallo!!!");
+                        alert("El servicio no esta funcionando. Intenta mas tarde.");
                     });
+                })
+                .catch((err) => {
+                    console.log(err)
+
+                    if(err.code == 'auth/email-already-in-use'){
+                        showRepeatedEmailMessage()
+                    }
 
                 })
-                .catch(err => console.log(err))
         }
     }
 
@@ -163,6 +133,9 @@ const Register = () => {
             </Snackbar>
             <Snackbar open={openRepeatedEmailMessage} autoHideDuration={3000} onClose={closeRepeatedEmailMessage}>
                 <Alert onClose={closeRepeatedEmailMessage} severity="error">Un usuario ya se registro con ese mail. Intenta otro.</Alert>
+            </Snackbar>
+            <Snackbar open={openSuccessfulRegister} autoHideDuration={3000} onClose={closeSuccessfulRegister}>
+                <Alert onClose={closeSuccessfulRegister} severity="success">Registro Exitoso. Revisa tu mail!</Alert>
             </Snackbar>
         </div>
     );

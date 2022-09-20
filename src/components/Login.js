@@ -11,8 +11,6 @@ import Box from '@mui/material/Box';
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
-import { border } from "@mui/system";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
@@ -25,18 +23,10 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [remember, setRemember] = useState(false);
-    const [validate, setValidate] = useState({});
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState(false);
-    const initialValues= {email:"",password:""};
-    const [formValues, setFormValues] = useState(initialValues);
     const [openVerifyEmailMessage, setopenVerifyEmailMessage] = React.useState(false);
     const [openCompleteAllFieldMessage , setopenCompleteAllFieldsError ] = React.useState(false);
-
-    const validateMail= () =>{
-
-    }
+    const [openInvalidEmailError , setopenInvalidEmailError ] = React.useState(false);
+    const [openInvalidUserError , setopenInvalidUserError ] = React.useState(false);
 
     const showVerifyEmailMessage = () => {
         setopenVerifyEmailMessage(true);
@@ -54,39 +44,31 @@ const Login = () => {
         setopenCompleteAllFieldsError(false);
     };
 
-    const validateLogin = () => {
-        let isValid = true;
+    const showInvalidEmailError = () => {
+        setopenInvalidEmailError(true);
+    };
 
-        let validator = Form.validator({
-            email: {
-                value: email,
-                isRequired: true,
-                isEmail: true
-            },
-            password: {
-                value: password,
-                isRequired: true,
-                minLength: 6
-            }
-        });
+    const closeInvalidEmailError = (event, reason) => {
+        setopenInvalidEmailError(false);
+    };
 
-        if (validator !== null) {
-            setValidate({
-                validate: validator.errors
-            })
+    const showInvalidUserError = () => {
+        setopenInvalidUserError(true);
+    };
 
-            isValid = false
-        }
-        return isValid;
-    }
+    const closeInvalidUserError = (event, reason) => {
+        setopenInvalidUserError(false);
+    };
 
     const { dispatch } = useContext(AuthContext);
 
     const handleLogin = (e) => {
         e.preventDefault()
 
-        console.log(email)
-        console.log(password)
+        if(email=='' || password==''){
+            showCompleteAllFieldError()
+        }
+        else{
 
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -103,9 +85,16 @@ const Login = () => {
 
             })
             .catch((error) => {
-                setError(true)
-            });
+                
+                if(error.code == 'auth/invalid-email'){
+                    showInvalidEmailError()
+                }
+                if(error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password'){
+                    showInvalidUserError()
+                }
 
+            });
+        }
     }
 
     return (
@@ -163,7 +152,12 @@ const Login = () => {
             <Snackbar open={openCompleteAllFieldMessage} autoHideDuration={3000} onClose={closeCompleteAllFieldError}>
                 <Alert onClose={closeCompleteAllFieldError} severity="error">Completa todos los campos!</Alert>
             </Snackbar>
-
+            <Snackbar open={openInvalidEmailError} autoHideDuration={3000} onClose={closeInvalidEmailError}>
+                <Alert onClose={closeInvalidEmailError} severity="error">Ingresa un mail valido!</Alert>
+            </Snackbar>
+            <Snackbar open={openInvalidUserError} autoHideDuration={3000} onClose={closeInvalidUserError}>
+                <Alert onClose={closeInvalidUserError} severity="error">Contraseña o Mail no correcto</Alert>
+            </Snackbar>
         </div>
     );
 }
