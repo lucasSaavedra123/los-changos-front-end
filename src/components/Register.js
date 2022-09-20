@@ -14,6 +14,12 @@ import { auth } from '../firebase'
 import { createUserWithEmailAndPassword, updateProfile, getAuth, sendEmailVerification } from 'firebase/auth'
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Register = () => {
 
@@ -24,6 +30,25 @@ const Register = () => {
     const [validate, setValidate] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(false);
+
+    const [openCompleteAllFieldsError, setopenCompleteAllFieldsError] = React.useState(false);
+    const [openRepeatedEmailMessage, setopenRepeatedEmailMessage] = React.useState(false);
+
+    const showCompleteAllFieldMessage = () => {
+        setopenCompleteAllFieldsError(true);
+    };
+
+    const closeCompleteAllFieldMessage = (event, reason) => {
+        setopenCompleteAllFieldsError(false);
+    };
+
+    const showRepeatedEmailMessage = () => {
+        setopenRepeatedEmailMessage(true);
+    };
+
+    const closeRepeatedEmailMessage = (event, reason) => {
+        setopenRepeatedEmailMessage(false);
+    };
 
     const validateRegister = () => {
         let isValid = true;
@@ -65,6 +90,7 @@ const Register = () => {
 
         const validate = validateRegister();
 
+        showRepeatedEmailMessage()
 
         if (validate) {
             setValidate({});
@@ -97,11 +123,11 @@ const Register = () => {
 
     return (
         <div className="row g-0 auth-wrapper background-color:white" >
-            <NavigatorWithoutButton/>
+            <NavigatorWithoutButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
-                        
+
                         <p>Crea tu cuenta</p>
                         <Box
                             component="form"
@@ -132,7 +158,12 @@ const Register = () => {
 
                 </div>
             </div>
-
+            <Snackbar open={openCompleteAllFieldsError} autoHideDuration={3000} onClose={closeCompleteAllFieldMessage}>
+                <Alert onClose={closeCompleteAllFieldMessage} severity="error">Ingrese todos los campos por favor!</Alert>
+            </Snackbar>
+            <Snackbar open={openRepeatedEmailMessage} autoHideDuration={3000} onClose={closeRepeatedEmailMessage}>
+                <Alert onClose={closeRepeatedEmailMessage} severity="error">Un usuario ya se registro con ese mail. Intenta otro.</Alert>
+            </Snackbar>
         </div>
     );
 }

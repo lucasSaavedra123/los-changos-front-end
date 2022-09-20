@@ -13,6 +13,12 @@ import { AuthContext } from "../context/AuthContext";
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
 import { border } from "@mui/system";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 
 const Login = () => {
@@ -25,13 +31,29 @@ const Login = () => {
     const [error, setError] = useState(false);
     const initialValues= {email:"",password:""};
     const [formValues, setFormValues] = useState(initialValues);
+    const [openVerifyEmailMessage, setopenVerifyEmailMessage] = React.useState(false);
+    const [openCompleteAllFieldMessage , setopenCompleteAllFieldsError ] = React.useState(false);
 
     const validateMail= () =>{
 
-
-
-
     }
+
+    const showVerifyEmailMessage = () => {
+        setopenVerifyEmailMessage(true);
+    };
+
+    const closeVerifyEmailMessage = (event, reason) => {
+        setopenVerifyEmailMessage(false);
+    };
+
+    const showCompleteAllFieldError = () => {
+        setopenCompleteAllFieldsError(true);
+    };
+
+    const closeCompleteAllFieldError = (event, reason) => {
+        setopenCompleteAllFieldsError(false);
+    };
+
     const validateLogin = () => {
         let isValid = true;
 
@@ -63,6 +85,9 @@ const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault()
 
+        console.log(email)
+        console.log(password)
+
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user
@@ -73,7 +98,7 @@ const Login = () => {
                     window.location.href = "/profile/home"
                 }
                 else{
-                    alert("Verifica tu mail primero!")
+                    showVerifyEmailMessage()
                 }
 
             })
@@ -130,6 +155,14 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+
+
+            <Snackbar open={openVerifyEmailMessage} autoHideDuration={3000} onClose={closeVerifyEmailMessage}>
+                <Alert onClose={closeVerifyEmailMessage} severity="error">Verifica el mail para poder ingresar!</Alert>
+            </Snackbar>
+            <Snackbar open={openCompleteAllFieldMessage} autoHideDuration={3000} onClose={closeCompleteAllFieldError}>
+                <Alert onClose={closeCompleteAllFieldError} severity="error">Completa todos los campos!</Alert>
+            </Snackbar>
 
         </div>
     );
