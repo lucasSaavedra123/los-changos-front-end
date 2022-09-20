@@ -3,68 +3,42 @@ import { Link } from "react-router-dom";
 import Form from '../assets/Forms';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Button from '@mui/material/Button';
-import { THEME } from "../CONSTANTS"
-import NavigatorWithoutButton from "./NavigatorWithoutButton";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
+import NavigatorWithoutButton from "./NavigatorWithoutButton";
 
 
 const Forgot = () => {
 
     const [email, setEmail] = useState('');
-    const [validate, setValidate] = useState({});
-
-    const validateforgotPassword = () => {
-        let isValid = true;
-
-        let validator = Form.validator({
-            email: {
-                value: email,
-                isRequired: true,
-                isEmail: true
-            }
-        });
-
-        if (validator !== null) {
-            setValidate({
-                validate: validator.errors
-            })
-
-            isValid = false
-        }
-        return isValid;
-    }
 
     const forgotPassword = (e) => {
         e.preventDefault();
 
-        const validate = validateforgotPassword();
-
-        if (validate) {
+        if (email != '') {
 
             sendPasswordResetEmail(auth, email)
-            .then(() => {
-                alert('Reset password link is sent to ' + email);
-                setValidate({});
-                setEmail('');
-            })
-            .catch((error) => {
-                alert("Algo fallo!");
-            });
+                .then(() => {
+                    alert('Se mando un mail para recuperar la contraseña a ' + email);
+                })
+                .catch((error) => {
+                    if (error.code == 'auth/invalid-email') {
+                        alert('Ingresa un mail valido')
+                    }
+                    else {
+                        alert('El servicio no esta disponible temporalmente. Intente mas tarde.');
+                    }
+                });
         }
     }
 
     return (
         <div className="row g-0 auth-wrapper">
-            <NavigatorWithoutButton/>
+            <NavigatorWithoutButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
-                    <img
+                        <img
                             src="/logo192.png"
                             className="d-inline-block align-top logo"
                         />

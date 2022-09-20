@@ -4,16 +4,12 @@ import "../assets/scss/constants.scss"
 import "../assets/scss/login.scss"
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Form from "../assets/Forms.js";
-import CurrencyList from 'currency-list'
-import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { auth } from '../firebase'
 
 import { createUserWithEmailAndPassword, updateProfile, getAuth, sendEmailVerification } from 'firebase/auth'
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 

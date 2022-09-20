@@ -5,8 +5,6 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Link } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import Button from '@mui/material/Button';
-import { THEME } from "../CONSTANTS"
 
 export const NavigatorWithoutButton = () => {
 
