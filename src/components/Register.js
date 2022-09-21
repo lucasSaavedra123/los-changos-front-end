@@ -1,7 +1,6 @@
 import React from "react";
 import "../assets/scss/landingPage.scss"
 import "../assets/scss/constants.scss"
-import "../assets/scss/login.scss"
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import TextField from '@mui/material/TextField';
