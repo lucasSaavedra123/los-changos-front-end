@@ -8,11 +8,11 @@ const Home = () => {
   const { currentUser } = useContext(AuthContext);
 
   return (
-    <div className='home section'>
-      <div className="banner">
-        <h1 className="banner-child white-font">¡Bienvenido a Walletify, {currentUser.displayName}!</h1>
+    <div className='home'>
+      <div className="child">
+        <h1 className="white-font">¡Bienvenido a Walletify, {currentUser.displayName}!</h1>
         <br></br>
-        <h3 className="banner-child white-font">¡Estate atento, esto recien empieza!</h3>
+        <h3 className="white-font">¡Estate atento, esto recien empieza!</h3>
       </div>
     </div>
   );
