@@ -4,7 +4,7 @@
   <img src="https://user-images.githubusercontent.com/46687572/190235826-52677e5c-736b-4d72-bf09-2c43bd10ed40.png" />
 </p>
 
-Official Repository of Walletify. Website: [Link](www.walletify-backend.herokuapp.com/)
+Official Repository of Walletify. Website: [Link](www.walletify.vercel.app/)
 
 
 ## Contribute
