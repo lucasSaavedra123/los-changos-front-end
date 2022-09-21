@@ -9,7 +9,7 @@ import { auth } from '../firebase'
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { createUserWithEmailAndPassword, updateProfile, getAuth, sendEmailVerification } from 'firebase/auth'
-import NavigatorWithoutButton from "./NavigatorWithoutButton";
+import NavigatorWithButton from "./NavigatorWithButton";
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { ThemeProvider } from '@mui/material/styles';
@@ -119,7 +119,7 @@ const Register = () => {
 
     return (
         <div className="row g-0 auth-wrapper background-color:white" >
-            <NavigatorWithoutButton />
+            <NavigatorWithButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">

@@ -12,7 +12,7 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import NavigatorWithoutButton from "./NavigatorWithoutButton";
+import NavigatorWithButton from "./NavigatorWithButton";
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -110,7 +110,7 @@ const Login = () => {
     return (
         <div className="row g-0 auth-wrapper">
 
-            <NavigatorWithoutButton />
+            <NavigatorWithButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
