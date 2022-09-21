@@ -16,6 +16,10 @@ import { ThemeProvider } from '@mui/material/styles';
 import { THEME } from '../CONSTANTS'
 
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -83,11 +87,12 @@ const Register = () => {
                     }).then(() => {
 
                         sendEmailVerification(updated_auth.currentUser)
-                            .then(() => {
+                            .then(async () => {
                                 setLoading(false);
-                                showSuccessfulRegister()
+                                showSuccessfulRegister();
+                                await sleep(2000);
+                                window.location.href = "/"
                             });
-
 
                     }).catch((error) => {
                         setLoading(false);
