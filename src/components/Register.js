@@ -103,7 +103,7 @@ const Register = () => {
                     if (err.code == 'auth/email-already-in-use') {
                         showRepeatedEmailMessage()
                     }
-                    if (err.code == 'auth/invalid-email') {
+                    else if (err.code == 'auth/invalid-email') {
                         showInvalidEmailError()
                     }
                     else {
