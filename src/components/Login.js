@@ -12,16 +12,9 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import NavigatorWithoutButton from "./NavigatorWithoutButton";
-import MuiAlert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
+import NavigatorWithButton from "./NavigatorWithButton";
 import LoadingButton from '@mui/lab/LoadingButton';
 import CustomAlert from './CustomAlert'
-
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 
 const Login = () => {
@@ -71,7 +64,7 @@ const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault()
         setLoading(true);
-        if (email == '' || password == '') {
+        if (email === '' || password === '') {
             showCompleteAllFieldError()
             setLoading(false);
         }
@@ -94,10 +87,11 @@ const Login = () => {
                 })
                 .catch((error) => {
 
-                    if (error.code == 'auth/invalid-email') {
+
+                    if (error.code === 'auth/invalid-email') {
                         showInvalidEmailError()
                     }
-                    if (error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password') {
+                    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
                         showInvalidUserError()
                     }
                     setLoading(false)
@@ -110,7 +104,7 @@ const Login = () => {
     return (
         <div className="row g-0 auth-wrapper">
 
-            <NavigatorWithoutButton />
+            <NavigatorWithButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">

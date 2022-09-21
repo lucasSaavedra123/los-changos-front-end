@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
-import NavigatorWithoutButton from "./NavigatorWithoutButton";
+import NavigatorWithButton from "./NavigatorWithButton";
 
 
 const Forgot = () => {
@@ -34,7 +34,7 @@ const Forgot = () => {
 
     return (
         <div className="row g-0 auth-wrapper">
-            <NavigatorWithoutButton />
+            <NavigatorWithButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">

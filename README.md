@@ -6,7 +6,6 @@
 
 Official Repository of Walletify. Website: [Link](www.walletify.vercel.app/)
 
-
 ## Contribute
 To Install and Run Walletify Front-end, just run:
 
