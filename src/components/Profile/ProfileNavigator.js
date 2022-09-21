@@ -1,11 +1,10 @@
-import "../assets/scss/constants.scss"
+import "../../assets/scss/constants.scss"
 
-import { useAuth0 } from "@auth0/auth0-react";
 
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import { THEME } from "../CONSTANTS"
-import '../assets/scss/navbar.scss';
+import { THEME } from "../../CONSTANTS"
+import '../../assets/scss/navbar.scss';
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -19,10 +18,25 @@ import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
+import { auth } from "../../firebase"
+import { signOut } from "firebase/auth";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 
 export const ProfileNavigator = () => {
-    const { logout } = useAuth0();
+
+    const { dispatch } = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
+
+    const logOut = () => {
+        signOut(auth).then(() => {
+            dispatch({ type: "LOGOUT", payload: null })
+            window.location.href = "/"
+        }).catch((error) => {
+            alert("FallO!!!!")
+        });
+    }
 
     const [state, setState] = React.useState({
         left: false,
@@ -44,7 +58,7 @@ export const ProfileNavigator = () => {
             onKeyDown={toggleDrawer(anchor, false)}
         >
 
-            <div style={{ "width": "100%", "margin-top": "25px", "text-align": "center" }}>
+            <div style={{ "width": "100%", "marginTop": "25px", "textAlign": "center" }}>
 
                 <img
                     src="/logo192.png"
@@ -52,21 +66,22 @@ export const ProfileNavigator = () => {
                     height="75"
                     className="d-inline-block align-top logo"
                     style={{ "margin": "auto" }}
+                    alt="logo"
                 /><br />
-                <span className="custom-font-light" style={{ "color": "white", "font-size": "25px" }}>Walletify</span>
+                <span className="custom-font-light" style={{ "color": "white", "fontSize": "25px" }}>Walletify</span>
             </div>
 
             <List>
 
-                <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/"} />
-                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/settings"} />
+                <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/profile/home"} />
+                <ProfileNavigatorItem name={"Settings"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/profile/settings"} />
 
             </List>
 
             <Divider sx={{ color: "white" }} />
 
             <List>
-                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { logout() }} path={"/"} />
+                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { logOut() }} path={"/"} />
             </List>
 
         </Box>
@@ -96,7 +111,8 @@ export const ProfileNavigator = () => {
                             width="30"
                             height="30"
                             className="d-inline-block align-top logo"
-                            style={{ "margin-right": "15px", "margin-left": "15px" }}
+                            style={{ "marginRight": "15px", "marginLeft": "15px" }}
+                            alt="logo"
                         />
                         <span className="custom-font-light">Walletify</span>
                     </Navbar.Brand>
