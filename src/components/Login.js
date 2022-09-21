@@ -16,6 +16,8 @@ import NavigatorWithoutButton from "./NavigatorWithoutButton";
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
+import CustomAlert from './CustomAlert'
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -142,17 +144,17 @@ const Login = () => {
                                 </div>
 
                                 <div className="text-center">
-                                <ThemeProvider theme={THEME}>
+                                    <ThemeProvider theme={THEME}>
 
-                                    <LoadingButton
-                                        size="medium"
-                                        onClick={handleLogin}
-                                        loading={loading}
-                                        variant="contained"
-                                    >
-                                        Iniciar Sesion
-                                    </LoadingButton>
-                                </ThemeProvider>
+                                        <LoadingButton
+                                            size="medium"
+                                            onClick={handleLogin}
+                                            loading={loading}
+                                            variant="contained"
+                                        >
+                                            Iniciar Sesion
+                                        </LoadingButton>
+                                    </ThemeProvider>
                                 </div>
 
                             </Box>
@@ -162,20 +164,11 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            <CustomAlert text={"Verifica el mail para poder ingresar!"} severity={"error"} open={openVerifyEmailMessage} closeAction={closeVerifyEmailMessage} />
+            <CustomAlert text={"¡Completa todos los campos!"} severity={"error"} open={openCompleteAllFieldMessage} closeAction={closeCompleteAllFieldError} />
+            <CustomAlert text={"¡Ingresa un mail valido!"} severity={"error"} open={openInvalidEmailError} closeAction={closeInvalidEmailError} />
+            <CustomAlert text={"Contraseña o Mail no correcto"} severity={"error"} open={openInvalidUserError} closeAction={closeInvalidUserError} />
 
-
-            <Snackbar open={openVerifyEmailMessage} autoHideDuration={3000} onClose={closeVerifyEmailMessage}>
-                <Alert onClose={closeVerifyEmailMessage} severity="error">Verifica el mail para poder ingresar!</Alert>
-            </Snackbar>
-            <Snackbar open={openCompleteAllFieldMessage} autoHideDuration={3000} onClose={closeCompleteAllFieldError}>
-                <Alert onClose={closeCompleteAllFieldError} severity="error">Completa todos los campos!</Alert>
-            </Snackbar>
-            <Snackbar open={openInvalidEmailError} autoHideDuration={3000} onClose={closeInvalidEmailError}>
-                <Alert onClose={closeInvalidEmailError} severity="error">Ingresa un mail valido!</Alert>
-            </Snackbar>
-            <Snackbar open={openInvalidUserError} autoHideDuration={3000} onClose={closeInvalidUserError}>
-                <Alert onClose={closeInvalidUserError} severity="error">Contraseña o Mail no correcto</Alert>
-            </Snackbar>
         </div>
     );
 }

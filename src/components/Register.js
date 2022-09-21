@@ -14,6 +14,7 @@ import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { ThemeProvider } from '@mui/material/styles';
 import { THEME } from '../CONSTANTS'
+import CustomAlert from "./CustomAlert";
 
 
 function sleep(ms) {
@@ -163,18 +164,10 @@ const Register = () => {
 
                 </div>
             </div>
-            <Snackbar open={openCompleteAllFieldsError} autoHideDuration={3000} onClose={closeCompleteAllFieldMessage}>
-                <Alert onClose={closeCompleteAllFieldMessage} severity="error">Ingrese todos los campos por favor!</Alert>
-            </Snackbar>
-            <Snackbar open={openRepeatedEmailMessage} autoHideDuration={3000} onClose={closeRepeatedEmailMessage}>
-                <Alert onClose={closeRepeatedEmailMessage} severity="error">Un usuario ya se registro con ese mail. Intenta otro.</Alert>
-            </Snackbar>
-            <Snackbar open={openSuccessfulRegister} autoHideDuration={3000} onClose={closeSuccessfulRegister}>
-                <Alert onClose={closeSuccessfulRegister} severity="success">Registro Exitoso. Revisa tu mail!</Alert>
-            </Snackbar>
-            <Snackbar open={openInvalidEmailError} autoHideDuration={3000} onClose={closeInvalidEmailError}>
-                <Alert onClose={closeInvalidEmailError} severity="error">Ingresa un mail valido!</Alert>
-            </Snackbar>
+            <CustomAlert text={"¡Ingrese todos los campos por favor!"} severity={"error"} open={openCompleteAllFieldsError} closeAction={closeCompleteAllFieldMessage}/>
+            <CustomAlert text={"Un usuario ya se registro con ese mail. Intenta otro."} severity={"error"} open={openRepeatedEmailMessage} closeAction={closeRepeatedEmailMessage}/>
+            <CustomAlert text={"Registro Exitoso. Revisa tu mail!"} severity={"success"} open={openSuccessfulRegister} closeAction={closeSuccessfulRegister}/>
+            <CustomAlert text={"Ingresa un mail valido!"} severity={"error"} open={openInvalidEmailError} closeAction={closeInvalidEmailError}/>
         </div>
     );
 }

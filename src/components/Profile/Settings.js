@@ -13,7 +13,7 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-
+import CustomAlert from '../CustomAlert';
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -55,14 +55,14 @@ const Settings = () => {
 
   const forgotPassword = (e) => {
 
-        sendPasswordResetEmail(auth, currentUser.email)
-        .then(() => {
-            showSuccessMessage();
-        })
-        .catch((error) => {
-            showErrorMessage();
-        });
-    }
+    sendPasswordResetEmail(auth, currentUser.email)
+      .then(() => {
+        showSuccessMessage();
+      })
+      .catch((error) => {
+        showErrorMessage();
+      });
+  }
 
 
   const BasicCard = () => {
@@ -86,15 +86,8 @@ const Settings = () => {
   return (
     <div className='settings'>
       <BasicCard className='child' />
-      <Snackbar open={openSuccess} autoHideDuration={3000} onClose={closeSuccessMessage}>
-        <Alert onClose={closeSuccessMessage} severity="success">Se ha enviado un email de cambio de contraseña!</Alert>
-      </Snackbar>
-      <Snackbar open={openError} autoHideDuration={3000} onClose={closeErrorMessage}>
-        <Alert onClose={closeErrorMessage} severity="error">Hubo un error. Intenta nuevamente mas tarde.</Alert>
-      </Snackbar>
-      <Snackbar open={openWarning} autoHideDuration={3000} onClose={closeWarningMessage}>
-        <Alert onClose={closeWarningMessage} severity="warning">Estas logeado con Google. Para cambiar tu contraseña, hacelo desde Google.</Alert>
-      </Snackbar>
+      <CustomAlert text={"¡Se ha enviado un email de cambio de contraseña!"} severity={"success"} open={openSuccess} closeAction={closeSuccessMessage} />
+      <CustomAlert text={"Hubo un error. Intenta nuevamente mas tarde."} severity={"error"} open={openError} closeAction={closeErrorMessage} />
     </div>
   );
 }

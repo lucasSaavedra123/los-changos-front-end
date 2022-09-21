@@ -2,15 +2,12 @@ import React from "react";
 import "../assets/scss/landingPage.scss"
 import "../assets/scss/constants.scss"
 
-
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from '@mui/material/Button';
 import { THEME } from "../CONSTANTS"
 
 export const Navigator = () => {
-
-
     return (
         <>
             <Navbar bg="black" variant="dark">
