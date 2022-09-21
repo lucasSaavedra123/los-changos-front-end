@@ -74,7 +74,6 @@ const Login = () => {
                 const user = userCredential.user
 
                 if (user.emailVerified) {
-                    console.log("Usuario:", user)
                     dispatch({ type: "LOGIN", payload: user })
                     window.location.href = "/profile/home"
                 }
