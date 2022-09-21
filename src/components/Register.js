@@ -6,11 +6,15 @@ import { Link } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { auth } from '../firebase'
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { createUserWithEmailAndPassword, updateProfile, getAuth, sendEmailVerification } from 'firebase/auth'
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { ThemeProvider } from '@mui/material/styles';
+import { THEME } from '../CONSTANTS'
+
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -22,10 +26,20 @@ const Register = () => {
     const [lastname, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = React.useState(false);
 
     const [openCompleteAllFieldsError, setopenCompleteAllFieldsError] = React.useState(false);
     const [openRepeatedEmailMessage, setopenRepeatedEmailMessage] = React.useState(false);
     const [openSuccessfulRegister, setOpenSuccessfulRegister] = React.useState(false);
+    const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
+
+    const showInvalidEmailError = () => {
+        setopenInvalidEmailError(true);
+    };
+
+    const closeInvalidEmailError = (event, reason) => {
+        setopenInvalidEmailError(false);
+    };
 
     const showCompleteAllFieldMessage = () => {
         setopenCompleteAllFieldsError(true);
@@ -51,13 +65,16 @@ const Register = () => {
         setOpenSuccessfulRegister(false);
     };
 
-    const register = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        if(email=='' || password==''|| name==''|| lastname==''){
+        if (email == '' || password == '' || name == '' || lastname == '') {
             showCompleteAllFieldMessage()
+            setLoading(false);
+
         }
-        else{
+        else {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((res) => {
                     const updated_auth = getAuth();
@@ -67,22 +84,31 @@ const Register = () => {
 
                         sendEmailVerification(updated_auth.currentUser)
                             .then(() => {
+                                setLoading(false);
                                 showSuccessfulRegister()
                             });
 
 
                     }).catch((error) => {
+                        setLoading(false);
                         alert("El servicio no esta funcionando. Intenta mas tarde.");
                     });
                 })
                 .catch((err) => {
-
-                    if(err.code == 'auth/email-already-in-use'){
+                    if (err.code == 'auth/email-already-in-use') {
                         showRepeatedEmailMessage()
                     }
+                    if (err.code == 'auth/invalid-email') {
+                        showInvalidEmailError()
+                    }
+                    else {
+                        alert("El servicio no esta funcionando. Intenta mas tarde.");
+                    }
+                    setLoading(false);
 
                 })
         }
+
     }
 
     return (
@@ -113,7 +139,17 @@ const Register = () => {
                             <TextField label="Correo electronico" color="primary" fullWidth onChange={(e) => setEmail(e.target.value)} />
                             <TextField label="Contraseña" color="primary" type="password" fullWidth onChange={(e) => setPassword(e.target.value)} />
                             <div className="text-center">
-                                <button className="btn btn-primary w-100 theme-btn mx-auto" onClick={register} style={{ backgroundColor: "#9CE37D", border: "none", color: "black" }}>Registrarse</button>
+                                <ThemeProvider theme={THEME}>
+
+                                    <LoadingButton
+                                        size="medium"
+                                        onClick={handleRegister}
+                                        loading={loading}
+                                        variant="contained"
+                                    >
+                                        Registrar
+                                    </LoadingButton>
+                                </ThemeProvider>
                             </div>
                             <div className="auth-option text-center pt-2">¿Ya tenes cuenta? <Link className="text-link" to="/login" >Iniciar Sesion</Link></div>
 
@@ -130,6 +166,9 @@ const Register = () => {
             </Snackbar>
             <Snackbar open={openSuccessfulRegister} autoHideDuration={3000} onClose={closeSuccessfulRegister}>
                 <Alert onClose={closeSuccessfulRegister} severity="success">Registro Exitoso. Revisa tu mail!</Alert>
+            </Snackbar>
+            <Snackbar open={openInvalidEmailError} autoHideDuration={3000} onClose={closeInvalidEmailError}>
+                <Alert onClose={closeInvalidEmailError} severity="error">Ingresa un mail valido!</Alert>
             </Snackbar>
         </div>
     );

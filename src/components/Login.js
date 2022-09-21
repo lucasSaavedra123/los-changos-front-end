@@ -7,11 +7,15 @@ import '../assets/scss/auth.scss'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
+import { THEME } from '../CONSTANTS'
+import { ThemeProvider } from '@mui/material/styles';
+
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import NavigatorWithoutButton from "./NavigatorWithoutButton";
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -23,9 +27,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [openVerifyEmailMessage, setopenVerifyEmailMessage] = React.useState(false);
-    const [openCompleteAllFieldMessage , setopenCompleteAllFieldsError ] = React.useState(false);
-    const [openInvalidEmailError , setopenInvalidEmailError ] = React.useState(false);
-    const [openInvalidUserError , setopenInvalidUserError ] = React.useState(false);
+    const [openCompleteAllFieldMessage, setopenCompleteAllFieldsError] = React.useState(false);
+    const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
+    const [openInvalidUserError, setopenInvalidUserError] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
 
     const showVerifyEmailMessage = () => {
         setopenVerifyEmailMessage(true);
@@ -63,42 +68,47 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault()
-
-        if(email=='' || password==''){
+        setLoading(true);
+        if (email == '' || password == '') {
             showCompleteAllFieldError()
+            setLoading(false);
         }
-        else{
+        else {
 
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user
 
-                if (user.emailVerified) {
-                    dispatch({ type: "LOGIN", payload: user })
-                    window.location.href = "/profile/home"
-                }
-                else{
-                    showVerifyEmailMessage()
-                }
+                    if (user.emailVerified) {
+                        dispatch({ type: "LOGIN", payload: user })
+                        window.location.href = "/profile/home"
+                    }
+                    else {
+                        showVerifyEmailMessage()
+                    }
 
-            })
-            .catch((error) => {
-                
-                if(error.code == 'auth/invalid-email'){
-                    showInvalidEmailError()
-                }
-                if(error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password'){
-                    showInvalidUserError()
-                }
+                    setLoading(false)
 
-            });
+                })
+                .catch((error) => {
+
+                    if (error.code == 'auth/invalid-email') {
+                        showInvalidEmailError()
+                    }
+                    if (error.code == 'auth/user-not-found' || error.code == 'auth/wrong-password') {
+                        showInvalidUserError()
+                    }
+                    setLoading(false)
+
+                });
+
         }
     }
 
     return (
         <div className="row g-0 auth-wrapper">
 
-            <NavigatorWithoutButton/>
+            <NavigatorWithoutButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
@@ -132,7 +142,17 @@ const Login = () => {
                                 </div>
 
                                 <div className="text-center">
-                                    <button onClick={handleLogin} className="btn btn-primary w-100 theme-btn mx-auto" style={{ backgroundColor: "#9CE37D", border: "none", color: "black" }}>Iniciar Sesion</button>
+                                <ThemeProvider theme={THEME}>
+
+                                    <LoadingButton
+                                        size="medium"
+                                        onClick={handleLogin}
+                                        loading={loading}
+                                        variant="contained"
+                                    >
+                                        Iniciar Sesion
+                                    </LoadingButton>
+                                </ThemeProvider>
                                 </div>
 
                             </Box>

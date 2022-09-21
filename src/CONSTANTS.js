@@ -9,7 +9,7 @@ export const THEME = createTheme({
             light: variables.primaryColor,
             main: variables.primaryColor,
             dark: variables.primaryColor,
-            contrastText: '#fff',
+            contrastText: '#000',
         },
         secondary: {
             light: variables.secondaryColor,
