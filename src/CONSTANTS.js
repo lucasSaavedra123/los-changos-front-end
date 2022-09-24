@@ -1,7 +1,7 @@
 import variables from "./assets/scss/constants.scss"
 import { createTheme } from '@mui/material/styles';
 
-export const LEMMA = "Nunca manejar la plata fue algo tan comodo."
+export const LEMMA = "Nunca manejar la plata fue algo tan cómodo."
 
 export const THEME = createTheme({
     palette: {

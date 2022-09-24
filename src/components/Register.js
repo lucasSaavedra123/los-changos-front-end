@@ -10,8 +10,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { createUserWithEmailAndPassword, updateProfile, getAuth, sendEmailVerification } from 'firebase/auth'
 import NavigatorWithButton from "./NavigatorWithButton";
-import MuiAlert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
 import { ThemeProvider } from '@mui/material/styles';
 import { THEME } from '../CONSTANTS'
 import CustomAlert from "./CustomAlert";
@@ -20,10 +18,6 @@ import CustomAlert from "./CustomAlert";
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const Register = () => {
 

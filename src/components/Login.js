@@ -130,7 +130,7 @@ const Login = () => {
                             >
 
                                 <div>
-                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }} />
+                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }}/>
                                 </div>
                                 <div>
                                     <TextField label="Contraseña" color="primary" type="password" style={{ width: "100%" }} onChange={(e) => { setPassword(e.target.value) }} />

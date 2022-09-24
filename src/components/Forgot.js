@@ -26,9 +26,12 @@ const Forgot = () => {
                         alert('Ingresa un mail valido')
                     }
                     else {
-                        alert('El servicio no esta disponible temporalmente. Intente mas tarde.');
+                        alert('Se mando un mail para recuperar la contraseña a ' + email);
                     }
                 });
+        }
+        else{
+            alert('Ingresá un mail!');
         }
     }
 
