@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const LEMMA = "Nunca manejar la plata fue algo tan cómodo."
 
-export const THEME = createTheme({/*
+export const THEME = createTheme({
     palette: {
         primary: {
             light: variables.primaryColor,
@@ -19,7 +19,7 @@ export const THEME = createTheme({/*
             contrastText: '#000',
         },
     },
-  */});
+});
 
 export const useStyles = makeStyles({
   root: {
