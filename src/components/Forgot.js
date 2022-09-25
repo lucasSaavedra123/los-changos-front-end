@@ -6,11 +6,13 @@ import TextField from '@mui/material/TextField';
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
 import NavigatorWithButton from "./NavigatorWithButton";
+import { useStyles } from "../CONSTANTS";
 
 
 const Forgot = () => {
 
     const [email, setEmail] = useState('');
+    const classes = useStyles();
 
     const forgotPassword = (e) => {
         e.preventDefault();
@@ -26,9 +28,12 @@ const Forgot = () => {
                         alert('Ingresa un mail valido')
                     }
                     else {
-                        alert('El servicio no esta disponible temporalmente. Intente mas tarde.');
+                        alert('Se mando un mail para recuperar la contraseña a ' + email);
                     }
                 });
+        }
+        else{
+            alert('Ingresá un mail!');
         }
     }
 
@@ -42,8 +47,8 @@ const Forgot = () => {
                             src="/logo192.png"
                             className="d-inline-block align-top logo"
                         />
-                        <p style={{ fontWeight: "bold" }}>Walletify</p>
-                        <p>Olvidé la contraseña</p>
+                        <p style={{ fontWeight: "bold" }} className="white-font">Walletify</p>
+                        <p className="white-font">Olvidé la contraseña</p>
                         <div className="auth-form-container text-start">
                             <Box
 
@@ -62,13 +67,13 @@ const Forgot = () => {
 
                             >
                                 <div>
-                                    <TextField label="Email" color="primary" style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }} />
+                                    <TextField className={classes.root} label="Email" color="primary" style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }} />
                                 </div>
                                 <div className="text-center">
                                     <button onClick={forgotPassword} style={{ backgroundColor: "#9CE37D", border: "none", color: "black" }} className="btn btn-primary w-100 theme-btn mx-auto">Olvidé la contraseña</button>
                                 </div>
                             </Box>
-                            <div className="auth-option text-center pt-2"><Link className="text-link" to="/login" >Volver al inicio de sesion</Link></div>
+                            <div className="auth-option text-center pt-2"><Link style={{color: '#5cb377'}} className="text-link" to="/login" >Volver al inicio de sesión</Link></div>
                         </div>
                     </div>
                 </div>
