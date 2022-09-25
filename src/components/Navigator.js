@@ -22,7 +22,7 @@ export const Navigator = () => {
                         />
                         <span className="custom-font-light">Walletify</span>
                     </Navbar.Brand>
-                    <Button className="custom-font-light" variant="outlined" theme={THEME} onClick={ () => window.location.href = "/login"  }><a>Iniciar Sesion</a></Button>
+                    <Button className="custom-font-light" variant="outlined" theme={THEME} onClick={ () => window.location.href = "/login"  }><a>Iniciar Sesión</a></Button>
                 </Container>
 
             </Navbar>
