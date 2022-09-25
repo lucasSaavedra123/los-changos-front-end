@@ -81,7 +81,7 @@ export const ProfileNavigator = () => {
             <Divider sx={{ color: "white" }} />
 
             <List>
-                <ProfileNavigatorItem name={"Log Out"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { logOut() }} path={"/"} />
+                <ProfileNavigatorItem name={"Cerrar Sesión"} icon={<LogoutIcon sx={{ color: "white" }} />} action={() => { logOut() }} path={"/"} />
             </List>
 
         </Box>
