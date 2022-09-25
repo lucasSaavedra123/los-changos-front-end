@@ -73,7 +73,7 @@ const Forgot = () => {
                                     <button onClick={forgotPassword} style={{ backgroundColor: "#9CE37D", border: "none", color: "black" }} className="btn btn-primary w-100 theme-btn mx-auto">Olvidé la contraseña</button>
                                 </div>
                             </Box>
-                            <div className="auth-option text-center pt-2"><Link style={{color: '#5cb377'}} className="text-link" to="/login" >Volver al inicio de sesion</Link></div>
+                            <div className="auth-option text-center pt-2"><Link style={{color: '#5cb377'}} className="text-link" to="/login" >Volver al inicio de sesión</Link></div>
                         </div>
                     </div>
                 </div>

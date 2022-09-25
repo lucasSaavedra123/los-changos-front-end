@@ -153,7 +153,7 @@ const Register = () => {
                                     </LoadingButton>
                                 </ThemeProvider>
                             </div>
-                            <div className="auth-option text-center pt-2 white-font">¿Ya tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/login" >Iniciar Sesion</Link></div>
+                            <div className="auth-option text-center pt-2 white-font">¿Ya tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/login" >Iniciar Sesión</Link></div>
 
                         </Box>
                     </div>

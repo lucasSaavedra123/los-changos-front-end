@@ -147,7 +147,7 @@ const Login = () => {
                                             loading={loading}
                                             variant="contained"
                                         >
-                                            Iniciar Sesion
+                                            Iniciar Sesión
                                         </LoadingButton>
                                     </ThemeProvider>
                                 </div>

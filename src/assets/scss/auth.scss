@@ -10,7 +10,7 @@ body,
 #root {
     height: 100%;
 }
-
+/*
 .btn {
 
     &:focus,
@@ -28,7 +28,7 @@ a {
         box-shadow: none !important;
     }
 }
-
+*/
 .auth{
 	.auth-background-holder {
 		height: 100vh;
@@ -44,10 +44,10 @@ a {
 	margin-left: auto;
 	margin-right: auto;
 }
-
+/*
 .auth-background-col {
 	background: rgba($theme-text-color-primary, 0.6);
-}
+}*/
 
 .auth-background-mask {
 	position: absolute;
@@ -56,11 +56,9 @@ a {
 	left: 0;
 	top: 0;
 	z-index: 10;
-	background: black;//rgba(0, 0, 0, 0.1);
 }
 
 .auth-wrapper {
-	background: black;//rgba(0, 0, 0, 0.1);
 	height: 100vh;
 	
 	.auth-body {
