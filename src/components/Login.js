@@ -7,7 +7,7 @@ import '../assets/scss/auth.scss'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 
-import { THEME } from '../CONSTANTS'
+import { THEME, useStyles } from '../CONSTANTS'
 import { ThemeProvider } from '@mui/material/styles';
 
 import { useContext } from "react";
@@ -27,6 +27,8 @@ const Login = () => {
     const [openInvalidUserError, setopenInvalidUserError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
 
+    const classes = useStyles();
+    
     const showVerifyEmailMessage = () => {
         setopenVerifyEmailMessage(true);
     };
@@ -111,8 +113,8 @@ const Login = () => {
                             src="/logo192.png"
                             className="d-inline-block align-top logo"
                         />
-                        <p style={{ fontWeight: "bold" }}>Walletify</p>
-                        <p>Ingresa a tu cuenta</p>
+                        <p style={{ fontWeight: "bold" }} className="white-font">Walletify</p>
+                        <p className="white-font">Ingresa a tu cuenta</p>
                         <div className="auth-form-container text-start">
                             <Box
                                 component="form"
@@ -130,10 +132,10 @@ const Login = () => {
                             >
 
                                 <div>
-                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }}/>
+                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
                                 </div>
                                 <div>
-                                    <TextField label="Contraseña" color="primary" type="password" style={{ width: "100%" }} onChange={(e) => { setPassword(e.target.value) }} />
+                                    <TextField label="Contraseña" color="primary" type="password" className={classes.root} style={{ width: "100%" }} onChange={(e) => { setPassword(e.target.value) }} />
                                 </div>
 
                                 <div className="text-center">
@@ -151,8 +153,8 @@ const Login = () => {
                                 </div>
 
                             </Box>
-                            <div className="auth-option text-center pt-2">¿No tenes cuenta? <Link className="text-link" to="/register" >Registrate </Link></div>
-                            <div className="auth-option text-center pt-2"><Link className="text-link" to="/forgotPassword">Olvide mi contraseña </Link></div>
+                            <div className="auth-option text-center pt-2 white-font">¿No tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/register" >Registrate </Link></div>
+                            <div className="auth-option text-center pt-2"><Link  style={{color: '#5cb377'}}  className="text-link" to="/forgotPassword">Olvide mi contraseña </Link></div>
                         </div>
                     </div>
                 </div>

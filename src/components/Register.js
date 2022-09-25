@@ -11,7 +11,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { createUserWithEmailAndPassword, updateProfile, getAuth, sendEmailVerification } from 'firebase/auth'
 import NavigatorWithButton from "./NavigatorWithButton";
 import { ThemeProvider } from '@mui/material/styles';
-import { THEME } from '../CONSTANTS'
+import { THEME, useStyles } from '../CONSTANTS'
 import CustomAlert from "./CustomAlert";
 
 
@@ -31,6 +31,8 @@ const Register = () => {
     const [openRepeatedEmailMessage, setopenRepeatedEmailMessage] = React.useState(false);
     const [openSuccessfulRegister, setOpenSuccessfulRegister] = React.useState(false);
     const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
+    
+    const classes = useStyles();
 
     const showInvalidEmailError = () => {
         setopenInvalidEmailError(true);
@@ -118,7 +120,7 @@ const Register = () => {
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
 
-                        <p>Crea tu cuenta</p>
+                        <p className="white-font">Crea tu cuenta</p>
                         <Box
                             component="form"
                             sx={{
@@ -134,10 +136,10 @@ const Register = () => {
                             }}
                         >
 
-                            <TextField label="Nombre" color="primary" fullWidth onChange={(e) => setFirstName(e.target.value)} />
-                            <TextField label="Apellido" color="primary" fullWidth onChange={(e) => setLastName(e.target.value)} />
-                            <TextField label="Correo electronico" color="primary" fullWidth onChange={(e) => setEmail(e.target.value)} />
-                            <TextField label="Contraseña" color="primary" type="password" fullWidth onChange={(e) => setPassword(e.target.value)} />
+                            <TextField label="Nombre" color="primary" className={classes.root} fullWidth onChange={(e) => setFirstName(e.target.value)} />
+                            <TextField label="Apellido" color="primary" className={classes.root} fullWidth onChange={(e) => setLastName(e.target.value)} />
+                            <TextField label="Correo electronico" color="primary" className={classes.root} fullWidth onChange={(e) => setEmail(e.target.value)} />
+                            <TextField label="Contraseña" color="primary" type="password" className={classes.root} fullWidth onChange={(e) => setPassword(e.target.value)} />
                             <div className="text-center">
                                 <ThemeProvider theme={THEME}>
 
@@ -151,7 +153,7 @@ const Register = () => {
                                     </LoadingButton>
                                 </ThemeProvider>
                             </div>
-                            <div className="auth-option text-center pt-2">¿Ya tenes cuenta? <Link className="text-link" to="/login" >Iniciar Sesion</Link></div>
+                            <div className="auth-option text-center pt-2 white-font">¿Ya tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/login" >Iniciar Sesion</Link></div>
 
                         </Box>
                     </div>
