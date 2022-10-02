@@ -50,12 +50,24 @@ function Row() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  /*
   return (
     <div className='table-row-container'>
       <TableRow className="table-row" onClick={()=>setOpen(!open)} >
         <TableCell className='table-cell'>
             <ExpendCard title={"Cafe Eatbar"} value={"200"}/>
         </TableCell>
+      </TableRow>
+      <Modal open={open} onClose={handleClose}>
+            <ModalDetailedExpenseCard title={"Cafe EatBar"} value={"200"} date={"2 de Octubre"} category={"Buen vivir"}/>
+    </Modal>
+    </div>
+  );
+  */
+  return (
+    <div className='table-row-container'>
+      <TableRow className="table-row" onClick={()=>setOpen(!open)} >
+            <ExpendCard title={"Cafe Eatbar"} value={"200"}/>
       </TableRow>
       <Modal open={open} onClose={handleClose}>
             <ModalDetailedExpenseCard title={"Cafe EatBar"} value={"200"} date={"2 de Octubre"} category={"Buen vivir"}/>
