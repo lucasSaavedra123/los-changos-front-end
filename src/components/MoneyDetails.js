@@ -11,7 +11,7 @@ export const MoneyDetails = () => {
           className="details-img"
         />
         <div>
-          <p className="details-text">Your Expenses</p>
+          <p className="details-text">Tus gastos</p>
           <p className="details-money" testid="expensesAmount">
             Rs {0}
           </p>

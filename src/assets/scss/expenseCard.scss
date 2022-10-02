@@ -1,0 +1,184 @@
+.card-container{
+    
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+}
+.card-wrapper{
+    
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+    height:100%;
+    background-color: white;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+.expense-title{
+    color: black;
+    margin-left: 7px;
+}
+.expense-value{
+    color:black;
+
+}
+.logo{
+   
+}
+.left-side{
+    color: white;
+    align-self: center;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    width:50%
+}
+
+.right-side{
+    display: flex;
+    align-self: center;
+}
+.contenedor-card{
+    display: flex;
+    justify-content: center;
+    height:65%;
+}
+
+.detailed-expense-card {
+
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    width:60%;
+    
+}
+.detailed-logo{
+    background-color: grey;
+    height: 25%;
+    display: flex;
+    align-items: center;
+
+}
+.expense{
+    height: 25%;
+    background-color: greenyellow;
+    padding: 7px;
+}
+.category{
+    height: 10%;
+    background-color: antiquewhite;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    
+    
+}
+.price{
+    color: black;
+    font-size: 65px;
+    text-align: center;
+
+}
+.change-category{
+    font-size: 12px;
+    color: greenyellow;
+}
+.category-type{
+    font-size: 15px;
+    
+}
+.expense-detail{
+    text-align: center;
+    
+}
+.date{
+    font-size: 12px;
+    text-align: center;
+}
+
+.type-category-container{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    height: 7%;
+    background-color: white;
+    
+}
+.active {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    height: 7%;
+    background-color: red;
+
+}
+.category-modal-wrapper{
+    background-color: white;
+    height: 90%;
+    width:80%;
+    display: flex;
+    flex-direction: column;
+
+}
+.category-center{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    background-color: red;
+
+}
+.category-modal-container{
+    height: 70%;
+    display: flex;
+    //flex-direction: column;
+    justify-content: center;
+    padding: 7px;
+}
+.boton-modal{
+    margin-top: auto;
+    text-align: right;
+    
+}
+.add-category{
+    background-color: white;
+    display: flex;
+    width: 60%;
+    
+}
+.contenedor{
+    display: flex;
+    justify-content: center;
+    height: 40%;
+}
+.form-expense{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.name-expense-category{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+.select-expense-icon{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.label-expense-icon{
+    display: flex;
+    justify-content: center;
+    margin:10px
+}
