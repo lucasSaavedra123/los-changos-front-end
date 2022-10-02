@@ -11,6 +11,9 @@ export const ExpenseCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
 
     
+    const handleClick= ()=>{
+        
+    }
 
     const handleMouseOver = () => {
         setIsHovering(true);

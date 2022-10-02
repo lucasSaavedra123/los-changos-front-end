@@ -3,7 +3,8 @@
     display:flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
+    height: 100%;
+    background-color: red;
 }
 .card-wrapper{
     
@@ -15,6 +16,7 @@
     background-color: white;
     padding-left: 4%;
     padding-right: 4%;
+    background-color: violet;
 }
 .expense-title{
     color: black;
@@ -33,12 +35,14 @@
     display: flex;
     position: relative;
     flex-direction: row;
-    width:50%
+    width:50%;
+    background-color: aqua;
 }
 
 .right-side{
     display: flex;
     align-self: center;
+    background-color: greenyellow;
 }
 .contenedor-card{
     display: flex;
@@ -58,7 +62,6 @@
     
 }
 .detailed-logo{
-    background-color: grey;
     height: 25%;
     display: flex;
     align-items: center;
@@ -66,18 +69,17 @@
 }
 .expense{
     height: 25%;
-    background-color: greenyellow;
     padding: 7px;
 }
 .category{
     height: 10%;
-    background-color: antiquewhite;
     width: 90%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    margin:auto;
     align-items: center;
     padding: 7px;
+    justify-content: space-evenly;
     
     
 }
@@ -177,8 +179,36 @@
     flex-direction: column;
     align-items: center;
 }
+.add-expense-modal{
+    background-color: white;
+    width: 70%;
+    justify-content: center;
+    display: flex;
+
+}
 .label-expense-icon{
     display: flex;
     justify-content: center;
     margin:10px
 }
+
+.table-row-container{
+    padding: 0;
+    margin:0;
+    display:flex;
+    width: 100%;
+}
+.table-container{
+    width: 100%;
+    display: flex;
+}
+.table{
+    width: 100%;
+}
+.table-body{
+    width: 100%;
+}
+.table-row{
+    width: 100%;
+}
+

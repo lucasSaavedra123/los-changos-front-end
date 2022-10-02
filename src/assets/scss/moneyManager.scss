@@ -2,20 +2,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   min-height: 100vh;
 }
 
 .responsive-container {
   width: 100%;
-  max-width: 550px;
+  max-width: 550px; 
 }
-
-@media screen and (min-width: 768px) {
-  .responsive-container {
-    max-width: 1140px;
-  }
+.chart{
+  background-color: white;
 }
+.balance{
+  flex-direction: row;
+  display: flex;
+  width: 70%;
 
+}
+.movements{
+  background-color: greenyellow;
+  width:70%
+  
+}
 .header-container {
   display: flex;
   flex-direction: column;

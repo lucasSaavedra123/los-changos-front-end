@@ -1,23 +1,25 @@
 import MoneyDetails from "./MoneyDetails";
 import "../assets/scss/moneyManager.scss"
-import TransactionItem from "./TransactionItem";
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ExpendCard from "./ExpendCard";
 import ModalDetailedExpenseCard from "./ModalDetailedExpenseCard";
 import CategoryModal from "./CategoryModal";
+import MovementsTable from "./MovementsTable";
+import Button from '@mui/material/Button'
+import { Modal } from '@material-ui/core';
+
 
 export const MoneyManager = () => {
 
   const { currentUser } = useContext(AuthContext);
 
-  const openDetailedCard= () =>{
+  const [open, setOpen] = useState(false);
+  const handleAgregarGasto = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-
-
-  }
     return(
-      // <div className="app-container">
+      //  <div className="app-container">
       //   <div className="responsive-container">
       //     <div className="header-container">
       //       <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName} !</h1>
@@ -27,23 +29,44 @@ export const MoneyManager = () => {
       //         <h1 className="transaction-header">History</h1>
       //         <div className="transactions-table-container">
       //           <ul className="transactions-table">
-      //             <li className="table-header">
-      //               <p className="table-header-cell">Title</p>
-      //               <p className="table-header-cell">Amount</p>
-      //               <p className="table-header-cell">Type</p>
-      //             </li>         
+      //           <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
+      //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
+      //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
+      //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
+      //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
+      //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
+      //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>             
       //           </ul>
       //         </div>
             
       //     </div>
       //   </div>
       // </div>
-      
-      // <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
-      // <ExpendCard title={"Almuerzo Mcdonalds"} value={"1200"}/>
-      <ModalDetailedExpenseCard title={"Almuerzo Mcdonalds"} value={"1200"} category={"Buen vivir"} date={"1 de octubre"}/>
-      
-      
+      <div className="app-container">
+          <div className="responsive-container">
+               <div className="header-container">
+                <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName} !</h1>
+              </div>
+          </div>
+          <div className="balance">
+            <MoneyDetails/>
+            <MoneyDetails/>
+          </div>
+          <div className="add-expense-modal">
+            <Button className="add-expense" onClick={handleAgregarGasto}>Agregar Gasto</Button>
+            <Modal
+            open={open} onClose={handleClose}>
+                <div className="add-expense-modal">
+                  Aca va el modal para agregar gasto
+                </div>
+            </Modal>
+          </div>
+          {/* <div className="chart"> Hola Chart</div> */}
+          <div className="movements">Movimientos
+            <MovementsTable/>
+          </div>
+
+      </div>
       )
 }
 

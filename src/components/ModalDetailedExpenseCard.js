@@ -4,7 +4,7 @@ import CategoryModal from "./CategoryModal";
 import { useState } from "react";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { Button } from "react-bootstrap";
+import Button from '@mui/material/Button'
 
 export const ModalDetailedExpenseCard = (props) => {
     const [open, setOpen] = useState(false);
@@ -15,7 +15,7 @@ export const ModalDetailedExpenseCard = (props) => {
         <div className="contenedor-card">
         <div className='detailed-expense-card'>
             <div className="detailed-logo">
-                <EmojiEmotions fontSize="large"/>
+                <EmojiEmotions sx={{fontSize: 90}}/>
             </div>
             <div className="expense">
                 <div className='price'>${props.value}</div>
@@ -24,7 +24,7 @@ export const ModalDetailedExpenseCard = (props) => {
             </div>
             <div className="category">
                 <div className='category-type'>{props.category}</div>
-                <Button className='change-category' onClick={handleOpen}>CAMBIAR</Button>
+                <Button className='change-category' onClick={handleOpen}>Editar Gasto</Button>
                 <Modal open={open}
                     onClose={handleClose}
                 >
