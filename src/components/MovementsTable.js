@@ -19,30 +19,9 @@ import { Modal } from '@material-ui/core';
 import { useState } from 'react';
 import ExpendCard from './ExpendCard';
 import "../assets/scss/expenseCard.scss"
+import { useEffect } from 'react';
+import { Label } from '@mui/icons-material';
 
-
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
-  };
-}
 
 function Row() {
   //const { expenseDetails } = props;
@@ -74,18 +53,39 @@ function Row() {
   );
 }
 export default function MovementsTable() {
+
+  const [transactions, setTransactions] = useState([]);
+  const getTransactions = () =>{
+       fetch('http://walletify-backend-develop.herokuapp.com/transaction')
+           .then((response) => response.json())
+           .then((actualData) =>{ 
+               setTransactions(actualData);   
+           })
+               .catch((err) => {
+               console.log(err.message);
+           });
+
+
+  }
+
+  useEffect(() => {
+   getTransactions()
+  }, [transactions]);
+
+
+
+
   return (
     <TableContainer component={Paper} className="table-container">
       <Table aria-label="collapsible table" className="table">
         <TableBody className="table-body">
-          {//rows.map((row) => (
-            <>
-            <Row />
-            <Row />
-            <Row/>
-            </>
-          //))
-          }
+          {transactions.map((transaction) => (
+            
+          
+            <ExpendCard id={transaction.id} title={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} />
+            
+
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

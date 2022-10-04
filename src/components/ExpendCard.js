@@ -29,27 +29,31 @@ export const ExpendCard = (props) => {
 
     return(
 
-        //<div className='card-container'>
-        //onClick={()=>setOpen(!open)}
         <div className="card-wrapper">
             <div className="left-side" onClick={()=>setOpen(!open)} >
                 <div className="logo">
                     <LunchDiningIcon/>
                 </div>
                 <div className="expense-title" >{props.title}</div>
+                <Modal open={open}
+                    onClose={handleClose}>
+                            <ModalDetailedExpenseCard value={props.value} category={props.category.name} date={props.date}/>
+                </Modal>
             </div>
             <div className="right-side">
                 <div className="expense-value">${props.value}</div>
+                <div className='buttons-transactions-table'>
                 <div className='delete-button' onClick={deleteExpenseCard}>
                     <DeleteIcon/>
                 </div>
-                <div className='edit-button' onClick={()=>setOpen(!open)}>
+                <div className='edit-button' onClick={()=>setCategoryOpen(!openCategory)}>
                     <EditIcon/>
-                    <Modal open={open}
-                    onClose={handleClose}>
+                    <Modal open={openCategory}
+                    onClose={handleCategoryClose}>
                             <EditExpenseModal/>
 
                     </Modal>
+                </div>
                 </div>
             </div>
 

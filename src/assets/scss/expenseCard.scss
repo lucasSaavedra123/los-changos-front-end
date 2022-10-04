@@ -20,6 +20,8 @@
 }
 .expense-value{
     color:black;
+    width: 50%;
+ 
 
 }
 
@@ -38,8 +40,22 @@
 .right-side{
     display: flex;
     width: 30%;
-    align-self: center;
+    align-items: center;
+    //justify-content: space-evenly;
+}
+.buttons-transactions-table{
+
+    width: 50%;
+    display: flex;
+    align-items: center;
     justify-content: space-evenly;
+}
+
+.delete-button{
+   display: flex;
+}
+.edit-button{
+    display: flex;
 }
 .contenedor-card{
     justify-content: center;

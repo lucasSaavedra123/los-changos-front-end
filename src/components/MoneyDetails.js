@@ -1,6 +1,32 @@
 import "../assets/scss/moneyDetails.scss"
+import { useState } from "react";
+import { useEffect } from "react";
+export const MoneyDetails = (props) => {
 
-export const MoneyDetails = () => {
+  const [expense,setExpense]=useState(0);
+  const [transactions, setTransactions] = useState([]);
+  
+  const getTransactions = () =>{
+       fetch('http://walletify-backend-develop.herokuapp.com/transaction')
+           .then((response) => response.json())
+           .then((actualData) =>{ 
+               setTransactions(actualData);
+               console.log(actualData);
+               //getExpenseValue();
+           
+           })
+               .catch((err) => {
+               console.log(err.message);
+           });
+
+
+  }
+  const total=(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
+
+  useEffect(() => {
+   getTransactions()
+  }, []);
+  
 
   return (
     <div className="money-details-container">
@@ -15,7 +41,7 @@ export const MoneyDetails = () => {
         <div>
           <p className="details-text">Tus gastos</p>
           <p className="details-money" testid="expensesAmount">
-            $ {600}
+            $ {total}
           </p>
         </div>
       </div>

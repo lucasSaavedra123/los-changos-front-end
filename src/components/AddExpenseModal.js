@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextField } from '@material-ui/core';
 import { Box } from '@mui/system';
 import Select from '@mui/material/Select';
@@ -22,13 +22,67 @@ export const AddExpenseModal = (props) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [age, setAge] = useState('');
-    const [value, setValue] = useState('2014-08-18T21:11:54');
+    const [category, setCategory] = useState('');
+    const [date, setDate] = useState('2022-10-4T21:11:54');
+    const [name, setName]= useState('')
+    const [value,setValue]= useState('')
+    const [categories, setCategories] = useState([]);
+
+  
+    const getCategorias = () =>{
+         fetch('https://walletify-backend-develop.herokuapp.com/category')
+             .then((response) => response.json())
+             .then((actualData) =>{ 
+                 setCategories(actualData);
+                 console.log(categories);
+             
+             })
+                 .catch((err) => {
+                 console.log(err.message);
+             });
+  
+  
+    }
+
+    useEffect(() => {
+        getCategorias()
+       }, []);
+
 
     const handleChange = (newValue) => {
-        setValue(newValue);
+        setDate(newValue);
     };
-    const saveCategory = () =>{
+
+    const handleChangeSelect = (event) => {
+        setCategory(event.target.value);
+      };
+    const saveExpense = (e) =>{
+        
+        console.log(category.id);
+        console.log(value);
+        console.log(date);
+        console.log(name);
+        e.preventDefault();
+        if (value === ''  || name ==='') {
+            console.log('Faltan campos ')
+
+        }
+        else{
+        fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        value: value,
+        category_id: category.id,
+        date: "2022-10-03",
+        name: name
+        })
+    
+        });}
+
 
     }
     const cancelChanges = () =>{
@@ -42,18 +96,18 @@ export const AddExpenseModal = (props) => {
                 <Box component="form" className="form-expense">
 
                     <div className="name-expense-category"> 
-                        <TextField className="textfield"label="Nombre del gasto" />
+                        <TextField className="textfield"label="Nombre del gasto" onChange={(e) => { setName(e.target.value) }}/>
                     </div>
                     <div className="name-expense-category"> 
-                        <TextField className="textfield"label="Monto" />
+                        <TextField className="textfield"label="Monto" onChange={(e) => { setValue(e.target.value) }}/>
                     </div>
                     <div className="name-expense-category">
                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                         <MobileDatePicker
                         className="textfield"
                         label="Fecha del gasto"
-                        inputFormat="MM/DD/YYYY"
-                        value={value}
+                        inputFormat="YYYY-MM-DD"
+                        value={date}
                         onChange={handleChange}
                         renderInput={(params) => <TextField {...params} />}
                         />
@@ -63,26 +117,22 @@ export const AddExpenseModal = (props) => {
                         <InputLabel className="label-expense-icon">Categoria</InputLabel>
                         <Select
                         className="icon-select"
-                            value={age}
+                            value={category}
                             label="Icono"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value={"Impuestos y Servicios"}>  <ExpenseCategory title={"Impuestos y Servicios"} icon={<AccountBalanceIcon sx={{ color: "black" }} />} /></MenuItem>
-
-                            <MenuItem value= {"Entretenimiento y Ocio"}><ExpenseCategory title={"Entretenimiento y Ocio"} icon={<CasinoIcon sx={{ color: "black" }} />}/> </MenuItem>
-
-                            <MenuItem value={"Hogar y Mercado"}><ExpenseCategory title={"Hogar y Mercado"} icon={<HomeIcon sx={{ color: "black" }} />}/> </MenuItem>
-
-                            <MenuItem value={"Buen vivir"}><ExpenseCategory title={"Buen vivir"} icon={<EmojiEmotionsIcon sx={{ color: "black" }} />}/> </MenuItem>
-
-                            <MenuItem value={"Electrodomesticos"}><ExpenseCategory title={"Electrodomesticos"} icon={<KitchenIcon sx={{ color: "black" }} />}/></MenuItem>
+                            onChange={handleChangeSelect}>
                             
-                           
+                            {categories.map((category) => (
+                                
+                                <MenuItem value={category}>
+                                    <ExpenseCategory title={category.name} id={category.id}/>
+                                </MenuItem>
+                            ))}           
 
                         </Select>
+                        
                     </div>
                     <div className="buttons">
-                    <Button className="save-button"onClick={saveCategory}> <DoneIcon/> </Button>
+                    <Button className="save-button"onClick={saveExpense}> <DoneIcon/> </Button>
                     <Button className="cancel-button" onClick={cancelChanges}> <CancelIcon/> </Button>
                     </div>
                 </Box>
