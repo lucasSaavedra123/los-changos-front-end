@@ -5,7 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import "../assets/scss/expenseCard.scss"
-import { Button } from "react-bootstrap";
+import { Button } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import ExpenseCategory from "./ExpenseCategory";
 import { Casino } from "@mui/icons-material";
@@ -34,7 +34,7 @@ export const CategoryModal = (props) => {
             <ExpenseCategory title={"Electrodomesticos"} icon={<KitchenIcon sx={{ color: "black" }} />}/>
             
             <div className="boton-modal">
-            <Button onClick={handleOpen}>
+            <Button onClick={()=>setOpen(!open)}>
                 <AddIcon/>
             </Button>
 

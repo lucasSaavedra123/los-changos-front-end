@@ -4,8 +4,6 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-bottom: 32px;
-    margin-top: 32px;
   }
   
   @media screen and (min-width: 768px) {
@@ -88,14 +86,14 @@
   
   .expenses-container {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    background-color: #ede9fe;
+    background-color: white;
     width: 100%;
-    min-width: 200px;
+    //Cuando le pongo height se agranda de mas
+    //min-width: 200px;
     border: 1px solid #7c3aed;
-    border-radius: 16px;
-    margin-bottom: 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
   }
   
   @media screen and (min-width: 768px) {

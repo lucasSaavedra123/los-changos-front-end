@@ -8,6 +8,7 @@ import CategoryModal from "./CategoryModal";
 import MovementsTable from "./MovementsTable";
 import Button from '@mui/material/Button'
 import { Modal } from '@material-ui/core';
+import AddExpenseModal from "./AddExpenseModal";
 
 
 export const MoneyManager = () => {
@@ -50,14 +51,13 @@ export const MoneyManager = () => {
           </div>
           <div className="balance">
             <MoneyDetails/>
-            <MoneyDetails/>
           </div>
           <div className="add-expense-modal">
             <Button className="add-expense" onClick={handleAgregarGasto}>Agregar Gasto</Button>
             <Modal
             open={open} onClose={handleClose}>
                 <div className="add-expense-modal">
-                  Aca va el modal para agregar gasto
+                  <AddExpenseModal/>
                 </div>
             </Modal>
           </div>

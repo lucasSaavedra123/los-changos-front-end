@@ -63,15 +63,13 @@ function Row() {
     </Modal>
     </div>
   );
+  onClick={()=>setOpen(!open)}
   */
   return (
     <div className='table-row-container'>
-      <TableRow className="table-row" onClick={()=>setOpen(!open)} >
+      <TableRow className="table-row"  >
             <ExpendCard title={"Cafe Eatbar"} value={"200"}/>
       </TableRow>
-      <Modal open={open} onClose={handleClose}>
-            <ModalDetailedExpenseCard title={"Cafe EatBar"} value={"200"} date={"2 de Octubre"} category={"Buen vivir"}/>
-    </Modal>
     </div>
   );
 }

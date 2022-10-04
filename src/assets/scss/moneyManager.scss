@@ -1,6 +1,6 @@
 .app-container {
   display: flex;
-  justify-content: center;
+  //justify-content: center;
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
@@ -21,7 +21,10 @@
 }
 .movements{
   background-color: greenyellow;
-  width:70%
+  width:70%;
+  display:flex;
+  flex-direction: column;
+  margin-top: 10px;
   
 }
 .header-container {
@@ -30,11 +33,33 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url('https://res.cloudinary.com/do4qwwms8/image/upload/v1626263091/Money%20Manager/money-manager-header_rxlcrn.png');
-  background-size: cover;
-  height: 172px;
-  border-radius: 16px;
-  margin-top: 64px;
+  //background-image: url('https://res.cloudinary.com/do4qwwms8/image/upload/v1626263091/Money%20Manager/money-manager-header_rxlcrn.png');
+  //background-size: cover;
+  //height: 172px;
+  //border-radius: 16px;
+  //margin-top: 64px;
+}
+
+.add-expense-modal{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 70%;
+  //Con esto le puedo dar la altura y centrar div en el centro
+  //height: 65%;
+  //position: absolute;
+  //top: 0;
+  //bottom: 0;
+  //left: 0;
+  //right: 0;
+  //margin: auto;
+  //Esto me deja centrarlo sin darle tamano
+  //top: 50%;
+  //left: 50%;
+  //position: fixed;
+  //transform: translate(-50%, -50%);
 }
 
 @media screen and (min-width: 768px) {

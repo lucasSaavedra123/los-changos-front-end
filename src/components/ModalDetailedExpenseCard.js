@@ -12,6 +12,7 @@ export const ModalDetailedExpenseCard = (props) => {
     const handleClose = () => setOpen(false);
  
       return(
+        
         <div className="contenedor-card">
         <div className='detailed-expense-card'>
             <div className="detailed-logo">
@@ -24,12 +25,6 @@ export const ModalDetailedExpenseCard = (props) => {
             </div>
             <div className="category">
                 <div className='category-type'>{props.category}</div>
-                <Button className='change-category' onClick={handleOpen}>Editar Gasto</Button>
-                <Modal open={open}
-                    onClose={handleClose}
-                >
-                    <CategoryModal/>
-                </Modal>
             </div>
         </div>
         </div>

@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { Button } from "react-bootstrap";
+import { Button } from "@mui/material";
 
 export const AddCategoryModal = (props) => {
     const [open, setOpen] = useState(false);
@@ -15,6 +15,12 @@ export const AddCategoryModal = (props) => {
     const handleChange = (event) => {
         setAge(event.target.value);
     };
+    const saveCategory = () =>{
+
+    }
+    const cancelChanges = () =>{
+        
+    }
 
 
     return (
@@ -38,8 +44,8 @@ export const AddCategoryModal = (props) => {
                             <MenuItem value={30}>Thirty</MenuItem>
                         </Select>
                     </div>
-                    <Button> GUARDAR CATEGORIA</Button>
-                    <Button> DESCARTAR CAMBIOS</Button>
+                    <Button onClick={saveCategory}> GUARDAR CATEGORIA</Button>
+                    <Button onClick={cancelChanges}> DESCARTAR CAMBIOS</Button>
                 </Box>
             </div>
         </div>

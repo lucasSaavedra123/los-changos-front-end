@@ -10,10 +10,12 @@ export const MoneyDetails = () => {
           alt="expenses"
           className="details-img"
         />
+        {//Agregar div para ajustar texto con el box 
+        }
         <div>
           <p className="details-text">Tus gastos</p>
           <p className="details-money" testid="expensesAmount">
-            Rs {0}
+            $ {600}
           </p>
         </div>
       </div>
