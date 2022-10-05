@@ -29,18 +29,15 @@ import { useEffect } from "react";
 
 export const EditExpenseModal = (props) => {
 
-    console.log(props)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = (event, reason) => { console.log("hola rey") };
+    const handleClose = () => setOpen(false);
     const [age, setAge] = useState('');
     const [category, setCategory] = useState('');
     const [date, setDate] = useState('2022-10-4T21:11:54');
     const [name, setName]= useState('')
     const [value,setValue]= useState('')
     const [categories, setCategories] = useState([]);
-
-    console.log(props);
   
     const getCategorias = () =>{
          fetch('https://walletify-backend-develop.herokuapp.com/category')
@@ -69,7 +66,7 @@ export const EditExpenseModal = (props) => {
       };
 
     const cancelChanges = () => {
-
+        props.handleCloseModal()
     }
 
     const saveExpense = (e) =>{
@@ -79,6 +76,7 @@ export const EditExpenseModal = (props) => {
 
         }
         else{
+        props.handleCloseModal()
         fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
         method: 'PATCH',
         headers: {
@@ -92,8 +90,9 @@ export const EditExpenseModal = (props) => {
         date: "2022-10-03",
         name: name
         })
-    
         });}
+
+        
 
 
     }

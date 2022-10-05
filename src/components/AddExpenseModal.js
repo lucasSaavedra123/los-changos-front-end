@@ -79,12 +79,12 @@ export const AddExpenseModal = (props) => {
     
         });}
 
-        handleClose()
+        props.handleCloseModal()
 
 
     }
     const cancelChanges = () =>{
-        
+        props.handleCloseModal()
     }
 
 

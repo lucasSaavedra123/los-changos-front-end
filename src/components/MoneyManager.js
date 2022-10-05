@@ -60,7 +60,7 @@ export const MoneyManager = () => {
             <Modal
             open={open} onClose={handleClose}>
                 <div className="add-expense-modal">
-                  <AddExpenseModal/>
+                  <AddExpenseModal handleCloseModal={handleClose}/>
                 </div>
             </Modal>
           </div>
