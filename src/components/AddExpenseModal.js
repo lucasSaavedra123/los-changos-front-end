@@ -58,6 +58,7 @@ export const AddExpenseModal = (props) => {
       };
     const saveExpense = (e) =>{
         e.preventDefault();
+        console.log(date.$y+"-"+date.$M+"-"+date.$D);
         if (value === ''  || name ==='') {
             console.log('Faltan campos ')
 
@@ -72,7 +73,7 @@ export const AddExpenseModal = (props) => {
         body: JSON.stringify({
         value: value,
         category_id: category.id,
-        date: "2022-10-03",
+        date: (date.$y+"-"+date.$M+"-"+date.$D),
         name: name
         })
     

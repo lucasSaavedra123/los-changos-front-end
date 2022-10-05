@@ -4,8 +4,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import "../assets/scss/expenseCard.scss"
-import { Button } from 'react-bootstrap';
+import { Button } from '@mui/material';
 import { useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 export const ExpenseDynamicCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
 
@@ -25,6 +26,23 @@ export const ExpenseDynamicCategory = (props) => {
         console.log("Me desactive")
       }
 
+    const deleteCategory= (e) => {
+        e.preventDefault();
+        console.log(
+        fetch('https://walletify-backend-develop.herokuapp.com/category', {
+        method: 'DELETE', 
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            id: props.id
+            })
+
+        
+        }))
+    }
+
     return (
         <>
         
@@ -34,7 +52,7 @@ export const ExpenseDynamicCategory = (props) => {
                     <ListItemIcon>
                         {props.icon}
                     </ListItemIcon>
-                <Button>Borrar</Button>            
+                <Button onClick={deleteCategory}><DeleteIcon/></Button>            
             
         </div>
         </>

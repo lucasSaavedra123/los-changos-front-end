@@ -9,6 +9,7 @@ import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import Forgot from "./components/Forgot";
 import EditExpenseModal from "./components/EditExpenseModal";
+import { PropaneSharp } from "@mui/icons-material";
 
 const App = () => {
 

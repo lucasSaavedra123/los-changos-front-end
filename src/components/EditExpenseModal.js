@@ -27,7 +27,9 @@ import ExpenseDynamicCategory from "./ExpenseDynamicCategory";
 import { useEffect } from "react";
 
 
-export const EditExpenseModal = () => {
+export const EditExpenseModal = (props) => {
+
+    console.log(props)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = (event, reason) => { console.log("hola rey") };
@@ -38,13 +40,13 @@ export const EditExpenseModal = () => {
     const [value,setValue]= useState('')
     const [categories, setCategories] = useState([]);
 
+    console.log(props);
   
     const getCategorias = () =>{
          fetch('https://walletify-backend-develop.herokuapp.com/category')
              .then((response) => response.json())
              .then((actualData) =>{ 
                  setCategories(actualData);
-                 console.log(categories);
              
              })
                  .catch((err) => {
@@ -65,10 +67,34 @@ export const EditExpenseModal = () => {
     const handleChangeSelect = (event) => {
         setCategory(event.target.value);
       };
-    const saveCategory = () => {
+
+    const cancelChanges = () => {
 
     }
-    const cancelChanges = () => {
+
+    const saveExpense = (e) =>{
+        e.preventDefault();
+        if (value === ''  || name ==='') {
+            console.log('Faltan campos ')
+
+        }
+        else{
+        fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+        method: 'PATCH',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        id: props.id,
+        value: value,
+        category_id: category.id,
+        date: "2022-10-03",
+        name: name
+        })
+    
+        });}
+
 
     }
 
@@ -79,17 +105,17 @@ export const EditExpenseModal = () => {
                 <Box component="form" className="form-expense">
 
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Nombre del gasto" />
+                        <TextField className="textfield" label="Nombre del gasto" onChange={(e) => { setName(e.target.value) }} />
                     </div>
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Monto" />
+                        <TextField className="textfield" label="Monto" onChange={(e) => { setValue(e.target.value) }} />
                     </div>
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <MobileDatePicker
                                 label="Fecha del gasto"
                                 inputFormat="MM/DD/YYYY"
-                                value={value}
+                                value={date}
                                 onChange={handleChange}
                                 renderInput={(params) => <TextField {...params} />}
                             />
@@ -124,7 +150,7 @@ export const EditExpenseModal = () => {
                         
                     </div>
                     <div>
-                        <Button onClick={saveCategory}> <DoneIcon /> </Button>
+                        <Button onClick={saveExpense}> <DoneIcon /> </Button>
                         <Button onClick={cancelChanges}> <CancelIcon /> </Button>
                          <Button onClick={()=>setOpen(!open)}>
                         <AddIcon/>
