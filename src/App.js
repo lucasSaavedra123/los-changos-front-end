@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import Forgot from "./components/Forgot";
+import EditExpenseModal from "./components/EditExpenseModal";
 
 const App = () => {
 
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/forgotPassword'><Forgot/> </Route>
         <Route path='/profile/home'><RequireAuth><ProfileNavigator /><Home /></RequireAuth></Route>
         <Route path='/profile/settings'><RequireAuth><ProfileNavigator /><Settings /></RequireAuth></Route>
+        <Route path='/editExpense'><EditExpenseModal/></Route>
         <Redirect to="/" />
       </Switch>
     </Router>

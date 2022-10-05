@@ -57,11 +57,6 @@ export const AddExpenseModal = (props) => {
         setCategory(event.target.value);
       };
     const saveExpense = (e) =>{
-        
-        console.log(category.id);
-        console.log(value);
-        console.log(date);
-        console.log(name);
         e.preventDefault();
         if (value === ''  || name ==='') {
             console.log('Faltan campos ')

@@ -9,6 +9,7 @@ import { Modal } from '@mui/material';
 import ModalDetailedExpenseCard from './ModalDetailedExpenseCard';
 import CategoryModal from './CategoryModal';
 import EditExpenseModal from './EditExpenseModal';
+import { Link } from "react-router-dom";
 
 
 export const ExpendCard = (props) => {
@@ -19,8 +20,24 @@ export const ExpendCard = (props) => {
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
 
-    const deleteExpenseCard= () =>{
-        alert("Se borro el gasto")
+    const deleteExpenseCard= (e) =>{
+        e.preventDefault();
+        fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+        method: 'DELETE', 
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            id: props.id
+            })
+
+
+        })
+       
+
+
+
     }
 
     const editExpenseCard = () => {
@@ -46,14 +63,17 @@ export const ExpendCard = (props) => {
                 <div className='delete-button' onClick={deleteExpenseCard}>
                     <DeleteIcon/>
                 </div>
-                <div className='edit-button' onClick={()=>setCategoryOpen(!openCategory)}>
-                    <EditIcon/>
-                    <Modal open={openCategory}
+                <div className='edit-button'>
+                    
+                        <Link to='/editExpense'> Prueba</Link>
+                    
+                    {/* <Modal open={openCategory}
                     onClose={handleCategoryClose}>
                             <EditExpenseModal/>
 
-                    </Modal>
+                    </Modal> */}
                 </div>
+
                 </div>
             </div>
 

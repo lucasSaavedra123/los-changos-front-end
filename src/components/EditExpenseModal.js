@@ -21,24 +21,54 @@ import AddCategoryModal from "./AddCategoryModal";
 import AddIcon from '@mui/icons-material/Add';
 import { Modal } from '@mui/material';
 import CategoryModal from "./CategoryModal";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect } from "react";
 
 
-
-export const EditExpenseModal = (props) => {
+export const EditExpenseModal = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => {setOpen(false)};
+    const handleClose = () => { setOpen(false) };
     const [age, setAge] = useState('');
-    const [value, setValue] = useState('2022-10-3T21:11:54');
+    const [category, setCategory] = useState('');
+    const [date, setDate] = useState('2022-10-4T21:11:54');
+    const [name, setName]= useState('')
+    const [value,setValue]= useState('')
+    const [categories, setCategories] = useState([]);
+
+  
+    const getCategorias = () =>{
+         fetch('https://walletify-backend-develop.herokuapp.com/category')
+             .then((response) => response.json())
+             .then((actualData) =>{ 
+                 setCategories(actualData);
+                 console.log(categories);
+             
+             })
+                 .catch((err) => {
+                 console.log(err.message);
+             });
+  
+  
+    }
+
+    useEffect(() => {
+        getCategorias()
+       }, []);
+
 
     const handleChange = (newValue) => {
         setValue(newValue);
     };
-    const saveCategory = () =>{
+    const handleChangeSelect = (event) => {
+        setCategory(event.target.value);
+      };
+    const saveCategory = () => {
 
     }
-    const cancelChanges = () =>{
-        
+    const cancelChanges = () => {
+
     }
 
 
@@ -47,60 +77,55 @@ export const EditExpenseModal = (props) => {
             <div className="add-category">
                 <Box component="form" className="form-expense">
 
-                    <div className="name-expense-category"> 
-                        <TextField className="textfield"label="Nombre del gasto" />
+                    <div className="name-expense-category">
+                        <TextField className="textfield" label="Nombre del gasto" />
                     </div>
-                    <div className="name-expense-category"> 
-                        <TextField className="textfield"label="Monto" />
+                    <div className="name-expense-category">
+                        <TextField className="textfield" label="Monto" />
                     </div>
                     <div>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <MobileDatePicker
-                        label="Fecha del gasto"
-                        inputFormat="MM/DD/YYYY"
-                        value={value}
-                        onChange={handleChange}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <MobileDatePicker
+                                label="Fecha del gasto"
+                                inputFormat="MM/DD/YYYY"
+                                value={value}
+                                onChange={handleChange}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
                     </div>
                     <div className="select-expense-icon">
                         <InputLabel className="label-expense-icon">Categoria</InputLabel>
                         <Select
                         className="icon-select"
-                            value={age}
+                            value={category}
                             label="Icono"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value={"Impuestos y Servicios"}>  <ExpenseCategory title={"Impuestos y Servicios"} icon={<AccountBalanceIcon sx={{ color: "black" }} />} /></MenuItem>
-
-                            <MenuItem value= {"Entretenimiento y Ocio"}><ExpenseCategory title={"Entretenimiento y Ocio"} icon={<CasinoIcon sx={{ color: "black" }} />}/> </MenuItem>
-
-                            <MenuItem value={"Hogar y Mercado"}><ExpenseCategory title={"Hogar y Mercado"} icon={<HomeIcon sx={{ color: "black" }} />}/> </MenuItem>
-
-                            <MenuItem value={"Buen vivir"}><ExpenseCategory title={"Buen vivir"} icon={<EmojiEmotionsIcon sx={{ color: "black" }} />}/> </MenuItem>
-
-                            <MenuItem value={"Electrodomesticos"}><ExpenseCategory title={"Electrodomesticos"} icon={<KitchenIcon sx={{ color: "black" }} />}/></MenuItem>
+                            onChange={handleChangeSelect}>
                             
-                           
+                            {categories.map((category) => (
+                                <MenuItem value={category}>
+                                    <ExpenseCategory title={category.name} id={category.id}/>
+                                </MenuItem>
+                            ))}           
 
                         </Select>
+                        
                     </div>
                     <div>
-                    <Button onClick={saveCategory}> <DoneIcon/> </Button>
-                    <Button onClick={cancelChanges}> <CancelIcon/> </Button>
-{/*                    <Button onClick={()=>setOpen(!open)}>
+                        <Button onClick={saveCategory}> <DoneIcon /> </Button>
+                        <Button onClick={cancelChanges}> <CancelIcon /> </Button>
+                         <Button onClick={()=>setOpen(!open)}>
                         <AddIcon/>
                     </Button> 
                     <Modal open={open} onClose={handleClose}>
                         <AddCategoryModal/>
-                    </Modal> */}
+                    </Modal>
                     </div>
 
-                    
 
-      
-          
+
+
+
                 </Box>
             </div>
         </div>
