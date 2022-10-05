@@ -78,6 +78,8 @@ export const AddExpenseModal = (props) => {
     
         });}
 
+        handleClose()
+
 
     }
     const cancelChanges = () =>{

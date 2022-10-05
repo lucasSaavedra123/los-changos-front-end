@@ -13,28 +13,30 @@ import { Link } from "react-router-dom";
 
 
 export const ExpendCard = (props) => {
-   const [open, setOpen] = useState(false);
-   const [openCategory, setCategoryOpen] = useState(false)
-   const handleCategoryOpen= () => setCategoryOpen(true)
-   const handleCategoryClose = () => setCategoryOpen(false)
-   const handleOpen = () => setOpen(true);
-   const handleClose = () => setOpen(false);
+    const [open, setOpen] = useState(false);
+    const [openCategory, setCategoryOpen] = useState(false)
+    const handleCategoryOpen = () => setCategoryOpen(true)
+    const handleCategoryClose = () => {
+        setCategoryOpen(false)
+    }
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false)
 
-    const deleteExpenseCard= (e) =>{
+    const deleteExpenseCard = (e) => {
         e.preventDefault();
         fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
-        method: 'DELETE', 
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-            id: props.id
+                id: props.id
             })
 
 
         })
-       
+
 
 
 
@@ -44,33 +46,36 @@ export const ExpendCard = (props) => {
         alert("Se Edito la card")
     }
 
-    return(
+    return (
 
         <div className="card-wrapper">
-            <div className="left-side" onClick={()=>setOpen(!open)} >
+            <div className="left-side" onClick={() => setOpen(!open)} >
                 <div className="logo">
-                    <LunchDiningIcon/>
+                    <LunchDiningIcon />
                 </div>
                 <div className="expense-title" >{props.title}</div>
-                <Modal open={open}
-                    onClose={handleClose}>
-                            <ModalDetailedExpenseCard value={props.value} category={props.category.name} date={props.date}/>
-                </Modal>
             </div>
+
+            <Modal open={open}
+                onClose={handleClose} >
+                <ModalDetailedExpenseCard value={props.value} category={props.category.name} date={props.date} />
+            </Modal>
             <div className="right-side">
                 <div className="expense-value">${props.value}</div>
                 <div className='buttons-transactions-table'>
-                <div className='delete-button' onClick={deleteExpenseCard}>
-                    <DeleteIcon/>
-                </div>
-                <div className='edit-button' onClick={()=>setCategoryOpen(!openCategory)}>
-                    <EditIcon/>
+                    <div className='delete-button' onClick={deleteExpenseCard}>
+                        <DeleteIcon />
+                    </div>
+                    <div className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
+                        <EditIcon />
+
+                    </div>
+
                     <Modal open={openCategory}
-                    onClose={handleCategoryClose}>
-                            <EditExpenseModal/>
+                        onClose={handleCategoryClose} disableBackdropClick>
+                        <EditExpenseModal />
 
                     </Modal>
-                </div>
 
                 </div>
             </div>

@@ -30,7 +30,7 @@ import { useEffect } from "react";
 export const EditExpenseModal = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => { setOpen(false) };
+    const handleClose = (event, reason) => { console.log("hola rey") };
     const [age, setAge] = useState('');
     const [category, setCategory] = useState('');
     const [date, setDate] = useState('2022-10-4T21:11:54');
@@ -129,7 +129,7 @@ export const EditExpenseModal = () => {
                          <Button onClick={()=>setOpen(!open)}>
                         <AddIcon/>
                     </Button> 
-                    <Modal open={open} onClose={handleClose}>
+                    <Modal open={open} onClose={handleClose} >
                         <AddCategoryModal/>
                     </Modal>
                     </div>
