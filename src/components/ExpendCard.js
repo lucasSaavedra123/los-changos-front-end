@@ -63,15 +63,13 @@ export const ExpendCard = (props) => {
                 <div className='delete-button' onClick={deleteExpenseCard}>
                     <DeleteIcon/>
                 </div>
-                <div className='edit-button'>
-                    
-                        <Link to='/editExpense'> Prueba</Link>
-                    
-                    {/* <Modal open={openCategory}
+                <div className='edit-button' onClick={()=>setCategoryOpen(!openCategory)}>
+                    <EditIcon/>
+                    <Modal open={openCategory}
                     onClose={handleCategoryClose}>
                             <EditExpenseModal/>
 
-                    </Modal> */}
+                    </Modal>
                 </div>
 
                 </div>

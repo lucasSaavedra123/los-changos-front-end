@@ -81,9 +81,9 @@ export default function MovementsTable() {
         <TableBody className="table-body">
           {transactions.map((transaction) => (
             
-          
+            <TableRow key={transaction.id}>
             <ExpendCard id={transaction.id} title={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} />
-            
+            </TableRow>
 
           ))}
         </TableBody>

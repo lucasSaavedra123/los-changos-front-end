@@ -23,6 +23,7 @@ import { Modal } from '@mui/material';
 import CategoryModal from "./CategoryModal";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ExpenseDynamicCategory from "./ExpenseDynamicCategory";
 import { useEffect } from "react";
 
 
@@ -102,11 +103,22 @@ export const EditExpenseModal = () => {
                             label="Icono"
                             onChange={handleChangeSelect}>
                             
-                            {categories.map((category) => (
+                            {categories.map((category) => {
+                            if(category.static === true) {
+                                return(
                                 <MenuItem value={category}>
                                     <ExpenseCategory title={category.name} id={category.id}/>
                                 </MenuItem>
-                            ))}           
+                                )
+                            }
+                            else{
+                                return(
+                                <MenuItem value={category}>
+                                    <ExpenseDynamicCategory title={category.name} id={category.id}/>
+                                </MenuItem>
+                                )
+
+                            }        }  )}           
 
                         </Select>
                         
