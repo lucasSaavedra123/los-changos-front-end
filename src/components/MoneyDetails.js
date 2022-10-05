@@ -11,7 +11,6 @@ export const MoneyDetails = (props) => {
            .then((response) => response.json())
            .then((actualData) =>{ 
                setTransactions(actualData);
-               console.log(actualData);
                //getExpenseValue();
            
            })
@@ -25,7 +24,7 @@ export const MoneyDetails = (props) => {
 
   useEffect(() => {
    getTransactions()
-  }, []);
+  }, [transactions]);
   
 
   return (

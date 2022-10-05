@@ -22,36 +22,6 @@ import "../assets/scss/expenseCard.scss"
 import { useEffect } from 'react';
 import { Label } from '@mui/icons-material';
 
-
-function Row() {
-  //const { expenseDetails } = props;
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  /*
-  return (
-    <div className='table-row-container'>
-      <TableRow className="table-row" onClick={()=>setOpen(!open)} >
-        <TableCell className='table-cell'>
-            <ExpendCard title={"Cafe Eatbar"} value={"200"}/>
-        </TableCell>
-      </TableRow>
-      <Modal open={open} onClose={handleClose}>
-            <ModalDetailedExpenseCard title={"Cafe EatBar"} value={"200"} date={"2 de Octubre"} category={"Buen vivir"}/>
-    </Modal>
-    </div>
-  );
-  onClick={()=>setOpen(!open)}
-  */
-  return (
-    <div className='table-row-container'>
-      <TableRow className="table-row"  >
-            <ExpendCard title={"Cafe Eatbar"} value={"200"}/>
-      </TableRow>
-    </div>
-  );
-}
 export default function MovementsTable() {
 
   const [transactions, setTransactions] = useState([]);
@@ -76,15 +46,19 @@ export default function MovementsTable() {
 
 
   return (
-    <TableContainer component={Paper} className="table-container">
-      <Table aria-label="collapsible table" className="table">
-        <TableBody className="table-body">
+    <TableContainer component={Paper}>
+      <Table >
+        <TableHead>
+          <TableRow>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {transactions.map((transaction) => (
-            
-            <TableRow key={transaction.id}>
-            <ExpendCard id={transaction.id} title={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} />
+            <TableRow
+              key={transaction.id}
+            >
+              <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.value} category={transaction.category}></ExpendCard>
             </TableRow>
-
           ))}
         </TableBody>
       </Table>

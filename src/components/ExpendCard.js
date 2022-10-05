@@ -19,7 +19,7 @@ export const ExpendCard = (props) => {
    const handleCategoryClose = () => setCategoryOpen(false)
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
-
+   
     const deleteExpenseCard= (e) =>{
         e.preventDefault();
         fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
@@ -63,13 +63,14 @@ export const ExpendCard = (props) => {
                 <div className='delete-button' onClick={deleteExpenseCard}>
                     <DeleteIcon/>
                 </div>
-                <div className='edit-button' onClick={()=>setCategoryOpen(!openCategory)}>
-                    <EditIcon/>
-                    <Modal open={openCategory}
+                <div className='edit-button'>
+                        <Link to='/editExpense' id={props.id}> Prueba</Link>
+                    
+                    {/* <Modal open={openCategory}
                     onClose={handleCategoryClose}>
                             <EditExpenseModal/>
 
-                    </Modal>
+                    </Modal> */}
                 </div>
 
                 </div>
