@@ -245,3 +245,19 @@
     width: 100%;
 }
 
+.buttonContainer{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 70%;
+}
+
+
+.backArrow{
+    display: flex;
+    align-items: center;
+}
+
+.addCategoryButton{
+    margin:auto;
+}

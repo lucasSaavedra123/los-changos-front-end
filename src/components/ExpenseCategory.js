@@ -37,7 +37,8 @@ export const ExpenseCategory = (props) => {
           </div>
               
           <div className='category-title'>{props.name}</div>
-         </div>      
+         </div>
+         <div className='category-buttons'></div>      
                             
             
         </div>

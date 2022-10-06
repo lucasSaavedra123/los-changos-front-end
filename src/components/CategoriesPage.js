@@ -39,6 +39,8 @@ import { Label } from '@mui/icons-material';
 import ExpenseCategory from './ExpenseCategory';
 import ExpenseDynamicCategory from './ExpenseDynamicCategory';
 import AddCategoryModal from './AddCategoryModal';
+import { Link } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -79,9 +81,9 @@ const CategoriesPage = () => {
   return (
 
     <div className="app-container">
-    <div className='settings'>
-      <BasicCard className='child' />
-  
+    <div className='buttonContainer'>
+      <Link className="text-link backArrow" to="/profile/home" style={{ color: "grey"}}><ArrowBackIcon></ArrowBackIcon> </Link>
+      <BasicCard className='addCategoryButton' />
     </div>
     <Modal open={open} onClose={handleClose} >
                     <AddCategoryModal handleCloseModal={handleClose}/>
@@ -98,7 +100,7 @@ const CategoriesPage = () => {
             if(category.static === true) {
                 return(
                 <TableRow value={category}>
-                <ExpenseCategory title={category.name} id={category.id} icon={category.material_ui_icon_name}/>
+                <ExpenseCategory name={category.name} id={category.id} icon={category.material_ui_icon_name}/>
                 </TableRow>
                 )}
             else{
