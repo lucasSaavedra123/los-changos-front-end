@@ -24,7 +24,8 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ExpenseDynamicCategory from "./ExpenseDynamicCategory";
 import { useEffect } from "react";
-
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 export const EditExpenseModal = (props) => {
 
@@ -38,9 +39,12 @@ export const EditExpenseModal = (props) => {
     const [value,setValue]= useState(props.value)
     const [categories, setCategories] = useState([]);
   
-    console.log(props)
+    const { currentUser } = useContext(AuthContext);
+
     const getCategorias = () =>{
-         fetch('https://walletify-backend-develop.herokuapp.com/category')
+         fetch('https://walletify-backend-develop.herokuapp.com/category',{
+            headers: {'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken}
+         })
              .then((response) => response.json())
              .then((actualData) =>{ 
                  setCategories(actualData);
@@ -81,7 +85,8 @@ export const EditExpenseModal = (props) => {
         method: 'PATCH',
         headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
         },
         body: JSON.stringify({
         id: props.id,

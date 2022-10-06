@@ -11,12 +11,15 @@ import CategoryIcon from './CategoryIcon';
 import EditIcon from '@mui/icons-material/Edit';
 import {Modal} from '@mui/material';
 import EditCategoryModal from './EditCategoryModal';
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 export const ExpenseDynamicCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { currentUser } = useContext(AuthContext);
 
     const handleClick= ()=>{
         
@@ -39,6 +42,7 @@ export const ExpenseDynamicCategory = (props) => {
         fetch('https://walletify-backend-develop.herokuapp.com/category', {
         method: 'DELETE', 
         headers: {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
             },

@@ -18,6 +18,9 @@ import KitchenIcon from '@mui/icons-material/Kitchen';
 import ExpenseCategory from "./ExpenseCategory";
 import "../assets/scss/addExpense.scss"
 import CategoryIcon from "./CategoryIcon";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 export const AddExpenseModal = (props) => {
     const [open, setOpen] = useState(false);
@@ -28,10 +31,14 @@ export const AddExpenseModal = (props) => {
     const [name, setName] = useState('')
     const [value, setValue] = useState('')
     const [categories, setCategories] = useState([]);
+    const { currentUser } = useContext(AuthContext);
 
 
     const getCategorias = () => {
-        fetch('https://walletify-backend-develop.herokuapp.com/category')
+        fetch('https://walletify-backend-develop.herokuapp.com/category', {
+            'headers': {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+            }})
             .then((response) => response.json())
             .then((actualData) => {
                 setCategories(actualData);
@@ -58,7 +65,6 @@ export const AddExpenseModal = (props) => {
     };
     const saveExpense = (e) => {
         e.preventDefault();
-        console.log(date.$y + "-" + date.$M + "-" + date.$D);
         if (value === '' || name === '') {
             console.log('Faltan campos ')
 
@@ -67,17 +73,18 @@ export const AddExpenseModal = (props) => {
             fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
                 method: 'POST',
                 headers: {
+                    'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     value: value,
                     category_id: category,
-                    date: (date.$y + "-" + date.$M + "-" + date.$D),
+                    date: date.slice(0,date.indexOf("T")),
                     name: name
                 })
 
-            });
+            })
             
         }
 

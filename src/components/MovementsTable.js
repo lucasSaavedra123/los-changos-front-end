@@ -21,12 +21,21 @@ import ExpendCard from './ExpendCard';
 import "../assets/scss/expenseCard.scss"
 import { useEffect } from 'react';
 import { Label } from '@mui/icons-material';
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 export default function MovementsTable() {
 
+
+  const { currentUser } = useContext(AuthContext);
+
+
   const [transactions, setTransactions] = useState([]);
   const getTransactions = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/transaction')
+       fetch('http://walletify-backend-develop.herokuapp.com/transaction', {
+        'headers': {
+          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+        }})
            .then((response) => response.json())
            .then((actualData) =>{ 
                setTransactions(actualData);   

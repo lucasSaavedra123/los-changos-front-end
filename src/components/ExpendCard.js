@@ -11,7 +11,8 @@ import CategoryModal from './CategoryModal';
 import EditExpenseModal from './EditExpenseModal';
 import { Link } from "react-router-dom";
 import CategoryIcon from './CategoryIcon';
-
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 export const ExpendCard = (props) => {
     const [open, setOpen] = useState(false);
@@ -22,6 +23,7 @@ export const ExpendCard = (props) => {
     }
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false)
+    const { currentUser } = useContext(AuthContext);
 
     const deleteExpenseCard = (e) => {
         e.preventDefault();
@@ -29,7 +31,8 @@ export const ExpendCard = (props) => {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
             },
             body: JSON.stringify({
                 id: props.id

@@ -1,31 +1,35 @@
 import "../assets/scss/moneyDetails.scss"
 import { useState } from "react";
 import { useEffect } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
+
 export const MoneyDetails = (props) => {
 
-  const [expense,setExpense]=useState(0);
   const [transactions, setTransactions] = useState([]);
-  
+  const { currentUser } = useContext(AuthContext);
+
   const getTransactions = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/transaction')
+       fetch('http://walletify-backend-develop.herokuapp.com/transaction', {
+        'headers': {
+          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+        }
+       })
            .then((response) => response.json())
            .then((actualData) =>{ 
-               setTransactions(actualData);
-               //getExpenseValue();
-           
+               setTransactions(actualData);           
            })
                .catch((err) => {
                console.log(err.message);
            });
 
-
   }
-  const total=(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
 
   useEffect(() => {
    getTransactions()
-  }, [transactions]);
+  }, []);
   
+  const total=(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
 
   return (
     <div className="money-details-container">

@@ -48,9 +48,13 @@ const CategoriesPage = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
+  const { currentUser } = useContext(AuthContext);
   const getCategories = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/category')
+       fetch('http://walletify-backend-develop.herokuapp.com/category', {
+        headers: {
+          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+        }
+       })
            .then((response) => response.json())
            .then((actualData) =>{ 
             setCategories(actualData);   

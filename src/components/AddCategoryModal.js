@@ -7,6 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { Button } from "@mui/material";
 import { ALLOWS_ICONS_FOR_CATEGORY } from "../CONSTANTS";
 import CategoryIcon from "./CategoryIcon";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
 export const AddCategoryModal = (props) => {
     const [open, setOpen] = useState(false);
@@ -15,7 +17,7 @@ export const AddCategoryModal = (props) => {
     const [icon, setIcon] = useState('');
     const [name, setName]= useState('')
     const [value,setValue]= useState('')
-
+    const { currentUser } = useContext(AuthContext);
     console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
         setIcon(event.target.value);
@@ -31,6 +33,7 @@ export const AddCategoryModal = (props) => {
         fetch('https://walletify-backend-develop.herokuapp.com/category', {
         method: 'POST',
         headers: {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
         },
