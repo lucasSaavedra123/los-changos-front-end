@@ -5,15 +5,18 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from "@mui/material";
+import { ALLOWS_ICONS_FOR_CATEGORY } from "../CONSTANTS";
+import CategoryIcon from "./CategoryIcon";
 
 export const AddCategoryModal = (props) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [age, setAge] = useState('');
+    const [icon, setIcon] = useState('');
 
+    console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
-        setAge(event.target.value);
+        setIcon(event.target.value);
     };
     const saveCategory = () =>{
 
@@ -35,13 +38,12 @@ export const AddCategoryModal = (props) => {
                         <InputLabel className="label-expense-icon">Icono</InputLabel>
                         <Select
                         className="icon-select"
-                            value={age}
+                            value={icon}
                             label="Icono"
                             onChange={handleChange}
-                        >
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
+                        > {ALLOWS_ICONS_FOR_CATEGORY.map((icon)=> (
+                            <MenuItem value={icon}><CategoryIcon name={icon} /></MenuItem>
+                        ))}
                         </Select>
                     </div>
                     <Button onClick={saveCategory}> GUARDAR CATEGORIA</Button>
