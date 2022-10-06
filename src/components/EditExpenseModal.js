@@ -17,7 +17,6 @@ import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import ExpenseCategory from "./ExpenseCategory";
 import "../assets/scss/addExpense.scss"
-import AddCategoryModal from "./AddCategoryModal";
 import AddIcon from '@mui/icons-material/Add';
 import { Modal } from '@mui/material';
 import CategoryModal from "./CategoryModal";
@@ -35,8 +34,8 @@ export const EditExpenseModal = (props) => {
     const [age, setAge] = useState('');
     const [category, setCategory] = useState('');
     const [date, setDate] = useState('2022-10-4T21:11:54');
-    const [name, setName]= useState('')
-    const [value,setValue]= useState('')
+    const [name, setName]= useState(props.name)
+    const [value,setValue]= useState(props.value)
     const [categories, setCategories] = useState([]);
   
     console.log(props)

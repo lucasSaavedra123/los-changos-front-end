@@ -36,9 +36,8 @@ export const ExpenseCategory = (props) => {
             <CategoryIcon name={props.icon}></CategoryIcon>
           </div>
               
-          <div className='category-title'>{props.title}</div>
-         </div>
-        <div className='category-buttons'></div>         
+          <div className='category-title'>{props.name}</div>
+         </div>      
                             
             
         </div>

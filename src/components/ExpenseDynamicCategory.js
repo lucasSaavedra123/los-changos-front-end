@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CategoryIcon from './CategoryIcon';
 import EditIcon from '@mui/icons-material/Edit';
 import {Modal} from '@mui/material';
-import AddCategoryModal from './AddCategoryModal';
+import EditCategoryModal from './EditCategoryModal';
 
 export const ExpenseDynamicCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
@@ -69,7 +69,7 @@ export const ExpenseDynamicCategory = (props) => {
                     </div>
                 </div> 
                 <Modal open={open} onClose={handleClose} >
-                        <AddCategoryModal/>
+                        <EditCategoryModal icon={props.icon} name={props.title} handleCloseModal={handleClose} id={props.id}/>
                 </Modal>           
             
         </div>

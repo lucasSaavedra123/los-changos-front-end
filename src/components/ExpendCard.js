@@ -22,7 +22,6 @@ export const ExpendCard = (props) => {
     }
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false)
-    console.log(props)
 
     const deleteExpenseCard = (e) => {
         e.preventDefault();

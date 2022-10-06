@@ -84,7 +84,7 @@ const CategoriesPage = () => {
   
     </div>
     <Modal open={open} onClose={handleClose} >
-                    <AddCategoryModal/>
+                    <AddCategoryModal handleCloseModal={handleClose}/>
     </Modal>  
     <div className="movements">Movimientos
         <TableContainer component={Paper}>

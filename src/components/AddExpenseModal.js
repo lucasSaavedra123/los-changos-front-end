@@ -17,6 +17,7 @@ import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import ExpenseCategory from "./ExpenseCategory";
 import "../assets/scss/addExpense.scss"
+import CategoryIcon from "./CategoryIcon";
 
 export const AddExpenseModal = (props) => {
     const [open, setOpen] = useState(false);
@@ -24,29 +25,28 @@ export const AddExpenseModal = (props) => {
     const handleClose = () => setOpen(false);
     const [category, setCategory] = useState('');
     const [date, setDate] = useState('2022-10-4T21:11:54');
-    const [name, setName]= useState('')
-    const [value,setValue]= useState('')
+    const [name, setName] = useState('')
+    const [value, setValue] = useState('')
     const [categories, setCategories] = useState([]);
 
-  
-    const getCategorias = () =>{
-         fetch('https://walletify-backend-develop.herokuapp.com/category')
-             .then((response) => response.json())
-             .then((actualData) =>{ 
-                 setCategories(actualData);
-                 console.log(categories);
-             
-             })
-                 .catch((err) => {
-                 console.log(err.message);
-             });
-  
-  
+
+    const getCategorias = () => {
+        fetch('https://walletify-backend-develop.herokuapp.com/category')
+            .then((response) => response.json())
+            .then((actualData) => {
+                setCategories(actualData);
+
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+
+
     }
 
     useEffect(() => {
         getCategorias()
-       }, []);
+    },[]);
 
 
     const handleChange = (newValue) => {
@@ -55,35 +55,37 @@ export const AddExpenseModal = (props) => {
 
     const handleChangeSelect = (event) => {
         setCategory(event.target.value);
-      };
-    const saveExpense = (e) =>{
+    };
+    const saveExpense = (e) => {
         e.preventDefault();
-        console.log(date.$y+"-"+date.$M+"-"+date.$D);
-        if (value === ''  || name ==='') {
+        console.log(date.$y + "-" + date.$M + "-" + date.$D);
+        if (value === '' || name === '') {
             console.log('Faltan campos ')
 
         }
-        else{
-        fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
-        method: 'POST',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-        value: value,
-        category_id: category.id,
-        date: (date.$y+"-"+date.$M+"-"+date.$D),
-        name: name
-        })
-    
-        });}
+        else {
+            fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    value: value,
+                    category_id: category,
+                    date: (date.$y + "-" + date.$M + "-" + date.$D),
+                    name: name
+                })
+
+            });
+            
+        }
 
         props.handleCloseModal()
 
 
     }
-    const cancelChanges = () =>{
+    const cancelChanges = () => {
         props.handleCloseModal()
     }
 
@@ -93,48 +95,45 @@ export const AddExpenseModal = (props) => {
             <div className="add-category">
                 <Box component="form" className="form-expense">
 
-                    <div className="name-expense-category"> 
-                        <TextField className="textfield"label="Nombre del gasto" onChange={(e) => { setName(e.target.value) }}/>
-                    </div>
-                    <div className="name-expense-category"> 
-                        <TextField className="textfield"label="Monto" onChange={(e) => { setValue(e.target.value) }}/>
+                    <div className="name-expense-category">
+                        <TextField className="textfield" label="Nombre del gasto" onChange={(e) => { setName(e.target.value) }} />
                     </div>
                     <div className="name-expense-category">
-                    <LocalizationProvider dateAdapter={AdapterDayjs} >
-                        <MobileDatePicker
-                        className="textfield"
-                        label="Fecha del gasto"
-                        inputFormat="YYYY-MM-DD"
-                        value={date}
-                        onChange={handleChange}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    </LocalizationProvider>
+                        <TextField className="textfield" label="Monto" onChange={(e) => { setValue(e.target.value) }} />
+                    </div>
+                    <div className="name-expense-category">
+                        <LocalizationProvider dateAdapter={AdapterDayjs} >
+                            <MobileDatePicker
+                                className="textfield"
+                                label="Fecha del gasto"
+                                inputFormat="YYYY-MM-DD"
+                                value={date}
+                                onChange={handleChange}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
                     </div>
                     <div className="select-expense-icon">
-                        <InputLabel className="label-expense-icon">Categoria</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
                         <Select
-                        className="icon-select"
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
                             value={category}
-                            label="Icono"
-                            onChange={handleChangeSelect}>
-                            
-                            {categories.map((category) => (
-                                
-                                <MenuItem value={category}>
-                                    <ExpenseCategory title={category.name} id={category.id}/>
-                                </MenuItem>
-                            ))}           
-
+                            label="Age"
+                            onChange={handleChangeSelect}
+                        >
+                            {categories.map((category)=>(
+                                <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                            ))}
                         </Select>
-                        
+
                     </div>
                     <div className="buttons">
-                    <Button className="save-button"onClick={saveExpense}> <DoneIcon/> </Button>
-                    <Button className="cancel-button" onClick={cancelChanges}> <CancelIcon/> </Button>
+                        <Button className="save-button" onClick={saveExpense}> <DoneIcon /> </Button>
+                        <Button className="cancel-button" onClick={cancelChanges}> <CancelIcon /> </Button>
                     </div>
                 </Box>
-                
+
             </div>
         </div>
     )

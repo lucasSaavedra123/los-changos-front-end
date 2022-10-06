@@ -8,12 +8,12 @@ import { Button } from "@mui/material";
 import { ALLOWS_ICONS_FOR_CATEGORY } from "../CONSTANTS";
 import CategoryIcon from "./CategoryIcon";
 
-export const AddCategoryModal = (props) => {
+export const EditCategoryModal = (props) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [icon, setIcon] = useState('');
-    const [name, setName]= useState('')
+    const [icon, setIcon] = useState(props.icon);
+    const [name, setName]= useState(props.name)
     const [value,setValue]= useState('')
 
     console.log(ALLOWS_ICONS_FOR_CATEGORY)
@@ -29,14 +29,15 @@ export const AddCategoryModal = (props) => {
         else{
         props.handleCloseModal()
         fetch('https://walletify-backend-develop.herokuapp.com/category', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
         },
         body: JSON.stringify({
         name: name,
-        material_ui_icon_name: icon
+        material_ui_icon_name: icon,
+        id: props.id,
         })
     
         });}
@@ -53,11 +54,12 @@ export const AddCategoryModal = (props) => {
                 <Box component="form" className="form-expense">
 
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Categoria" onChange={(e) => { setName(e.target.value)}} />
+                        <TextField defaultValue={props.name} className="textfield" label="Categoria" onChange={(e) => { setName(e.target.value)}} />
                     </div>
                     <div className="select-expense-icon">
                         <InputLabel id="demo-simple-select-label">Icono</InputLabel>
                         <Select
+                            defaultValue={props.icon}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={icon}
@@ -78,4 +80,4 @@ export const AddCategoryModal = (props) => {
     )
 }
 
-export default AddCategoryModal;
+export default EditCategoryModal;
