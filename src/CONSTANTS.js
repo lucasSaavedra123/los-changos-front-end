@@ -55,7 +55,7 @@ export const useStyles = makeStyles({
 
 
 export const ALLOWS_ICONS_FOR_CATEGORY = [
-    "AccessibilityNewOutlinedIcon",
+    "AccessibilityNewOutlined",
     "AccountBalanceOutlined",
     "AccountBalanceWalletOutlined",
     "AirplanemodeActiveOutlined",
