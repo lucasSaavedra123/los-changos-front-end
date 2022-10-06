@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import "../assets/scss/expenseCard.scss"
 import { Button } from 'react-bootstrap';
 import { useState } from 'react';
+import CategoryIcon from './CategoryIcon';
 
 export const ExpenseCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
@@ -30,11 +31,10 @@ export const ExpenseCategory = (props) => {
         <>
         
         <div className={setIsHovering? "type-category-container" :"active"} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-            
+        <CategoryIcon name={props.icon}></CategoryIcon>
               <div>{props.title}</div>
-                    <ListItemIcon>
-                        {props.icon}
-                    </ListItemIcon>            
+                  
+                            
             
         </div>
         </>

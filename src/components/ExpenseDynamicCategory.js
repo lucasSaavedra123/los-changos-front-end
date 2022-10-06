@@ -7,10 +7,17 @@ import "../assets/scss/expenseCard.scss"
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CategoryIcon from './CategoryIcon';
+import EditIcon from '@mui/icons-material/Edit';
+import {Modal} from '@mui/material';
+import AddCategoryModal from './AddCategoryModal';
+
 export const ExpenseDynamicCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    
     const handleClick= ()=>{
         
     }
@@ -47,12 +54,14 @@ export const ExpenseDynamicCategory = (props) => {
         <>
         
         <div className={setIsHovering? "type-category-container" :"active"} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-            
-              <div>{props.title}</div>
-                    <ListItemIcon>
-                        {props.icon}
-                    </ListItemIcon>
-                <Button onClick={deleteCategory}><DeleteIcon/></Button>            
+                <CategoryIcon name={props.icon}></CategoryIcon>
+                <div>{props.title}</div>
+                
+                <Button onClick={deleteCategory}><DeleteIcon/></Button>
+                <Button onClick={()=>setOpen(!open)}><EditIcon/></Button> 
+                <Modal open={open} onClose={handleClose} >
+                        <AddCategoryModal/>
+                </Modal>           
             
         </div>
         </>

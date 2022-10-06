@@ -36,9 +36,17 @@ import { Modal } from '@material-ui/core';
 import CategoryCard from './CategoryCard';
 import "../assets/scss/expenseCard.scss"
 import { Label } from '@mui/icons-material';
+import ExpenseCategory from './ExpenseCategory';
+import ExpenseDynamicCategory from './ExpenseDynamicCategory';
+import AddCategoryModal from './AddCategoryModal';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+
   const getCategories = () =>{
        fetch('http://walletify-backend-develop.herokuapp.com/category')
            .then((response) => response.json())
@@ -60,33 +68,56 @@ const CategoriesPage = () => {
     return (
       <Card style={{ borderRadius: 5, border: "1px solid #9CE37D", margin: 30, backgroundColor: "black" }}>
         <CardContent style={{ color: "black" }}>
-            <Button>Agregar Categorias</Button>
+            <Button onClick={()=>setOpen(!open)}>Agregar Categorias</Button> 
         </CardContent>
+  
       </Card>
+      
     );
 
   }
   return (
+
+    <div className="app-container">
     <div className='settings'>
       <BasicCard className='child' />
-      <TableContainer component={Paper}>
-      <Table >
-        <TableHead>
-          <TableRow>
-          </TableRow>
+  
+    </div>
+    <Modal open={open} onClose={handleClose} >
+                    <AddCategoryModal/>
+                </Modal>  
+    <div className="movements">Movimientos
+        <TableContainer component={Paper}>
+            <Table >
+            <TableHead>
+            <TableRow>
+            </TableRow>
         </TableHead>
         <TableBody>
-          {categories.map((category) => (
-            <TableRow
-              key={category.id}
-            >
-              <CategoryCard id={category.id} name={category.name} material_ui_icon_name={category.material_ui_icon_name}/>
-            </TableRow>
-          ))}
+        {categories.map((category) => {
+            if(category.static === true) {
+                return(
+                <TableRow value={category}>
+                <ExpenseCategory title={category.name} id={category.id} icon={category.material_ui_icon_name}/>
+                </TableRow>
+                )}
+            else{
+                return(
+                <TableRow value={category}>
+                <ExpenseDynamicCategory title={category.name} id={category.id} icon={category.material_ui_icon_name}/>
+                </TableRow>
+                )}
+            })}   
+          
         </TableBody>
       </Table>
     </TableContainer>
+        </div>
     </div>
+
+
+
+ 
   );
 
 }
