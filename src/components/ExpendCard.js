@@ -10,6 +10,7 @@ import ModalDetailedExpenseCard from './ModalDetailedExpenseCard';
 import CategoryModal from './CategoryModal';
 import EditExpenseModal from './EditExpenseModal';
 import { Link } from "react-router-dom";
+import CategoryIcon from './CategoryIcon';
 
 
 export const ExpendCard = (props) => {
@@ -51,7 +52,7 @@ export const ExpendCard = (props) => {
         <div className="card-wrapper">
             <div className="left-side" onClick={() => setOpen(!open)} >
                 <div className="logo">
-                    <LunchDiningIcon />
+                    <CategoryIcon name={props.category.material_ui_icon_name} />
                 </div>
                 <div className="expense-title" >{props.title}</div>
             </div>

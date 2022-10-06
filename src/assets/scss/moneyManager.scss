@@ -19,6 +19,12 @@
   width: 70%;
 
 }
+.see-categories{
+  border-radius: 5px;
+  border-color:#9CE37D ;
+  margin: 30;
+  background-color: "white";
+}
 .movements{
   background-color: greenyellow;
   width:70%;
@@ -45,7 +51,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  //background-color: white;
   width: 70%;
   //Con esto le puedo dar la altura y centrar div en el centro
   //height: 65%;

@@ -21,6 +21,8 @@
 .expense-value{
     color:black;
     width: 50%;
+    justify-content: center;
+    display: flex;
  
 
 }
@@ -30,7 +32,7 @@
     color: white;
     align-self: center;
     display: flex;
-    position: relative;
+    //position: relative;
     flex-direction: row;
     width:70%;
     

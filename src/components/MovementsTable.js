@@ -57,7 +57,7 @@ export default function MovementsTable() {
             <TableRow
               key={transaction.id}
             >
-              <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.value} category={transaction.category}></ExpendCard>
+              <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.value} category={transaction.category} ></ExpendCard>
             </TableRow>
           ))}
         </TableBody>
