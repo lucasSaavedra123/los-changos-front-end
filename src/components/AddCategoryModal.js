@@ -18,11 +18,11 @@ export const AddCategoryModal = (props) => {
     const handleChange = (event) => {
         setIcon(event.target.value);
     };
-    const saveCategory = () =>{
+    const saveCategory = () => {
 
     }
-    const cancelChanges = () =>{
-        
+    const cancelChanges = () => {
+
     }
 
 
@@ -31,19 +31,22 @@ export const AddCategoryModal = (props) => {
             <div className="add-category">
                 <Box component="form" className="form-expense">
 
-                    <div className="name-expense-category"> 
-                        <TextField className="textfield"label="Categoria" />
+                    <div className="name-expense-category">
+                        <TextField className="textfield" label="Categoria" />
                     </div>
                     <div className="select-expense-icon">
-                        <InputLabel className="label-expense-icon">Icono</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Icono</InputLabel>
                         <Select
-                        className="icon-select"
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
                             value={icon}
-                            label="Icono"
+                            label="Categoria"
                             onChange={handleChange}
-                        > {ALLOWS_ICONS_FOR_CATEGORY.map((icon)=> (
-                            <MenuItem value={icon}><CategoryIcon name={icon} /></MenuItem>
-                        ))}
+                        >
+                            {ALLOWS_ICONS_FOR_CATEGORY.map((icon)=>(
+                            <MenuItem value={icon}><CategoryIcon name={icon}></CategoryIcon></MenuItem>))
+                            
+                            }
                         </Select>
                     </div>
                     <Button onClick={saveCategory}> GUARDAR CATEGORIA</Button>

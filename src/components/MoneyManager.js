@@ -61,8 +61,8 @@ export const MoneyManager = () => {
           </Button>
         </div>
         <div className="see-categories">
-          <Button>
-            <Link to='/profile/categories'>Ver categoria</Link>
+          <Button style={{fontFamily: "UnB-Light"}}>
+            <Link style={{color:"white", textDecoration:"none"}} to='/profile/categories'>CATEGORIAS</Link>
           </Button>
         </div>
         <Modal
