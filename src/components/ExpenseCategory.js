@@ -30,10 +30,15 @@ export const ExpenseCategory = (props) => {
     return (
         <>
         
-        <div className={setIsHovering? "type-category-container" :"active"} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-        <CategoryIcon name={props.icon}></CategoryIcon>
-              <div>{props.title}</div>
-                  
+        <div className='type-category-container'>
+        <div className='expense-category-left-side'>
+          <div className='expense-category-icon'>
+            <CategoryIcon name={props.icon}></CategoryIcon>
+          </div>
+              
+          <div className='category-title'>{props.title}</div>
+         </div>
+        <div className='category-buttons'></div>         
                             
             
         </div>

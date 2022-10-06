@@ -53,12 +53,21 @@ export const ExpenseDynamicCategory = (props) => {
     return (
         <>
         
-        <div className={setIsHovering? "type-category-container" :"active"} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-                <CategoryIcon name={props.icon}></CategoryIcon>
-                <div>{props.title}</div>
-                
-                <Button onClick={deleteCategory}><DeleteIcon/></Button>
-                <Button onClick={()=>setOpen(!open)}><EditIcon/></Button> 
+        <div className={"type-category-container"}>
+                <div className='expense-category-left-side'>
+                    <div className='expense-category-icon'>
+                        <CategoryIcon name={props.icon}></CategoryIcon>
+                    </div>
+                    <div className='category-title'>{props.title}</div>
+                </div>
+                <div className='category-buttons'>
+                    <div>
+                    <Button onClick={deleteCategory}><DeleteIcon/></Button>
+                    </div>
+                    <div>
+                    <Button onClick={()=>setOpen(!open)}><EditIcon/></Button>
+                    </div>
+                </div> 
                 <Modal open={open} onClose={handleClose} >
                         <AddCategoryModal/>
                 </Modal>           

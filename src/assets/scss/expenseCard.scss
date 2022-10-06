@@ -126,11 +126,30 @@
 .type-category-container{
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
-    align-items: center;
-    height: 7%;
+    //justify-content:space-between;
+    //align-items: center;
+    //height:7%;
     background-color: white;
+    //width: 100%;
     
+}
+.expense-category-icon{
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.category-buttons{
+    display: flex;
+    width:30%;
+    justify-content: space-evenly;
+    height: 36px;
+}
+.expense-category-left-side{
+    align-self: center;
+    display: flex;
+    //position: relative;
+    flex-direction: row;
+    width:70%;
+
 }
 .active {
     display: flex;

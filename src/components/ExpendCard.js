@@ -22,6 +22,7 @@ export const ExpendCard = (props) => {
     }
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false)
+    console.log(props)
 
     const deleteExpenseCard = (e) => {
         e.preventDefault();
@@ -71,7 +72,7 @@ export const ExpendCard = (props) => {
 
                     <Modal open={openCategory}
                         onClose={handleCategoryClose} disableBackdropClick>
-                        <EditExpenseModal id={props.id} handleCloseModal={handleCategoryClose}/>
+                        <EditExpenseModal id={props.id} date={props.date} title={props.title} value={props.value} handleCloseModal={handleCategoryClose}/>
 
                     </Modal>
 

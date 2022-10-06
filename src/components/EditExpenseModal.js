@@ -39,6 +39,7 @@ export const EditExpenseModal = (props) => {
     const [value,setValue]= useState('')
     const [categories, setCategories] = useState([]);
   
+    console.log(props)
     const getCategorias = () =>{
          fetch('https://walletify-backend-develop.herokuapp.com/category')
              .then((response) => response.json())
@@ -104,17 +105,17 @@ export const EditExpenseModal = (props) => {
                 <Box component="form" className="form-expense">
 
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Nombre del gasto" onChange={(e) => { setName(e.target.value) }} />
+                        <TextField className="textfield" label="Nombre del gasto" defaultValue={props.title} onChange={(e) => { setName(e.target.value) }} />
                     </div>
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Monto" onChange={(e) => { setValue(e.target.value) }} />
+                        <TextField className="textfield" label="Monto" defaultValue={props.value} onChange={(e) => { setValue(e.target.value) }} />
                     </div>
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <MobileDatePicker
                                 label="Fecha del gasto"
                                 inputFormat="MM/DD/YYYY"
-                                value={date}
+                                value={props.date}
                                 onChange={handleChange}
                                 renderInput={(params) => <TextField {...params} />}
                             />
@@ -151,12 +152,6 @@ export const EditExpenseModal = (props) => {
                     <div>
                         <Button onClick={saveExpense}> <DoneIcon /> </Button>
                         <Button onClick={cancelChanges}> <CancelIcon /> </Button>
-                         <Button onClick={()=>setOpen(!open)}>
-                        <AddIcon/>
-                    </Button> 
-                    <Modal open={open} onClose={handleClose} >
-                        <AddCategoryModal/>
-                    </Modal>
                     </div>
 
 
