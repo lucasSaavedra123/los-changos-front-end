@@ -48,7 +48,7 @@ export const MoneyManager = () => {
     <div className="app-container">
       <div className="responsive-container">
         <div className="header-container">
-          <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName} !</h1>
+          <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName}!</h1>
         </div>
       </div>
       <div className="balance">

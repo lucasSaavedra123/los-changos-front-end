@@ -27,7 +27,7 @@ export const AddExpenseModal = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [category, setCategory] = useState('');
-    const [date, setDate] = useState('2022-10-4T21:11:54');
+    const [date, setDate] = useState();
     const [name, setName] = useState('')
     const [value, setValue] = useState('')
     const [categories, setCategories] = useState([]);
@@ -70,6 +70,7 @@ export const AddExpenseModal = (props) => {
 
         }
         else {
+            console.log(typeof date)
             fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
                 method: 'POST',
                 headers: {
@@ -77,12 +78,15 @@ export const AddExpenseModal = (props) => {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
+
+                
                 body: JSON.stringify({
                     value: value,
                     category_id: category,
-                    date: date.slice(0,date.indexOf("T")),
+                    date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
                     name: name
                 })
+
 
             })
             
@@ -121,7 +125,7 @@ export const AddExpenseModal = (props) => {
                         </LocalizationProvider>
                     </div>
                     <div className="select-expense-icon">
-                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"

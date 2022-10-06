@@ -27,7 +27,7 @@ export const MoneyDetails = (props) => {
 
   useEffect(() => {
    getTransactions()
-  }, []);
+  }, [transactions]);
   
   const total=(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
 

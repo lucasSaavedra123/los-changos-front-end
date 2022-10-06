@@ -26,6 +26,7 @@ import ExpenseDynamicCategory from "./ExpenseDynamicCategory";
 import { useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import CategoryIcon from "./CategoryIcon";
 
 export const EditExpenseModal = (props) => {
 
@@ -33,8 +34,8 @@ export const EditExpenseModal = (props) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [age, setAge] = useState('');
-    const [category, setCategory] = useState('');
-    const [date, setDate] = useState('2022-10-4T21:11:54');
+    const [category, setCategory] = useState(props.category.id);
+    const [date, setDate] = useState(new Date(props.date+"T00:00:00"));
     const [name, setName]= useState(props.name)
     const [value,setValue]= useState(props.value)
     const [categories, setCategories] = useState([]);
@@ -63,7 +64,8 @@ export const EditExpenseModal = (props) => {
 
 
     const handleChange = (newValue) => {
-        setValue(newValue);
+        console.log(newValue)
+        setDate(newValue);
     };
     const handleChangeSelect = (event) => {
         setCategory(event.target.value);
@@ -73,31 +75,36 @@ export const EditExpenseModal = (props) => {
         props.handleCloseModal()
     }
 
-    const saveExpense = (e) =>{
+    const saveExpense = (e) => {
         e.preventDefault();
-        if (value === ''  || name ==='') {
+        if (value === '' || name === '') {
             console.log('Faltan campos ')
 
         }
-        else{
-        props.handleCloseModal()
-        fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
-        method: 'PATCH',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-        },
-        body: JSON.stringify({
-        id: props.id,
-        value: value,
-        category_id: category.id,
-        date: "2022-10-03",
-        name: name
-        })
-        });}
+        else {
+            fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
 
-        
+                
+                body: JSON.stringify({
+                    id:props.id,
+                    value: value,
+                    category_id: category,
+                    date: date.toISOString().split('T')[0],
+                    name: name
+                })
+
+
+            })
+            
+        }
+
+        props.handleCloseModal()
 
 
     }
@@ -109,47 +116,35 @@ export const EditExpenseModal = (props) => {
                 <Box component="form" className="form-expense">
 
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Nombre del gasto" defaultValue={props.title} onChange={(e) => { setName(e.target.value) }} />
+                        <TextField className="textfield" label="Nombre del gasto" defaultValue={props.name} onChange={(e) => { setName(e.target.value) }} />
                     </div>
                     <div className="name-expense-category">
                         <TextField className="textfield" label="Monto" defaultValue={props.value} onChange={(e) => { setValue(e.target.value) }} />
                     </div>
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <MobileDatePicker
+                        <MobileDatePicker
+                                className="textfield"
                                 label="Fecha del gasto"
-                                inputFormat="MM/DD/YYYY"
-                                value={props.date}
+                                inputFormat="YYYY-MM-DD"
+                                value={date}
                                 onChange={handleChange}
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
                     </div>
                     <div className="select-expense-icon">
-                        <InputLabel className="label-expense-icon">Categoria</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
                         <Select
-                        className="icon-select"
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
                             value={category}
-                            label="Icono"
-                            onChange={handleChangeSelect}>
-                            
-                            {categories.map((category) => {
-                            if(category.static === true) {
-                                return(
-                                <MenuItem value={category}>
-                                    <ExpenseCategory title={category.name} id={category.id}/>
-                                </MenuItem>
-                                )
-                            }
-                            else{
-                                return(
-                                <MenuItem value={category}>
-                                    <ExpenseDynamicCategory title={category.name} id={category.id}/>
-                                </MenuItem>
-                                )
-
-                            }        }  )}           
-
+                            label="Age"
+                            onChange={handleChangeSelect}
+                        >
+                            {categories.map((category)=>(
+                                <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                            ))}
                         </Select>
                         
                     </div>
