@@ -5,6 +5,13 @@
     justify-content: center;
     height: 100%;
 }
+.app-container{
+    display: flex;
+    //justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
 .card-wrapper{
     
     display:flex;
@@ -248,7 +255,7 @@
 .buttonContainer{
     display:flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    //justify-content: space-evenly;
     width: 70%;
 }
 
@@ -256,8 +263,10 @@
 .backArrow{
     display: flex;
     align-items: center;
+    width:50%
 }
 
 .addCategoryButton{
-    margin:auto;
+    width:50%;
+    align-items: center;
 }

@@ -56,8 +56,8 @@ export const MoneyManager = () => {
       </div>
       <div className="add-expense-modal">
         <div className="add-expense">
-          <Button className="add-expense" onClick={handleAgregarGasto}>
-            <AddIcon />
+          <Button className="add-expense-button" style={{color:"white", textDecoration:"none"}} onClick={handleAgregarGasto}>
+            AGREGAR GASTO
           </Button>
         </div>
         <div className="see-categories">

@@ -86,7 +86,7 @@ const CategoriesPage = () => {
 
     <div className="app-container">
     <div className='buttonContainer'>
-      <Link className="text-link backArrow" to="/profile/home" style={{ color: "grey"}}><ArrowBackIcon></ArrowBackIcon> </Link>
+      <Link className="backArrow" to="/profile/home" style={{ color: "grey"}}><ArrowBackIcon></ArrowBackIcon> </Link>
       <BasicCard className='addCategoryButton' />
     </div>
     <Modal open={open} onClose={handleClose} >
