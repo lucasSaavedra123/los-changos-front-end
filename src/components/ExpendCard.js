@@ -38,9 +38,6 @@ export const ExpendCard = (props) => {
 
         })
 
-
-
-
     }
 
     const editExpenseCard = () => {

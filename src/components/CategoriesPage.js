@@ -6,7 +6,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { sendPasswordResetEmail } from 'firebase/auth';
@@ -14,56 +13,47 @@ import { auth } from '../firebase';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import CustomAlert from './CustomAlert';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { red } from '@mui/material/colors';
+import ModalDetailedExpenseCard from './ModalDetailedExpenseCard';
+import { Modal } from '@material-ui/core';
+import CategoryCard from './CategoryCard';
+import "../assets/scss/expenseCard.scss"
+import { Label } from '@mui/icons-material';
 
 const CategoriesPage = () => {
-  const [openError, setOpenError] = React.useState(false);
-  const [openSuccess, setOpenSuccess] = React.useState(false);
-  const [openWarning, setOpenWarning] = React.useState(false);
-
-  const { currentUser } = useContext(AuthContext);
-
-  const showSuccessMessage = () => {
-    setOpenSuccess(true);
-  };
-
-  const showErrorMessage = () => {
-    setOpenError(true);
-  };
-
-  const showWarningMessage = () => {
-    setOpenWarning(true);
-  };
-
-  const closeSuccessMessage = (event, reason) => {
-    setOpenSuccess(false);
-  };
-
-  const closeErrorMessage = (event, reason) => {
-    setOpenError(false);
-  };
-
-  const closeWarningMessage = () => {
-    setOpenWarning(false);
-  };
-
-  const forgotPassword = (e) => {
-
-    sendPasswordResetEmail(auth, currentUser.email)
-      .then(() => {
-        showSuccessMessage();
-      })
-      .catch((error) => {
-        showErrorMessage();
-      });
+  const [categories, setCategories] = useState([]);
+  const getCategories = () =>{
+       fetch('http://walletify-backend-develop.herokuapp.com/category')
+           .then((response) => response.json())
+           .then((actualData) =>{ 
+            setCategories(actualData);   
+           })
+               .catch((err) => {
+               console.log(err.message);
+           });
   }
+
+  useEffect(() => {
+   getCategories()
+  }, [categories]);
+
 
 
   const BasicCard = () => {
@@ -79,8 +69,23 @@ const CategoriesPage = () => {
   return (
     <div className='settings'>
       <BasicCard className='child' />
-      <CustomAlert text={"¡Se ha enviado un email de cambio de contraseña!"} severity={"success"} open={openSuccess} closeAction={closeSuccessMessage} />
-      <CustomAlert text={"Hubo un error. Intenta nuevamente mas tarde."} severity={"error"} open={openError} closeAction={closeErrorMessage} />
+      <TableContainer component={Paper}>
+      <Table >
+        <TableHead>
+          <TableRow>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {categories.map((category) => (
+            <TableRow
+              key={category.id}
+            >
+              <CategoryCard id={category.id} name={category.name} material_ui_icon_name={category.material_ui_icon_name}/>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
     </div>
   );
 

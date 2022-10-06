@@ -29,7 +29,7 @@ const App = () => {
         <Route path='/forgotPassword'><Forgot/> </Route>
         <Route path='/profile/home'><RequireAuth><ProfileNavigator /><Home /></RequireAuth></Route>
         <Route path='/profile/settings'><RequireAuth><ProfileNavigator /><Settings /></RequireAuth></Route>
-        <Route path='/home/categories'><RequireAuth><CategoriesPage/> </RequireAuth></Route>
+        <Route path='/profile/categories'><RequireAuth><CategoriesPage/> </RequireAuth></Route>
         <Redirect to="/" />
       </Switch>
     </Router>

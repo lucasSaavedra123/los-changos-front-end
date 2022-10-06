@@ -62,7 +62,7 @@ export const MoneyManager = () => {
         </div>
         <div className="see-categories">
           <Button>
-            <Link to='/home/categories'>Ver categoria</Link>
+            <Link to='/profile/categories'>Ver categoria</Link>
           </Button>
         </div>
         <Modal
