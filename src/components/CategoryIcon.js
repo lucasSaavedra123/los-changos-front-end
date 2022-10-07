@@ -4,5 +4,5 @@ import * as Icons from "@mui/icons-material"
 
 export default ({ name }) => {
   const IconComponent = Icons[name];
-  return <IconComponent />;
+  return <IconComponent sx={{ color: "white" }}/>;
 };

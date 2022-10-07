@@ -86,8 +86,12 @@ const CategoriesPage = () => {
 
     <div className="app-container">
     <div className='buttonContainer'>
-      <Link className="backArrow" to="/profile/home" style={{ color: "grey"}}><ArrowBackIcon></ArrowBackIcon> </Link>
-      <BasicCard className='addCategoryButton' />
+      {/* <Link className="backArrow" to="/profile/home" style={{ color: "grey"}}><ArrowBackIcon></ArrowBackIcon> </Link> */}
+      <div className="addCategoryButton" style={ {borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black"}} >
+          <Button className="add-expense-button" style={{color:"white", textDecoration:"none"}} onClick={()=>setOpen(!open)}>
+            AGREGAR CATEGORIA
+          </Button>
+        </div>
     </div>
     <Modal open={open} onClose={handleClose} >
                     <AddCategoryModal handleCloseModal={handleClose}/>
@@ -103,13 +107,13 @@ const CategoriesPage = () => {
         {categories.map((category) => {
             if(category.static === true) {
                 return(
-                <TableRow value={category}>
+                <TableRow value={category} style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>
                 <ExpenseCategory name={category.name} id={category.id} icon={category.material_ui_icon_name}/>
                 </TableRow>
                 )}
             else{
                 return(
-                <TableRow value={category}>
+                <TableRow value={category} style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>
                 <ExpenseDynamicCategory title={category.name} id={category.id} icon={category.material_ui_icon_name}/>
                 </TableRow>
                 )}

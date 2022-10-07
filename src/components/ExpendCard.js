@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import CategoryIcon from './CategoryIcon';
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 export const ExpendCard = (props) => {
     const [open, setOpen] = useState(false);
@@ -49,8 +50,9 @@ export const ExpendCard = (props) => {
 
     return (
 
-        <div className="card-wrapper">
-            <div className="left-side" onClick={() => setOpen(!open)} >
+        <div className="card-wrapper">{//Aca cambie el color del fondo de las cartas
+        }
+            <div className="left-side"  >
                 <div className="logo">
                     <CategoryIcon name={props.category.material_ui_icon_name} />
                 </div>
@@ -64,11 +66,14 @@ export const ExpendCard = (props) => {
             <div className="right-side">
                 <div className="expense-value">${props.value}</div>
                 <div className='buttons-transactions-table'>
+                    <div className='view-detailed-expense' onClick={() => setOpen(!open)}> 
+                        <VisibilityIcon sx={{ color: "white" }}/>
+                    </div>
                     <div className='delete-button' onClick={deleteExpenseCard}>
-                        <DeleteIcon />
+                        <DeleteIcon sx={{ color: "white" }}/>
                     </div>
                     <div className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
-                        <EditIcon />
+                        <EditIcon sx={{ color: "white" }} />
 
                     </div>
 

@@ -17,7 +17,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background-color: #ecfccb;
+    background-color:white;
     width: 100%;
     border: 1px solid #84cc16;
     border-radius: 16px;
@@ -38,9 +38,9 @@
   }
   
   .details-text {
-    color: #475569;
+    color: white;
     font-family: UnB-Light;
-    font-size: 12px;
+    font-size: 24px;
     line-height: 1.7;
     margin: 0px;
     margin-bottom: 8px;
@@ -53,8 +53,8 @@
   }
   
   .details-money {
-    color: #475569;
-    font-size: 18px;
+    color: white;
+    font-size: 32px;
     font-family: UnB-Light;
     line-height: 1.3;
     margin: 0px;
@@ -87,13 +87,16 @@
   .expenses-container {
     display: flex;
     align-items: center;
-    background-color: white;
-    width: 100%;
+    background-color: black;
+    //width: 100%;
     //Cuando le pongo height se agranda de mas
     //min-width: 200px;
-    border: 1px solid #7c3aed;
+    border: 1px solid #84cc16;
     border-radius: 8px;
-    margin-bottom: 10px;
+    //margin-bottom: 10px;
+  }
+  .data-container{
+    margin:10px;
   }
   
   @media screen and (min-width: 768px) {

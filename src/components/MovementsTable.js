@@ -55,17 +55,15 @@ export default function MovementsTable() {
 
 
   return (
-    <TableContainer component={Paper}>
-      <Table >
+    <TableContainer component={Paper} >
+      <Table>
         <TableHead>
           <TableRow>
           </TableRow>
         </TableHead>
         <TableBody>
           {transactions.map((transaction) => (
-            <TableRow
-              key={transaction.id}
-            >
+            <TableRow hover key={transaction.id} style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>
               <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} ></ExpendCard>
             </TableRow>
           ))}

@@ -22,29 +22,6 @@ export const MoneyManager = () => {
   const handleClose = () => setOpen(false);
 
   return (
-    //  <div className="app-container">
-    //   <div className="responsive-container">
-    //     <div className="header-container">
-    //       <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName} !</h1>
-    //     </div>
-    //     <MoneyDetails/>
-    //       <div className="history-transactions">
-    //         <h1 className="transaction-header">History</h1>
-    //         <div className="transactions-table-container">
-    //           <ul className="transactions-table">
-    //           <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
-    //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
-    //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
-    //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
-    //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
-    //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>
-    //             <ExpendCard title={"Cafe Eatbar"} value={"200"} onclick={openDetailedCard}/>             
-    //           </ul>
-    //         </div>
-
-    //     </div>
-    //   </div>
-    // </div>
     <div className="app-container">
       <div className="responsive-container">
         <div className="header-container">
@@ -55,12 +32,12 @@ export const MoneyManager = () => {
         <MoneyDetails />
       </div>
       <div className="add-expense-modal">
-        <div className="add-expense">
+        <div className="add-expense" style={ {borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black"}} >
           <Button className="add-expense-button" style={{color:"white", textDecoration:"none"}} onClick={handleAgregarGasto}>
             AGREGAR GASTO
           </Button>
         </div>
-        <div className="see-categories">
+        <div className="see-categories" style={{borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black" }} >
           <Button style={{fontFamily: "UnB-Light"}}>
             <Link style={{color:"white", textDecoration:"none"}} to='/profile/categories'>CATEGORIAS</Link>
           </Button>
@@ -73,7 +50,7 @@ export const MoneyManager = () => {
         </Modal>
       </div>
       {/* <div className="chart"> Hola Chart</div> */}
-      <div className="movements">Movimientos
+      <div className="movements" style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>Movimientos
         <MovementsTable />
       </div>
 

@@ -18,15 +18,15 @@
     flex-direction: row;
     justify-content: space-between;
     height:100%;
-    background-color: white;
+    background-color: black;
     
 }
 .expense-title{
-    color: black;
+    color: white;
     margin-left: 7px;    
 }
 .expense-value{
-    color:black;
+    color:white;
     width: 50%;
     justify-content: center;
     display: flex;
@@ -38,6 +38,7 @@
 .left-side{
     color: white;
     align-self: center;
+    justify-content: center;
     display: flex;
     //position: relative;
     flex-direction: row;
@@ -48,12 +49,11 @@
 
 .right-side{
     display: flex;
-    width: 30%;
+    width: 50%;
     align-items: center;
     //justify-content: space-evenly;
 }
 .buttons-transactions-table{
-
     width: 50%;
     display: flex;
     align-items: center;
@@ -62,9 +62,11 @@
 
 .delete-button{
    display: flex;
+   background-color: black;
 }
 .edit-button{
     display: flex;
+    background-color: black;
 }
 .contenedor-card{
     justify-content: center;
@@ -85,6 +87,7 @@
     background-color: white;
     
 }
+
 .detailed-logo{
     height: 25%;
     display: flex;
@@ -255,6 +258,7 @@
 .buttonContainer{
     display:flex;
     flex-direction: row;
+    justify-content: center;
     //justify-content: space-evenly;
     width: 70%;
 }
