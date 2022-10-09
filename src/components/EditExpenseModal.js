@@ -30,6 +30,7 @@ import CategoryIcon from "./CategoryIcon";
 
 export const EditExpenseModal = (props) => {
 
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
