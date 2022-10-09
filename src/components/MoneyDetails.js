@@ -5,7 +5,8 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
 export const MoneyDetails = (props) => {
-
+  
+  const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return (
     <div className="money-details-container">
       <div className="expenses-container">
@@ -19,7 +20,7 @@ export const MoneyDetails = (props) => {
         <div>
           <p className="details-text">Tus gastos</p>
           <p className="details-money" testid="expensesAmount">
-            $ {props.total}
+            $ {addCommas(props.total)}
           </p>
         </div>
       </div>

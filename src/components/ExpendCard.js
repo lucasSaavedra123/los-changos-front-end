@@ -20,6 +20,8 @@ export const ExpendCard = (props) => {
     const handleClose = () => setOpen(false)
     const { currentUser } = useContext(AuthContext);
 
+    const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
     const deleteExpenseCard = (e) => {
         e.preventDefault();
         if(window.confirm("¿Estas seguro que queres borrar este gasto?")){
@@ -55,7 +57,7 @@ export const ExpendCard = (props) => {
                 <ModalDetailedExpenseCard title={props.title} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon sx={{fontSize: 90, color:'black'}} name={props.category.material_ui_icon_name}/>}/>
             </Modal>
             <div className="right-side">
-                <div className="expense-value">${props.value}</div>
+                <div className="expense-value">${addCommas(props.value)}</div>
                 <div className='buttons-transactions-table'>
                     <div className='view-detailed-expense' onClick={() => setOpen(!open)}> 
                         <VisibilityIcon sx={{ color: "white" }}/>
