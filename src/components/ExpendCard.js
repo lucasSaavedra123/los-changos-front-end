@@ -9,6 +9,7 @@ import CategoryIcon from './CategoryIcon';
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { BACKEND_URL } from "../CONSTANTS";
 
 export const ExpendCard = (props) => {
     const [open, setOpen] = useState(false);
@@ -22,7 +23,7 @@ export const ExpendCard = (props) => {
     const deleteExpenseCard = (e) => {
         e.preventDefault();
         if(window.confirm("¿Estas seguro que queres borrar este gasto?")){
-        fetch(process.env.BACKEND_URL+'/expense', {
+        fetch(BACKEND_URL+'/expense', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

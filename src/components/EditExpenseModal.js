@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import CategoryIcon from "./CategoryIcon";
+import { BACKEND_URL } from "../CONSTANTS";
 
 export const EditExpenseModal = (props) => {
 
@@ -27,7 +28,7 @@ export const EditExpenseModal = (props) => {
     const { currentUser } = useContext(AuthContext);
 
     const getCategorias = () =>{
-         fetch(process.env.BACKEND_URL+'/category',{
+         fetch(BACKEND_URL+'/category',{
             headers: {'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken}
          })
              .then((response) => response.json())
@@ -74,7 +75,7 @@ export const EditExpenseModal = (props) => {
         }
         else {
             console.log(typeof date)
-            fetch(process.env.BACKEND_URL+'/expense', {
+            fetch(BACKEND_URL+'/expense', {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
@@ -107,7 +108,7 @@ export const EditExpenseModal = (props) => {
 
         }
         else {
-            fetch(process.env.BACKEND_URL+'/expense', {
+            fetch(BACKEND_URL+'/expense', {
                 method: 'PATCH',
                 headers: {
                     'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

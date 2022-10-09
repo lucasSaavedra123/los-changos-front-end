@@ -5,18 +5,14 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from "@mui/material";
-import { ALLOWS_ICONS_FOR_CATEGORY } from "../CONSTANTS";
+import { ALLOWS_ICONS_FOR_CATEGORY, BACKEND_URL } from "../CONSTANTS";
 import CategoryIcon from "./CategoryIcon";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
 export const EditCategoryModal = (props) => {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
     const [icon, setIcon] = useState(props.icon);
     const [name, setName]= useState(props.name)
-    const [value,setValue]= useState('')
     const { currentUser } = useContext(AuthContext);
 
     console.log(ALLOWS_ICONS_FOR_CATEGORY)
@@ -31,7 +27,7 @@ export const EditCategoryModal = (props) => {
         }
         else{
         props.handleCloseModal()
-        fetch(process.env.BACKEND_URL+'/category', {
+        fetch(BACKEND_URL+'/category', {
         method: 'PATCH',
         headers: {
         'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

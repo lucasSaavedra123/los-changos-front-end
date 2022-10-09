@@ -5,7 +5,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from "@mui/material";
-import { ALLOWS_ICONS_FOR_CATEGORY } from "../CONSTANTS";
+import { ALLOWS_ICONS_FOR_CATEGORY, BACKEND_URL } from "../CONSTANTS";
 import CategoryIcon from "./CategoryIcon";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
@@ -25,7 +25,7 @@ export const AddCategoryModal = (props) => {
         }
         else{
         props.handleCloseModal()
-        fetch(process.env.BACKEND_URL+'/category', {
+        fetch(BACKEND_URL+'/category', {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

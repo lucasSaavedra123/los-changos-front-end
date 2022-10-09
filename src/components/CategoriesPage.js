@@ -20,6 +20,7 @@ import ExpenseCategory from './ExpenseCategory';
 import ExpenseDynamicCategory from './ExpenseDynamicCategory';
 import AddCategoryModal from './AddCategoryModal';
 import { getPickersFadeTransitionGroupUtilityClass } from '@mui/x-date-pickers/CalendarPicker/pickersFadeTransitionGroupClasses';
+import { BACKEND_URL } from '../CONSTANTS';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -28,7 +29,7 @@ const CategoriesPage = () => {
 
   const { currentUser } = useContext(AuthContext);
   const getCategories = () =>{
-       fetch(process.env.BACKEND_URL+'/category', {
+       fetch(BACKEND_URL+'/category', {
         headers: {
           'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
         }

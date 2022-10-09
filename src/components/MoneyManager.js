@@ -8,6 +8,7 @@ import { Modal } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import { GraficoPie } from "./GraficoPie";
 import EditExpenseModal from "./EditExpenseModal";
+import { BACKEND_URL } from "../CONSTANTS";
 
 
 export const MoneyManager = () => {
@@ -20,7 +21,7 @@ export const MoneyManager = () => {
 
 
   const getTransactions = () =>{
-    fetch(process.env.BACKEND_URL+'/expense', {
+    fetch(BACKEND_URL+'/expense', {
      'headers': {
        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
      }
