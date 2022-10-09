@@ -30,15 +30,14 @@ import CategoryIcon from "./CategoryIcon";
 
 export const EditExpenseModal = (props) => {
 
-
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [age, setAge] = useState('');
-    const [category, setCategory] = useState(props.category.id);
-    const [date, setDate] = useState(new Date(props.date+"T00:00:00"));
-    const [name, setName]= useState(props.name)
-    const [value,setValue]= useState(props.value)
+    const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
+    const [date, setDate] = useState(typeof props.date === "undefined" ? new Date() : new Date(props.date+"T00:00:00"));
+    const [name, setName]= useState(typeof props.name === "undefined" ? '' : props.name)
+    const [value,setValue]= useState(typeof props.value === "undefined" ? '' : props.value)
     const [categories, setCategories] = useState([]);
   
     const { currentUser } = useContext(AuthContext);
@@ -76,7 +75,49 @@ export const EditExpenseModal = (props) => {
         props.handleCloseModal()
     }
 
+    const createOrEditExpense = (e) => {
+        if(typeof props.id === "undefined"){
+            saveExpense(e)
+        }else{
+            editExpense(e)
+        }
+    }
+
     const saveExpense = (e) => {
+        e.preventDefault();
+        if (value === '' || name === '') {
+            console.log('Faltan campos ')
+
+        }
+        else {
+            console.log(typeof date)
+            fetch('https://walletify-backend-develop.herokuapp.com/expense', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+                
+                body: JSON.stringify({
+                    value: value,
+                    category_id: category,
+                    date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
+                    name: name
+                })
+
+
+            })
+            
+        }
+
+        props.handleCloseModal()
+
+
+    }
+
+    const editExpense = (e) => {
         e.preventDefault();
         if (value === '' || name === '') {
             console.log('Faltan campos ')
@@ -96,7 +137,7 @@ export const EditExpenseModal = (props) => {
                     id:props.id,
                     value: value,
                     category_id: category,
-                    date: date.toISOString().split('T')[0],
+                    date: typeof date === '' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
                     name: name
                 })
 
@@ -117,10 +158,10 @@ export const EditExpenseModal = (props) => {
                 <Box component="form" className="form-expense">
 
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Nombre del gasto" defaultValue={props.name} onChange={(e) => { setName(e.target.value) }} />
+                        <TextField className="textfield" label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
                     </div>
                     <div className="name-expense-category">
-                        <TextField className="textfield" label="Monto" defaultValue={props.value} onChange={(e) => { setValue(e.target.value) }} />
+                        <TextField className="textfield" label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
                     </div>
                     <div>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -150,7 +191,7 @@ export const EditExpenseModal = (props) => {
                         
                     </div>
                     <div>
-                        <Button onClick={saveExpense}> <DoneIcon /> </Button>
+                        <Button onClick={createOrEditExpense}> <DoneIcon /> </Button>
                         <Button onClick={cancelChanges}> <CancelIcon /> </Button>
                     </div>
 

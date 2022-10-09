@@ -8,10 +8,10 @@ import CategoryModal from "./CategoryModal";
 import MovementsTable from "./MovementsTable";
 import Button from '@mui/material/Button'
 import { Modal } from '@material-ui/core';
-import AddExpenseModal from "./AddExpenseModal";
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from "react-router-dom";
 import { GraficoPie } from "./GraficoPie";
+import EditExpenseModal from "./EditExpenseModal";
 
 
 export const MoneyManager = () => {
@@ -49,7 +49,7 @@ export const MoneyManager = () => {
         <Modal
           open={open} onClose={handleClose}>
           <div className="add-expense-modal">
-            <AddExpenseModal handleCloseModal={handleClose} />
+            <EditExpenseModal handleCloseModal={handleClose} />
           </div>
         </Modal>
       </div>
