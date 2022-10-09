@@ -1,15 +1,10 @@
-import HomeIcon from '@mui/icons-material/Home';
-import ListItemIcon from 'material-ui/List/ListItem';
 import "../assets/scss/expenseCard.scss"
-import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import { Modal } from '@mui/material';
 import ModalDetailedExpenseCard from './ModalDetailedExpenseCard';
-import CategoryModal from './CategoryModal';
 import EditExpenseModal from './EditExpenseModal';
-import { Link } from "react-router-dom";
 import CategoryIcon from './CategoryIcon';
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
@@ -18,11 +13,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 export const ExpendCard = (props) => {
     const [open, setOpen] = useState(false);
     const [openCategory, setCategoryOpen] = useState(false)
-    const handleCategoryOpen = () => setCategoryOpen(true)
     const handleCategoryClose = () => {
         setCategoryOpen(false)
     }
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false)
     const { currentUser } = useContext(AuthContext);
 
@@ -46,10 +39,6 @@ export const ExpendCard = (props) => {
 
     }
 
-    const editExpenseCard = () => {
-        alert("Se Edito la card")
-    }
-
     return (
 
         <div className="card-wrapper">{//Aca cambie el color del fondo de las cartas
@@ -61,11 +50,8 @@ export const ExpendCard = (props) => {
                 <div className="expense-title" >{props.title}</div>
             </div>
 
-            <Modal open={open}
-                onClose={handleClose} >
-                
+            <Modal open={open} onClose={handleClose} >
                 <ModalDetailedExpenseCard title={props.title} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon sx={{fontSize: 90, color:'black'}} name={props.category.material_ui_icon_name}/>}/>
-                
             </Modal>
             <div className="right-side">
                 <div className="expense-value">${props.value}</div>

@@ -2,13 +2,9 @@ import MoneyDetails from "./MoneyDetails";
 import "../assets/scss/moneyManager.scss"
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useState } from "react";
-import ExpendCard from "./ExpendCard";
-import ModalDetailedExpenseCard from "./ModalDetailedExpenseCard";
-import CategoryModal from "./CategoryModal";
 import MovementsTable from "./MovementsTable";
 import Button from '@mui/material/Button'
 import { Modal } from '@material-ui/core';
-import AddIcon from '@mui/icons-material/Add';
 import { Link } from "react-router-dom";
 import { GraficoPie } from "./GraficoPie";
 import EditExpenseModal from "./EditExpenseModal";

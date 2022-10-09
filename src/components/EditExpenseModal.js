@@ -10,19 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DoneIcon from '@mui/icons-material/Done';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import CasinoIcon from '@mui/icons-material/Casino';
-import HomeIcon from '@mui/icons-material/Home';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import ExpenseCategory from "./ExpenseCategory";
 import "../assets/scss/addExpense.scss"
-import AddIcon from '@mui/icons-material/Add';
-import { Modal } from '@mui/material';
-import CategoryModal from "./CategoryModal";
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ExpenseDynamicCategory from "./ExpenseDynamicCategory";
 import { useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
@@ -30,10 +18,6 @@ import CategoryIcon from "./CategoryIcon";
 
 export const EditExpenseModal = (props) => {
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [age, setAge] = useState('');
     const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
     const [date, setDate] = useState(typeof props.date === "undefined" ? new Date() : new Date(props.date+"T00:00:00"));
     const [name, setName]= useState(typeof props.name === "undefined" ? '' : props.name)
@@ -181,7 +165,7 @@ export const EditExpenseModal = (props) => {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={category}
-                            label="Age"
+                            label="Category"
                             onChange={handleChangeSelect}
                         >
                             {categories.map((category)=>(

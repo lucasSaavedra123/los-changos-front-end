@@ -11,12 +11,8 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
 export const AddCategoryModal = (props) => {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
     const [icon, setIcon] = useState('');
     const [name, setName]= useState('')
-    const [value,setValue]= useState('')
     const { currentUser } = useContext(AuthContext);
     console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
