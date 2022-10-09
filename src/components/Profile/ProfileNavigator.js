@@ -16,6 +16,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CategorySharpIcon from '@mui/icons-material/CategorySharp';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
 import { auth } from "../../firebase"
@@ -74,8 +75,9 @@ export const ProfileNavigator = () => {
             <List>
 
                 <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/profile/home"} />
+                <ProfileNavigatorItem name={"Categorias"} icon={<CategorySharpIcon sx={{ color: "white" }} />} path={"/profile/categories"} />
                 <ProfileNavigatorItem name={"Configuración"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/profile/settings"} />
-
+                
             </List>
 
             <Divider sx={{ color: "white" }} />

@@ -1,0 +1,296 @@
+.card-container{
+    
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.app-container{
+    display: flex;
+    //justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.card-wrapper{
+    
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height:100%;
+    background-color: black;
+    
+}
+.expense-title{
+    color: white;
+    margin-left: 7px;    
+}
+.expense-value{
+    color:white;
+    width: 50%;
+    justify-content: right;
+    display: flex;
+    
+ 
+
+}
+.buttons-transactions-table{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.left-side{
+    //color: white;
+    align-self: center;
+    //justify-content: center;
+    display: flex;
+    //position: relative;
+    flex-direction: row;
+    width:50%;
+    
+
+}
+.logo{
+    color:white
+}
+
+.right-side{
+    display: flex;
+    width: 50%;
+    align-items: center;
+    //justify-content: space-evenly;
+}
+
+
+.delete-button{
+   display: flex;
+   background-color: black;
+}
+.edit-button{
+    display: flex;
+    background-color: black;
+}
+.contenedor-card{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    top: 50%;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 25%;
+}
+.contenedor-detailed-expense-card{
+
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    width: 70%;
+}
+
+.detailed-expense-card {
+    display: flex;
+    align-items: center;
+    //justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    width:100%;
+    height: 100%;
+    
+}
+
+.detailed-logo{
+    height: 25%;
+    display: flex;
+    align-items: center;
+
+}
+.expense{
+    
+    height: 40%;
+    padding: 7px;
+}
+.category{
+    height: 10%;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    //margin:auto;
+    align-items: center;
+    //padding: 7px;
+    justify-content: space-evenly;
+    
+    
+}
+.price{
+    color: black;
+    font-size: 55px;
+    text-align: center;
+
+}
+.change-category{
+    font-size: 12px;
+    color: greenyellow;
+}
+.category-type{
+    font-size: 15px;
+    
+}
+.category-title{
+    color:white
+}
+.expense-detail{
+    text-align: center;
+    
+}
+.date{
+    font-size: 12px;
+    text-align: center;
+}
+
+.type-category-container{
+    display: flex;
+    flex-direction: row;
+    //justify-content:space-between;
+    //align-items: center;
+    //height:7%;
+    background-color: black;
+    //width: 100%;
+    
+}
+.expense-category-icon{
+    margin-left: 5px;
+    margin-right: 10px;
+}
+.category-buttons{
+    display: flex;
+    width:30%;
+    justify-content: space-evenly;
+    height: 36px;
+}
+.expense-category-left-side{
+    align-self: center;
+    display: flex;
+    //position: relative;
+    flex-direction: row;
+    width:70%;
+
+}
+.active {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    height: 7%;
+    background-color: red;
+
+}
+.category-modal-wrapper{
+    background-color: white;
+    height: 90%;
+    width:80%;
+    display: flex;
+    flex-direction: column;
+
+}
+.category-center{
+    display: flex;
+    justify-content: center;
+    height:100%;
+    background-color: red;
+
+}
+.category-modal-container{
+    height: 70%;
+    display: flex;
+    //flex-direction: column;
+    justify-content: center;
+    padding: 7px;
+    top: 50%;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+}
+.boton-modal{
+    margin-top: auto;
+    text-align: right;
+    
+}
+.add-category{
+    background-color: white;
+    display: flex;
+    width: 100%;
+    
+}
+.contenedor{
+    display: flex;
+    justify-content: center;
+    height: 40%;
+}
+.form-expense{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.name-expense-category{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+.select-expense-icon{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.label-expense-icon{
+    display: flex;
+    justify-content: center;
+    margin:10px
+}
+
+.table-row-container{
+    padding: 0;
+    margin:0;
+    display:flex;
+    width: 100%;
+}
+.table-container{
+    width: 100%;
+    display: flex;
+}
+.table{
+    width: 100%;
+}
+.table-body{
+    width: 100%;
+}
+.table-row{
+    width: 100%;
+}
+
+.buttonContainer{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    //justify-content: space-evenly;
+    width: 70%;
+}
+
+
+.backArrow{
+    display: flex;
+    align-items: center;
+    width:50%
+}
+
+.addCategoryButton{
+    width:50%;
+    align-items: center;
+}

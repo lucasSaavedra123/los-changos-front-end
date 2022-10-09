@@ -4,21 +4,23 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const LEMMA = "Nunca manejar la plata fue algo tan cómodo."
 
+export const BACKEND_URL = "https://walletify-backend.herokuapp.com"
+
 export const THEME = createTheme({
-    palette: {
-        primary: {
-            light: variables.primaryColor,
-            main: variables.primaryColor,
-            dark: variables.primaryColor,
-            contrastText: '#000',
-        },
-        secondary: {
-            light: variables.secondaryColor,
-            main: variables.secondaryColor,
-            dark: variables.secondaryColor,
-            contrastText: '#000',
-        },
+  palette: {
+    primary: {
+      light: variables.primaryColor,
+      main: variables.primaryColor,
+      dark: variables.primaryColor,
+      contrastText: '#000',
     },
+    secondary: {
+      light: variables.secondaryColor,
+      main: variables.secondaryColor,
+      dark: variables.secondaryColor,
+      contrastText: '#000',
+    },
+  },
 });
 
 export const useStyles = makeStyles({
@@ -52,3 +54,35 @@ export const useStyles = makeStyles({
     },
   }
 });
+
+
+export const ALLOWS_ICONS_FOR_CATEGORY = [
+    "AccessibilityNewOutlined",
+    "AccountBalanceOutlined",
+    "AccountBalanceWalletOutlined",
+    "AirplanemodeActiveOutlined",
+    "AssistWalkerOutlined",
+    "AttachMoneyOutlined",
+    "AttractionsOutlined",
+    "BabyChangingStationOutlined",
+    "BedOutlined",
+    "ChurchOutlined",
+    "ChildFriendlyOutlined",
+    "CurrencyBitcoinOutlined",
+    "DeliveryDiningOutlined",
+    "Diversity3Outlined",
+    "DownhillSkiingOutlined",
+    "ElderlyOutlined",
+    "ElderlyWomanOutlined",
+    "HeadsetMicOutlined",
+    "PedalBikeOutlined",
+    "RestaurantOutlined",
+    "ScienceOutlined",
+    "SchoolOutlined",
+    "SmokingRoomsOutlined",
+    "SportsFootballOutlined",
+    "SportsBaseballOutlined",
+    "SportsEsportsOutlined",
+    "StoreMallDirectoryOutlined",
+    "VideocamOutlined"
+]
