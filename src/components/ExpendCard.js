@@ -34,7 +34,7 @@ export const ExpendCard = (props) => {
             })
 
 
-        })
+        }).then(() => {props.confirmAction()})
     }
 
     }

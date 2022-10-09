@@ -41,7 +41,6 @@ export const ExpenseDynamicCategory = (props) => {
 
         if(window.confirm("Si borras una categoria, se eliminan todas las transacciones pertenecientes a ella. ¿Estas seguro?")){
 
-        console.log(
         fetch('https://walletify-backend-develop.herokuapp.com/category', {
         method: 'DELETE', 
         headers: {
@@ -54,7 +53,7 @@ export const ExpenseDynamicCategory = (props) => {
             })
 
         
-        }))
+        }).finally(()=>{props.confirmAction()})
     }
     }
 

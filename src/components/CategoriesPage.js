@@ -19,6 +19,7 @@ import "../assets/scss/expenseCard.scss"
 import ExpenseCategory from './ExpenseCategory';
 import ExpenseDynamicCategory from './ExpenseDynamicCategory';
 import AddCategoryModal from './AddCategoryModal';
+import { getPickersFadeTransitionGroupUtilityClass } from '@mui/x-date-pickers/CalendarPicker/pickersFadeTransitionGroupClasses';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -34,7 +35,9 @@ const CategoriesPage = () => {
        })
            .then((response) => response.json())
            .then((actualData) =>{ 
-            setCategories(actualData);   
+            if(JSON.stringify(actualData) != JSON.stringify(categories) && actualData.length != categories.length){
+              setCategories(actualData);  
+          }  
            })
                .catch((err) => {
                console.log(err.message);
@@ -42,7 +45,8 @@ const CategoriesPage = () => {
   }
 
   useEffect(() => {
-   getCategories()
+    console.log("Corre Console Log de CategoriesPage")
+    getCategories()
   }, [categories]);
 
   return (
@@ -56,8 +60,8 @@ const CategoriesPage = () => {
           </Button>
         </div>
     </div>
-    <Modal open={open} onClose={handleClose} >
-                    <AddCategoryModal handleCloseModal={handleClose}/>
+    <Modal open={open} onClose={()=>{handleClose(); getCategories();}} >
+                    <AddCategoryModal handleCloseModal={()=>{handleClose(); getCategories();}}/>
     </Modal>  
     <div className="movements" style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }} >Categorias
         <TableContainer component={Paper}>
@@ -77,7 +81,7 @@ const CategoriesPage = () => {
             else{
                 return(
                 <TableRow value={category} style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>
-                <ExpenseDynamicCategory title={category.name} id={category.id} icon={category.material_ui_icon_name}/>
+                <ExpenseDynamicCategory title={category.name} id={category.id} icon={category.material_ui_icon_name} confirmAction={()=>{getCategories();}}/>
                 </TableRow>
                 )}
             })}   

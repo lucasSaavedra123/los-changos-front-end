@@ -12,34 +12,7 @@ import { useEffect } from 'react';
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
-export default function MovementsTable() {
-
-
-  const { currentUser } = useContext(AuthContext);
-
-
-  const [transactions, setTransactions] = useState([]);
-  const getTransactions = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/expense', {
-        'headers': {
-          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-        }})
-           .then((response) => response.json())
-           .then((actualData) =>{ 
-               setTransactions(actualData);   
-           })
-               .catch((err) => {
-               console.log(err.message);
-           });
-
-
-  }
-
-  useEffect(() => {
-   getTransactions()
-  }, [transactions]);
-
-
+export default function MovementsTable(props) {
   return (
     <TableContainer component={Paper} >
       <Table>
@@ -49,9 +22,9 @@ export default function MovementsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {transactions.map((transaction) => (
+          {props.transactions.map((transaction) => (
             <TableRow hover key={transaction.id} style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>
-              <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} ></ExpendCard>
+              <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction} ></ExpendCard>
             </TableRow>
           ))}
         </TableBody>

@@ -6,31 +6,6 @@ import { useContext } from "react";
 
 export const MoneyDetails = (props) => {
 
-  const [transactions, setTransactions] = useState([]);
-  const { currentUser } = useContext(AuthContext);
-
-  const getTransactions = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/expense', {
-        'headers': {
-          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-        }
-       })
-           .then((response) => response.json())
-           .then((actualData) =>{ 
-               setTransactions(actualData);           
-           })
-               .catch((err) => {
-               console.log(err.message);
-           });
-
-  }
-
-  useEffect(() => {
-   getTransactions()
-  }, [transactions]);
-  
-  const total=(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
-
   return (
     <div className="money-details-container">
       <div className="expenses-container">
@@ -44,7 +19,7 @@ export const MoneyDetails = (props) => {
         <div>
           <p className="details-text">Tus gastos</p>
           <p className="details-money" testid="expensesAmount">
-            $ {total}
+            $ {props.total}
           </p>
         </div>
       </div>

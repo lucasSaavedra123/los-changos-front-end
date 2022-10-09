@@ -1,7 +1,7 @@
 import MoneyDetails from "./MoneyDetails";
 import "../assets/scss/moneyManager.scss"
 import { AuthContext } from "../context/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import MovementsTable from "./MovementsTable";
 import Button from '@mui/material/Button'
 import { Modal } from '@material-ui/core';
@@ -15,8 +15,37 @@ export const MoneyManager = () => {
   const { currentUser } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+
+
+  const getTransactions = () =>{
+    console.log("Haciendolo")
+    fetch('http://walletify-backend-develop.herokuapp.com/expense', {
+     'headers': {
+       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+     }
+    })
+        .then((response) => response.json())
+        .then((actualData) =>{ 
+          setTotal(actualData.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+          if(JSON.stringify(actualData) != JSON.stringify(transactions) && actualData.length != transactions.length){
+               setTransactions(actualData);
+           }    
+        })
+            .catch((err) => {
+            console.log(err.message);
+        });
+
+}
+
   const handleAgregarGasto = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {setOpen(false);};
+
+  useEffect(() => {
+    console.log("Corre UseEffect de MoneyManager")
+    getTransactions()
+  }, [transactions]);
 
   return (
     <div className="app-container">
@@ -29,7 +58,7 @@ export const MoneyManager = () => {
         <GraficoPie/>
       </div>
       <div className="balance">
-        <MoneyDetails />
+        <MoneyDetails total={total}/>
       </div>
       <div className="add-expense-modal">
         <div className="add-expense" style={ {borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black"}} >
@@ -43,15 +72,15 @@ export const MoneyManager = () => {
           </Button>
         </div>
         <Modal
-          open={open} onClose={handleClose}>
+          open={open} onClose={() => {handleClose(); getTransactions();}}>
           <div className="add-expense-modal">
-            <EditExpenseModal handleCloseModal={handleClose} />
+            <EditExpenseModal handleCloseModal={() => {handleClose(); getTransactions();}} />
           </div>
         </Modal>
       </div>
       {/* <div className="chart"> Hola Chart</div> */}
       <div className="movements" >
-        <MovementsTable />
+        <MovementsTable transactions={transactions} confirmAction={getTransactions}/>
       </div>
 
     </div>

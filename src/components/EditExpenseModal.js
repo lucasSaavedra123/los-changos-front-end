@@ -43,6 +43,7 @@ export const EditExpenseModal = (props) => {
     }
 
     useEffect(() => {
+        console.log("Corre UseEffect de EditExpenseModal")
         getCategorias()
        }, []);
 
