@@ -11,15 +11,49 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
 export const EditCategoryModal = (props) => {
-    const [icon, setIcon] = useState(props.icon);
-    const [name, setName]= useState(props.name)
+    const [icon, setIcon] = useState(typeof props.icon === "undefined" ? '' : props.icon);
+    const [name, setName]= useState(typeof props.name === "undefined" ? '' : props.name);
     const { currentUser } = useContext(AuthContext);
 
     console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
         setIcon(event.target.value);
     };
+
+    const handleCategory = (e) =>{
+        if (typeof props.id === "undefined"){
+            saveCategory(e);
+        }else{
+            editCategory(e);
+        }
+    }
+
     const saveCategory = (e) => {
+        e.preventDefault();
+        if (name === ''  || icon ==='') {
+            console.log('Faltan campos ')
+
+        }
+        else{
+        fetch(BACKEND_URL+'/category', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        name: name,
+        material_ui_icon_name: icon
+        })
+    
+        }).finally(()=>{props.confirmAction()});}
+
+        props.handleCloseModal()
+
+    }
+
+    const editCategory = (e) => {
         e.preventDefault();
         if (name === ''  || icon ==='') {
             console.log('Faltan campos ')
@@ -54,7 +88,7 @@ export const EditCategoryModal = (props) => {
                 <Box component="form" className="form-expense">
 
                     <div className="name-expense-category">
-                        <TextField defaultValue={props.name} className="textfield" label="Categoria" onChange={(e) => { setName(e.target.value)}} />
+                        <TextField defaultValue={name} className="textfield" label="Categoria" onChange={(e) => { setName(e.target.value)}} />
                     </div>
                     <div className="select-expense-icon">
                         <InputLabel id="demo-simple-select-label">Icono</InputLabel>
@@ -72,7 +106,7 @@ export const EditCategoryModal = (props) => {
                             }
                         </Select>
                     </div>
-                    <Button onClick={saveCategory}> GUARDAR CATEGORIA</Button>
+                    <Button onClick={handleCategory}> GUARDAR CATEGORIA</Button>
                     <Button onClick={cancelChanges}> DESCARTAR CAMBIOS</Button>
                 </Box>
             </div>

@@ -18,7 +18,7 @@ import { Modal } from '@material-ui/core';
 import "../assets/scss/expenseCard.scss"
 import ExpenseCategory from './ExpenseCategory';
 import ExpenseDynamicCategory from './ExpenseDynamicCategory';
-import AddCategoryModal from './AddCategoryModal';
+import EditCategoryModal from './EditCategoryModal';
 import { BACKEND_URL } from '../CONSTANTS';
 
 const CategoriesPage = () => {
@@ -62,7 +62,7 @@ const CategoriesPage = () => {
         </div>
     </div>
     <Modal open={open} onClose={handleClose} >
-      <AddCategoryModal handleCloseModal={handleClose} confirmAction={getCategories}/>
+      <EditCategoryModal handleCloseModal={handleClose} confirmAction={getCategories}/>
     </Modal>  
     <div className="movements" style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }} >Categorias
         <TableContainer component={Paper}>
