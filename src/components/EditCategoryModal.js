@@ -40,7 +40,7 @@ export const EditCategoryModal = (props) => {
         id: props.id,
         })
     
-        });}
+        }).finally(()=>{props.confirmAction()});}
 
     }
     const cancelChanges = () => {

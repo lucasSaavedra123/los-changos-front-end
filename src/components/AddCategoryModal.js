@@ -24,7 +24,6 @@ export const AddCategoryModal = (props) => {
 
         }
         else{
-        props.handleCloseModal()
         fetch(BACKEND_URL+'/category', {
         method: 'POST',
         headers: {
@@ -37,7 +36,9 @@ export const AddCategoryModal = (props) => {
         material_ui_icon_name: icon
         })
     
-        });}
+        }).finally(()=>{props.confirmAction()});}
+
+        props.handleCloseModal()
 
     }
     const cancelChanges = () => {

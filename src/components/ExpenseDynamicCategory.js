@@ -16,24 +16,9 @@ import { useContext } from "react";
 import { BACKEND_URL } from '../CONSTANTS';
 
 export const ExpenseDynamicCategory = (props) => {
-    const [isHovering, setIsHovering] = useState(false);
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const { currentUser } = useContext(AuthContext);
-
-    const handleClick= ()=>{
-        
-    }
-
-    const handleMouseOver = () => {
-        setIsHovering(true);
-        
-        
-      };
-    const handleMouseOut = () => {
-        setIsHovering(false);
-      }
 
     const deleteCategory= (e) => {
         e.preventDefault();
@@ -75,7 +60,7 @@ export const ExpenseDynamicCategory = (props) => {
                     </div>
                 </div> 
                 <Modal open={open} onClose={handleClose} >
-                        <EditCategoryModal icon={props.icon} name={props.title} handleCloseModal={handleClose} id={props.id}/>
+                        <EditCategoryModal icon={props.icon} name={props.title} handleCloseModal={handleClose} id={props.id} confirmAction={props.confirmAction}/>
                 </Modal>           
             
         </div>

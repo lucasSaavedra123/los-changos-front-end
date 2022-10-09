@@ -70,7 +70,7 @@ export const ExpendCard = (props) => {
 
                     <Modal open={openCategory}
                         onClose={handleCategoryClose} disableBackdropClick>
-                        <EditExpenseModal category={props.category} id={props.id} date={props.date} name={props.title} value={props.value} handleCloseModal={handleCategoryClose}/>
+                        <EditExpenseModal confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.title} value={props.value} handleCloseModal={handleCategoryClose}/>
 
                     </Modal>
 

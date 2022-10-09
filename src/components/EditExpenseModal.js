@@ -92,7 +92,7 @@ export const EditExpenseModal = (props) => {
                 })
 
 
-            })
+            }).finally(() => {props.confirmAction()})
             
         }
 
@@ -126,7 +126,7 @@ export const EditExpenseModal = (props) => {
                 })
 
 
-            })
+            }).finally(() => {props.confirmAction()})
             
         }
 

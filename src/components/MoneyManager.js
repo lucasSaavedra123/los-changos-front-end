@@ -29,7 +29,9 @@ export const MoneyManager = () => {
         .then((response) => response.json())
         .then((actualData) =>{ 
           setTotal(actualData.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
-          if(JSON.stringify(actualData) != JSON.stringify(transactions) && actualData.length != transactions.length){
+          console.log("New Transactions:", JSON.stringify(actualData))
+          console.log("Current Transactions:", JSON.stringify(transactions))
+          if(JSON.stringify(actualData) != JSON.stringify(transactions)){
                setTransactions(actualData);
            }    
         })
@@ -71,9 +73,9 @@ export const MoneyManager = () => {
           </Button>
         </div>
         <Modal
-          open={open} onClose={() => {handleClose(); getTransactions();}}>
+          open={open} onClose={handleClose}>
           <div className="add-expense-modal">
-            <EditExpenseModal handleCloseModal={() => {handleClose(); getTransactions();}} />
+            <EditExpenseModal handleCloseModal={handleClose} confirmAction={getTransactions}/>
           </div>
         </Modal>
       </div>
