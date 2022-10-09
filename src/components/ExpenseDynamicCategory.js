@@ -13,6 +13,7 @@ import {Modal} from '@mui/material';
 import EditCategoryModal from './EditCategoryModal';
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import { BACKEND_URL } from '../CONSTANTS';
 
 export const ExpenseDynamicCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
@@ -39,7 +40,7 @@ export const ExpenseDynamicCategory = (props) => {
 
         if(window.confirm("Si borras una categoria, se eliminan todas las transacciones pertenecientes a ella. ¿Estas seguro?")){
 
-        fetch(process.env.BACKEND_URL+'/category', {
+        fetch(BACKEND_URL+'/category', {
         method: 'DELETE', 
         headers: {
             'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
