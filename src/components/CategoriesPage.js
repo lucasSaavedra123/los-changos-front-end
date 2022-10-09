@@ -96,7 +96,7 @@ const CategoriesPage = () => {
     <Modal open={open} onClose={handleClose} >
                     <AddCategoryModal handleCloseModal={handleClose}/>
     </Modal>  
-    <div className="movements">Movimientos
+    <div className="movements" style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }} >Categorias
         <TableContainer component={Paper}>
             <Table >
             <TableHead>

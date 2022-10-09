@@ -32,7 +32,7 @@ export default function MovementsTable() {
 
   const [transactions, setTransactions] = useState([]);
   const getTransactions = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/transaction', {
+       fetch('http://walletify-backend-develop.herokuapp.com/expense', {
         'headers': {
           'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
         }})
@@ -58,7 +58,8 @@ export default function MovementsTable() {
     <TableContainer component={Paper} >
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black",color:'white'}}>
+            Movimientos
           </TableRow>
         </TableHead>
         <TableBody>

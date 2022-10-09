@@ -10,7 +10,7 @@ export const MoneyDetails = (props) => {
   const { currentUser } = useContext(AuthContext);
 
   const getTransactions = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/transaction', {
+       fetch('http://walletify-backend-develop.herokuapp.com/expense', {
         'headers': {
           'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
         }

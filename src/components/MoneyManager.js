@@ -11,6 +11,7 @@ import { Modal } from '@material-ui/core';
 import AddExpenseModal from "./AddExpenseModal";
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from "react-router-dom";
+import { GraficoPie } from "./GraficoPie";
 
 
 export const MoneyManager = () => {
@@ -27,6 +28,9 @@ export const MoneyManager = () => {
         <div className="header-container">
           <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName}!</h1>
         </div>
+      </div>
+      <div>
+        <GraficoPie/>
       </div>
       <div className="balance">
         <MoneyDetails />
@@ -50,11 +54,12 @@ export const MoneyManager = () => {
         </Modal>
       </div>
       {/* <div className="chart"> Hola Chart</div> */}
-      <div className="movements" style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>Movimientos
+      <div className="movements" >
         <MovementsTable />
       </div>
 
     </div>
+    
   )
 }
 

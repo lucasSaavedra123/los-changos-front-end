@@ -82,7 +82,7 @@ export const EditExpenseModal = (props) => {
 
         }
         else {
-            fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+            fetch('https://walletify-backend-develop.herokuapp.com/expense', {
                 method: 'PATCH',
                 headers: {
                     'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

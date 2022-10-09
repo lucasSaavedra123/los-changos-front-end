@@ -12,22 +12,24 @@ export const ModalDetailedExpenseCard = (props) => {
     const handleClose = () => setOpen(false);
  
       return(
-        
+       
         <div className="contenedor-card">
         <div className='detailed-expense-card'>
             <div className="detailed-logo">
-                <EmojiEmotions sx={{fontSize: 90}}/>
+                {props.icon}
+            </div>
+            <div className="category">
+                <div className='category-type'>{props.category}</div>
             </div>
             <div className="expense">
                 <div className='price'>${props.value}</div>
                 <div className='expense-detail'>{props.title}</div>
                 <div className='date'>{props.date}</div>
             </div>
-            <div className="category">
-                <div className='category-type'>{props.category}</div>
-            </div>
+
         </div>
         </div>
+        
         )
   }
   

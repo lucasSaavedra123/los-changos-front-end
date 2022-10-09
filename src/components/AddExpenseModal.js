@@ -71,7 +71,7 @@ export const AddExpenseModal = (props) => {
         }
         else {
             console.log(typeof date)
-            fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+            fetch('https://walletify-backend-develop.herokuapp.com/expense', {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

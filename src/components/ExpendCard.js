@@ -28,7 +28,7 @@ export const ExpendCard = (props) => {
 
     const deleteExpenseCard = (e) => {
         e.preventDefault();
-        fetch('https://walletify-backend-develop.herokuapp.com/transaction', {
+        fetch('https://walletify-backend-develop.herokuapp.com/expense', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -53,15 +53,17 @@ export const ExpendCard = (props) => {
         <div className="card-wrapper">{//Aca cambie el color del fondo de las cartas
         }
             <div className="left-side"  >
-                <div className="logo">
-                    <CategoryIcon name={props.category.material_ui_icon_name} />
-                </div>
+                
+                <CategoryIcon name={props.category.material_ui_icon_name} />
+                
                 <div className="expense-title" >{props.title}</div>
             </div>
 
             <Modal open={open}
                 onClose={handleClose} >
-                <ModalDetailedExpenseCard value={props.value} category={props.category.name} date={props.date} />
+                
+                <ModalDetailedExpenseCard title={props.title} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon sx={{fontSize: 90, color:'black'}} name={props.category.material_ui_icon_name}/>}/>
+                
             </Modal>
             <div className="right-side">
                 <div className="expense-value">${props.value}</div>
