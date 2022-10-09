@@ -20,7 +20,6 @@ export const MoneyManager = () => {
 
 
   const getTransactions = () =>{
-    console.log("Haciendolo")
     fetch('http://walletify-backend-develop.herokuapp.com/expense', {
      'headers': {
        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
@@ -43,7 +42,6 @@ export const MoneyManager = () => {
   const handleClose = () => {setOpen(false);};
 
   useEffect(() => {
-    console.log("Corre UseEffect de MoneyManager")
     getTransactions()
   }, [transactions]);
 

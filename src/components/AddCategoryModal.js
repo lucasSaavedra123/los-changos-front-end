@@ -14,7 +14,6 @@ export const AddCategoryModal = (props) => {
     const [icon, setIcon] = useState('');
     const [name, setName]= useState('')
     const { currentUser } = useContext(AuthContext);
-    console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
         setIcon(event.target.value);
     };

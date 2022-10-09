@@ -43,13 +43,11 @@ export const EditExpenseModal = (props) => {
     }
 
     useEffect(() => {
-        console.log("Corre UseEffect de EditExpenseModal")
         getCategorias()
        }, []);
 
 
     const handleChange = (newValue) => {
-        console.log(newValue)
         setDate(newValue);
     };
     const handleChangeSelect = (event) => {

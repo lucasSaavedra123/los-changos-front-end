@@ -45,7 +45,6 @@ const CategoriesPage = () => {
   }
 
   useEffect(() => {
-    console.log("Corre Console Log de CategoriesPage")
     getCategories()
   }, [categories]);
 

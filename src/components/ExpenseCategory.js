@@ -18,13 +18,11 @@ export const ExpenseCategory = (props) => {
 
     const handleMouseOver = () => {
         setIsHovering(true);
-        console.log("Me active")
         
         
       };
     const handleMouseOut = () => {
         setIsHovering(false);
-        console.log("Me desactive")
       }
 
     return (

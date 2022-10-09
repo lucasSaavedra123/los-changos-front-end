@@ -27,13 +27,11 @@ export const ExpenseDynamicCategory = (props) => {
 
     const handleMouseOver = () => {
         setIsHovering(true);
-        console.log("Me active")
         
         
       };
     const handleMouseOut = () => {
         setIsHovering(false);
-        console.log("Me desactive")
       }
 
     const deleteCategory= (e) => {
