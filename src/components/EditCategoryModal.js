@@ -31,7 +31,7 @@ export const EditCategoryModal = (props) => {
         }
         else{
         props.handleCloseModal()
-        fetch('https://walletify-backend-develop.herokuapp.com/category', {
+        fetch(process.env.BACKEND_URL+'/category', {
         method: 'PATCH',
         headers: {
         'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

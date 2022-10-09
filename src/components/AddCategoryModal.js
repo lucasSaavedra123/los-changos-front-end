@@ -25,7 +25,7 @@ export const AddCategoryModal = (props) => {
         }
         else{
         props.handleCloseModal()
-        fetch('https://walletify-backend-develop.herokuapp.com/category', {
+        fetch(process.env.BACKEND_URL+'/category', {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

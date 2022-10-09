@@ -27,7 +27,7 @@ export const EditExpenseModal = (props) => {
     const { currentUser } = useContext(AuthContext);
 
     const getCategorias = () =>{
-         fetch('https://walletify-backend-develop.herokuapp.com/category',{
+         fetch(process.env.BACKEND_URL+'/category',{
             headers: {'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken}
          })
              .then((response) => response.json())
@@ -74,7 +74,7 @@ export const EditExpenseModal = (props) => {
         }
         else {
             console.log(typeof date)
-            fetch('https://walletify-backend-develop.herokuapp.com/expense', {
+            fetch(process.env.BACKEND_URL+'/expense', {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
@@ -107,7 +107,7 @@ export const EditExpenseModal = (props) => {
 
         }
         else {
-            fetch('https://walletify-backend-develop.herokuapp.com/expense', {
+            fetch(process.env.BACKEND_URL+'/expense', {
                 method: 'PATCH',
                 headers: {
                     'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,

@@ -22,7 +22,7 @@ export const ExpendCard = (props) => {
     const deleteExpenseCard = (e) => {
         e.preventDefault();
         if(window.confirm("¿Estas seguro que queres borrar este gasto?")){
-        fetch('https://walletify-backend-develop.herokuapp.com/expense', {
+        fetch(process.env.BACKEND_URL+'/expense', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

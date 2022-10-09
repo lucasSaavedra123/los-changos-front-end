@@ -28,7 +28,7 @@ const CategoriesPage = () => {
 
   const { currentUser } = useContext(AuthContext);
   const getCategories = () =>{
-       fetch('http://walletify-backend-develop.herokuapp.com/category', {
+       fetch(process.env.BACKEND_URL+'/category', {
         headers: {
           'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
         }

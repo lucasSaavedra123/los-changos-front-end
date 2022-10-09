@@ -20,7 +20,7 @@ export const MoneyManager = () => {
 
 
   const getTransactions = () =>{
-    fetch('http://walletify-backend-develop.herokuapp.com/expense', {
+    fetch(process.env.BACKEND_URL+'/expense', {
      'headers': {
        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
      }
