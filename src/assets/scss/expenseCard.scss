@@ -255,6 +255,20 @@
     margin:10px
 }
 
+.botones-formulario{
+    display: flex;
+    width: 80%;
+    justify-content: space-evenly;
+}
+.boton-cancelar{
+    background-color: beige;
+
+}
+.boton-confirmar{
+
+    background-color: black;
+}
+
 .table-row-container{
     padding: 0;
     margin:0;

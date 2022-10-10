@@ -64,11 +64,11 @@ const CategoriesPage = () => {
     <Modal open={open} onClose={handleClose} >
       <EditCategoryModal handleCloseModal={handleClose} confirmAction={getCategories}/>
     </Modal>  
-    <div className="movements" style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }} >Categorias
+    <div className="movements">
         <TableContainer component={Paper}>
             <Table >
             <TableHead>
-            <TableRow>
+            <TableRow style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" ,color:'white'}}>Categorias
             </TableRow>
         </TableHead>
         <TableBody>
@@ -76,13 +76,13 @@ const CategoriesPage = () => {
             if(category.static === true) {
                 return(
                 <TableRow value={category} style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>
-                <ExpenseCategory name={category.name} id={category.id} icon={category.material_ui_icon_name}/>
+                <ExpenseCategory name={category.name} id={category.id} icon={category.material_ui_icon_name} color={'white'}/>
                 </TableRow>
                 )}
             else{
                 return(
                 <TableRow value={category} style={{borderRadius: 5, border: "1px solid #9CE37D",backgroundColor: "black" }}>
-                <ExpenseDynamicCategory title={category.name} id={category.id} icon={category.material_ui_icon_name} confirmAction={()=>{getCategories();}}/>
+                <ExpenseDynamicCategory title={category.name} id={category.id} icon={category.material_ui_icon_name} color={'white'} confirmAction={()=>{getCategories();}}/>
                 </TableRow>
                 )}
             })}   

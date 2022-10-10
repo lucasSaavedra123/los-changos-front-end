@@ -47,16 +47,16 @@ export const ExpenseDynamicCategory = (props) => {
         <div className={"type-category-container"}>
                 <div className='expense-category-left-side'>
                     <div className='expense-category-icon'>
-                        <CategoryIcon name={props.icon}></CategoryIcon>
+                        <CategoryIcon name={props.icon} color={props.color}></CategoryIcon>
                     </div>
                     <div className='category-title'>{props.title}</div>
                 </div>
                 <div className='category-buttons'>
                     <div>
-                    <Button onClick={deleteCategory}><DeleteIcon/></Button>
+                    <Button onClick={deleteCategory}><DeleteIcon sx={{color:'white'}}/></Button>
                     </div>
                     <div>
-                    <Button onClick={()=>setOpen(!open)}><EditIcon/></Button>
+                    <Button onClick={()=>setOpen(!open)}><EditIcon sx={{color:'white'}}/></Button>
                     </div>
                 </div> 
                 <Modal open={open} onClose={handleClose} >

@@ -48,7 +48,7 @@ export const ExpendCard = (props) => {
         }
             <div className="left-side"  >
                 
-                <CategoryIcon name={props.category.material_ui_icon_name} />
+                <CategoryIcon name={props.category.material_ui_icon_name} color={'white'}/>
                 
                 <div className="expense-title" >{props.title}</div>
             </div>

@@ -9,6 +9,8 @@ import { ALLOWS_ICONS_FOR_CATEGORY, BACKEND_URL } from "../CONSTANTS";
 import CategoryIcon from "./CategoryIcon";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
+import CancelIcon from '@mui/icons-material/Cancel';
+import DoneIcon from '@mui/icons-material/Done';
 
 export const EditCategoryModal = (props) => {
     const [icon, setIcon] = useState(typeof props.icon === "undefined" ? '' : props.icon);
@@ -98,16 +100,18 @@ export const EditCategoryModal = (props) => {
                             id="demo-simple-select"
                             value={icon}
                             label="Categoria"
-                            onChange={handleChange}
-                        >
+                            onChange={handleChange}>
+                                
                             {ALLOWS_ICONS_FOR_CATEGORY.map((icon)=>(
-                            <MenuItem value={icon}><CategoryIcon name={icon}></CategoryIcon></MenuItem>))
+                            <MenuItem value={icon}><CategoryIcon name={icon} color={'black'}></CategoryIcon></MenuItem>))
                             
                             }
                         </Select>
                     </div>
-                    <Button onClick={handleCategory}> GUARDAR CATEGORIA</Button>
-                    <Button onClick={cancelChanges}> DESCARTAR CAMBIOS</Button>
+                    <div>
+                    <Button onClick={cancelChanges}> <CancelIcon /></Button>
+                    <Button onClick={handleCategory}> <DoneIcon /> </Button>
+                    </div>
                 </Box>
             </div>
         </div>

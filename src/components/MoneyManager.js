@@ -56,7 +56,7 @@ export const MoneyManager = () => {
         </div>
       </div>
       <div>
-{/*         <GraficoPie/> */}
+          <GraficoPie/>
       </div>
       <div className="balance">
         <MoneyDetails total={total}/>
@@ -67,11 +67,6 @@ export const MoneyManager = () => {
             AGREGAR GASTO
           </Button>
         </div>
- {/*        <div className="see-categories" style={{borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black" }} >
-          <Button style={{fontFamily: "UnB-Light"}}>
-            <Link style={{color:"white", textDecoration:"none"}} to='/profile/categories'>CATEGORIAS</Link>
-          </Button>
-        </div> */}
         <Modal
           open={open} onClose={handleClose}>
           <div className="add-expense-modal">

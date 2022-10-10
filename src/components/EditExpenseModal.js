@@ -174,9 +174,9 @@ export const EditExpenseModal = (props) => {
                         </Select>
                         
                     </div>
-                    <div>
-                        <Button onClick={createOrEditExpense}> <DoneIcon /> </Button>
-                        <Button onClick={cancelChanges}> <CancelIcon /> </Button>
+                    <div className="botones-formulario">
+                        <Button className='boton-cancelar' onClick={cancelChanges}> <CancelIcon /> </Button>
+                        <Button className='boton-confirmar' onClick={createOrEditExpense}> <DoneIcon /> </Button>
                     </div>
 
 
