@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const LEMMA = "Nunca manejar la plata fue algo tan cómodo."
 
-export const BACKEND_URL = "https://walletify-backend.herokuapp.com"
+export const BACKEND_URL = "https://walletify-backend-develop.herokuapp.com"
 
 export const THEME = createTheme({
   palette: {
