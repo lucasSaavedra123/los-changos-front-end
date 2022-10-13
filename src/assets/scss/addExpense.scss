@@ -11,7 +11,7 @@
 .form-expense{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -44,10 +44,4 @@
     justify-content: space-between;
     width: 50%;
 
-}
-.cancel-button{
-    
-}
-.save-button{
-    
 }

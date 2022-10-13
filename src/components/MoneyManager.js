@@ -55,7 +55,7 @@ export const MoneyManager = () => {
           <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName}!</h1>
         </div>
       </div>
-      <div>
+      <div className="pie-chart">
           <GraficoPie/>
       </div>
       <div className="balance">

@@ -4,6 +4,7 @@
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
+  //height:100%;
 }
 
 .responsive-container {
@@ -33,6 +34,7 @@
   margin-top: 10px;
   text-align: center;
   color: white;
+  margin-bottom: 20px;
   
 }
 .header-container {
@@ -57,6 +59,7 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  
 }
 
 .add-expense-modal{

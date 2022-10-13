@@ -140,7 +140,7 @@ export const EditExpenseModal = (props) => {
         <div className="contenedor">
             <div className="add-category">
                 <Box component="form" className="form-expense">
-
+                    <div> Nuevo Gasto </div>
                     <div className="name-expense-category">
                         <TextField className="textfield" label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
                     </div>
@@ -175,8 +175,8 @@ export const EditExpenseModal = (props) => {
                         
                     </div>
                     <div className="botones-formulario">
-                        <Button className='boton-cancelar' onClick={cancelChanges}> <CancelIcon /> </Button>
-                        <Button className='boton-confirmar' onClick={createOrEditExpense}> <DoneIcon /> </Button>
+                        <Button  style={{backgroundColor:'#9CE37D'}} onClick={cancelChanges}> <CancelIcon sx={{color:'white'}} /> </Button>
+                        <Button  style={{backgroundColor:'#9CE37D'}} onClick={createOrEditExpense}> <DoneIcon sx={{color:'white'}} /> </Button>
                     </div>
 
 

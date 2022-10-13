@@ -11,6 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
 import DoneIcon from '@mui/icons-material/Done';
+import "../assets/scss/expenseCard.scss"
 
 export const EditCategoryModal = (props) => {
     const [icon, setIcon] = useState(typeof props.icon === "undefined" ? '' : props.icon);
@@ -88,7 +89,7 @@ export const EditCategoryModal = (props) => {
         <div className="contenedor">
             <div className="add-category">
                 <Box component="form" className="form-expense">
-
+                    <div> Nueva Categoria </div>
                     <div className="name-expense-category">
                         <TextField defaultValue={name} className="textfield" label="Categoria" onChange={(e) => { setName(e.target.value)}} />
                     </div>
@@ -108,9 +109,9 @@ export const EditCategoryModal = (props) => {
                             }
                         </Select>
                     </div>
-                    <div>
-                    <Button onClick={cancelChanges}> <CancelIcon /></Button>
-                    <Button onClick={handleCategory}> <DoneIcon /> </Button>
+                    <div className="botones-formulario">
+                    <Button style={{backgroundColor:'#9CE37D'}} onClick={cancelChanges}> <CancelIcon sx={{color:'white'}}/></Button>
+                    <Button  style={{backgroundColor:'#9CE37D'}} onClick={handleCategory}> <DoneIcon sx={{color:'white'}} /> </Button>
                     </div>
                 </Box>
             </div>
