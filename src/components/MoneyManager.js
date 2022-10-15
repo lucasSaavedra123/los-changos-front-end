@@ -29,8 +29,6 @@ export const MoneyManager = () => {
         .then((response) => response.json())
         .then((actualData) =>{ 
           setTotal(actualData.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
-          console.log("New Transactions:", JSON.stringify(actualData))
-          console.log("Current Transactions:", JSON.stringify(transactions))
           if(JSON.stringify(actualData) != JSON.stringify(transactions)){
                setTransactions(actualData);
            }    

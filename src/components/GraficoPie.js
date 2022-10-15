@@ -1,11 +1,18 @@
-import {Pie} from 'react-chartjs-2'
-import React from 'react';
+import {Pie,getElementAtEvent, getDatasetAtEvent} from 'react-chartjs-2'
+import { useRef, React, useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 
   export const GraficoPie = () =>{
 
+    const chartRef = useRef();
     ChartJS.register(ArcElement, Tooltip, Legend);
+
+
+    const onClick = (event) => {
+      let elements = getDatasetAtEvent(chartRef.current, event)
+      console.log(event);
+    }
 
     const data = {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -35,7 +42,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
       };
 
 
-    return <Pie options={{responsive:true}} data= {data}/>
+    return <Pie ref={chartRef} options={{responsive:true}} data= {data} onClick={onClick}/>
 }
 
 
