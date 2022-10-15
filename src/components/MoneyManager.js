@@ -9,6 +9,10 @@ import { Link } from "react-router-dom";
 import { GraficoPie } from "./GraficoPie";
 import EditExpenseModal from "./EditExpenseModal";
 import { BACKEND_URL } from "../CONSTANTS";
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TextField } from '@material-ui/core';
 
 
 export const MoneyManager = () => {
@@ -18,6 +22,44 @@ export const MoneyManager = () => {
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [transactions, setTransactions] = useState([]);
+  let today = new Date();
+  const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [dateTo, setDateTo] = useState(today);
+
+  const applyDateFilter = () => {
+      console.log(dateTo.toISOString().split('T')[0])
+      fetch(BACKEND_URL+'/expense/filter', {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+  
+          
+          body: JSON.stringify({
+              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]]
+          })
+  
+  
+      })
+      .then((res)=>res.json())
+      .then((data) =>updateFilterTransactions(data))
+  }
+
+
+  const handleChangeFrom = (newValue) => {
+      setDateFrom(newValue);
+  };
+
+  const handleChangeTo = (newValue) => {
+      setDateTo(newValue);
+  };
+
+  const updateFilterTransactions = (transactions) =>{
+    setTransactions(transactions)
+    setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+  }
 
 
   const getTransactions = () =>{
@@ -43,8 +85,8 @@ export const MoneyManager = () => {
   const handleClose = () => {setOpen(false);};
 
   useEffect(() => {
-    getTransactions()
-  }, [transactions]);
+    applyDateFilter()
+  }, []);
 
   return (
     <div className="app-container">
@@ -52,6 +94,32 @@ export const MoneyManager = () => {
         <div className="header-container">
           <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName}!</h1>
         </div>
+      </div>
+      <div style={{backgroundColor:"white"}}>
+        Filtar desde: 
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <MobileDatePicker
+                className="textfield"
+                inputFormat="YYYY-MM-DD"
+                maxDate={dateTo}
+                value={dateFrom}
+                onChange={handleChangeFrom}
+                renderInput={(params) => <TextField {...params} />}
+            />
+        </LocalizationProvider>
+        Hasta: 
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <MobileDatePicker
+                className="textfield"
+                minDate={dateFrom}
+                maxDate={today}
+                inputFormat="YYYY-MM-DD"
+                value={dateTo}
+                onChange={handleChangeTo}
+                renderInput={(params) => <TextField {...params} />}
+            />
+        </LocalizationProvider>
+        <Button className="add-expense-button" style={{color:"black", textDecoration:"none"}} onClick={applyDateFilter}>Aplicar</Button>
       </div>
       <div className="pie-chart">
           <GraficoPie/>
@@ -68,13 +136,13 @@ export const MoneyManager = () => {
         <Modal
           open={open} onClose={handleClose}>
           <div className="add-expense-modal">
-            <EditExpenseModal handleCloseModal={handleClose} confirmAction={getTransactions}/>
+            <EditExpenseModal handleCloseModal={handleClose} confirmAction={applyDateFilter}/>
           </div>
         </Modal>
       </div>
       {/* <div className="chart"> Hola Chart</div> */}
       <div className="movements" >
-        <MovementsTable transactions={transactions} confirmAction={getTransactions}/>
+        <MovementsTable transactions={transactions} confirmAction={applyDateFilter}/>
       </div>
 
     </div>

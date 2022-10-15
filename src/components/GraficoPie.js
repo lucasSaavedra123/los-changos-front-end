@@ -10,8 +10,8 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 
     const onClick = (event) => {
-      let elements = getDatasetAtEvent(chartRef.current, event)
-      console.log(event);
+      let elements = getElementAtEvent(chartRef.current, event)
+      console.log(elements);
     }
 
     const data = {
