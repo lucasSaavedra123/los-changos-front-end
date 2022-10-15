@@ -122,7 +122,7 @@ export const MoneyManager = () => {
         <Button className="add-expense-button" style={{color:"black", textDecoration:"none"}} onClick={applyDateFilter}>Aplicar</Button>
       </div>
       <div className="pie-chart">
-          <GraficoPie/>
+          <GraficoPie transactions={transactions}/>
       </div>
       <div className="balance">
         <MoneyDetails total={total}/>
