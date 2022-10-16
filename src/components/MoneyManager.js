@@ -13,18 +13,20 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TextField } from '@material-ui/core';
+import { MultiSelect } from "react-multi-select-component";
 
 
 export const MoneyManager = () => {
-
+  
+  let today = new Date();
   const { currentUser } = useContext(AuthContext);
-
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [transactions, setTransactions] = useState([]);
-  let today = new Date();
   const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [dateTo, setDateTo] = useState(today);
+  const [selected, setSelected] = useState([]);
+  const [options, setOptions] = useState([])
 
   const applyDateFilter = () => {
       console.log(dateTo.toISOString().split('T')[0])
@@ -38,7 +40,8 @@ export const MoneyManager = () => {
   
           
           body: JSON.stringify({
-              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]]
+              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
+              //category_id: selected[0].value
           })
   
   
@@ -58,6 +61,22 @@ export const MoneyManager = () => {
 
   const updateFilterTransactions = (transactions) =>{
     setTransactions(transactions)
+    let categories = {}
+    transactions.map((transaction) => {
+      categories[transaction.category.name] = transaction.category.id
+    });
+    let names = Object.keys(categories);
+    let optionsAux = []
+    names.map((name)=>{
+      let option = {
+        label: name,
+        value: categories[name]
+      }
+      optionsAux.push(option)
+
+
+    })
+    setOptions(optionsAux)
     setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
   }
 
@@ -120,6 +139,14 @@ export const MoneyManager = () => {
             />
         </LocalizationProvider>
         <Button className="add-expense-button" style={{color:"black", textDecoration:"none"}} onClick={applyDateFilter}>Aplicar</Button>
+      </div>
+      <div>
+      <MultiSelect
+        options={options}
+        value={selected}
+        onChange={setSelected}
+        labelledBy="Select"
+      />
       </div>
       <div className="pie-chart">
           <GraficoPie transactions={transactions}/>

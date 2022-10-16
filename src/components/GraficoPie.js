@@ -10,6 +10,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
     const [total, setTotal] = useState();
     const [labels, setLabels] = useState();
     const [backgroundColors,setBackgroundColors] = useState();
+    const [selectedIndex, setSelectedIndex] = useState();
 
     const getCategoriesFromTransactions = () =>{
       let categoriesValue = {}
@@ -37,11 +38,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 
 
-
-    const onClick = (event) => {
-      let elements = getElementAtEvent(chartRef.current, event)
-    }
-
     const data = {
       labels: labels,
       datasets: [
@@ -55,7 +51,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
     };
 
 
-    return (<Pie ref={chartRef} options={{responsive:true}} data= {data} onClick={onClick} />)
+    return (<Pie ref={chartRef} options={{responsive:true}} data= {data} />)
 }
 
 
