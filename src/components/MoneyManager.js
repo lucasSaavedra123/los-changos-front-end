@@ -9,16 +9,77 @@ import { Link } from "react-router-dom";
 import {GraficoPie}  from "./GraficoPie";
 import EditExpenseModal from "./EditExpenseModal";
 import { BACKEND_URL } from "../CONSTANTS";
-import React from "react";
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TextField } from '@material-ui/core';
+import { MultiSelect } from "react-multi-select-component";
+
 
 export const MoneyManager = () => {
-
+  
+  let today = new Date();
   const { currentUser } = useContext(AuthContext);
-
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = React.useState(false);
+  const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [dateTo, setDateTo] = useState(today);
+  const [selected, setSelected] = useState([]);
+  const [options, setOptions] = useState([])
+
+  const applyDateFilter = () => {
+      console.log(dateTo.toISOString().split('T')[0])
+      fetch(BACKEND_URL+'/expense/filter', {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+  
+          
+          body: JSON.stringify({
+              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
+              //category_id: selected[0].value
+          })
+  
+  
+      })
+      .then((res)=>res.json())
+      .then((data) =>updateFilterTransactions(data))
+  }
+
+
+  const handleChangeFrom = (newValue) => {
+      setDateFrom(newValue);
+  };
+
+  const handleChangeTo = (newValue) => {
+      setDateTo(newValue);
+  };
+
+  const updateFilterTransactions = (transactions) =>{
+    setTransactions(transactions)
+    let categories = {}
+    transactions.map((transaction) => {
+      categories[transaction.category.name] = transaction.category.id
+    });
+    let names = Object.keys(categories);
+    let optionsAux = []
+    names.map((name)=>{
+      let option = {
+        label: name,
+        value: categories[name]
+      }
+      optionsAux.push(option)
+
+
+    })
+    setOptions(optionsAux)
+    setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+  }
+
 
   const getTransactions = () =>{
     fetch(BACKEND_URL+'/expense', {
@@ -45,8 +106,8 @@ export const MoneyManager = () => {
 
 
   useEffect(() => {
-    getTransactions()
-  }, [transactions]);
+    applyDateFilter()
+  }, []);
 
   return (
     <div className="app-container">
@@ -55,7 +116,42 @@ export const MoneyManager = () => {
           <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName}!</h1>
         </div>
       </div>
+      <div style={{backgroundColor:"white"}}>
+        Filtar desde: 
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <MobileDatePicker
+                className="textfield"
+                inputFormat="YYYY-MM-DD"
+                maxDate={dateTo}
+                value={dateFrom}
+                onChange={handleChangeFrom}
+                renderInput={(params) => <TextField {...params} />}
+            />
+        </LocalizationProvider>
+        Hasta: 
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <MobileDatePicker
+                className="textfield"
+                minDate={dateFrom}
+                maxDate={today}
+                inputFormat="YYYY-MM-DD"
+                value={dateTo}
+                onChange={handleChangeTo}
+                renderInput={(params) => <TextField {...params} />}
+            />
+        </LocalizationProvider>
+        <Button className="add-expense-button" style={{color:"black", textDecoration:"none"}} onClick={applyDateFilter}>Aplicar</Button>
+      </div>
+      <div>
+      <MultiSelect
+        options={options}
+        value={selected}
+        onChange={setSelected}
+        labelledBy="Select"
+      />
+      </div>
       <div className="pie-chart">
+          <GraficoPie transactions={transactions}/>
       </div>
       <div className="balance">
         <MoneyDetails total={total}/>
@@ -69,13 +165,13 @@ export const MoneyManager = () => {
         <Modal
           open={open} onClose={handleClose}>
           <div className="add-expense-modal">
-            <EditExpenseModal handleCloseModal={handleClose} confirmAction={getTransactions}/>
+            <EditExpenseModal handleCloseModal={handleClose} confirmAction={applyDateFilter}/>
           </div>
         </Modal>
       </div>
       {/* <div className="chart"> Hola Chart</div> */}
       <div className="movements" >
-        <MovementsTable transactions={transactions} confirmAction={getTransactions}/>
+        <MovementsTable transactions={transactions} confirmAction={applyDateFilter}/>
       </div>
 
     </div>

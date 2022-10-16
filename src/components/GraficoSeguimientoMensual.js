@@ -77,6 +77,8 @@ const SplineWithPoints = props => (
 );
 
 const series = [
+
+    //Categorias
   { name: 'USA', key: 'usa', color: '#08abbd' },
   { name: 'Saudi Arabia', key: 'saudiArabia', color: '#78bc97' },
   { name: 'Iran', key: 'iran', color: '#d4d67e' },

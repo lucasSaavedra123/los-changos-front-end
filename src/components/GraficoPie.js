@@ -1,48 +1,57 @@
 import {Pie,getElementAtEvent, getDatasetAtEvent} from 'react-chartjs-2'
-import { useRef, React, useEffect } from 'react';
+import { useRef, React, useEffect,useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 
-  export const GraficoPie = () =>{
+  export const GraficoPie = (props) =>{
 
     const chartRef = useRef();
     ChartJS.register(ArcElement, Tooltip, Legend);
+    const [total, setTotal] = useState();
+    const [labels, setLabels] = useState();
+    const [backgroundColors,setBackgroundColors] = useState();
+    const [selectedIndex, setSelectedIndex] = useState();
 
+    const getCategoriesFromTransactions = () =>{
+      let categoriesValue = {}
+      let categoriesColor = {}
+      let categoriesName = {}
+      props.transactions.map((transaction) => {
+        categoriesValue[transaction.category.id] = typeof categoriesValue[transaction.category.id] === "undefined" ? transaction.value : categoriesValue[transaction.category.id] + transaction.value;
+        categoriesColor[transaction.category.id] = transaction.category.color
+        categoriesName[transaction.category.id] = transaction.category.name
+      })
 
-    const onClick = (event) => {
-      let elements = getDatasetAtEvent(chartRef.current, event)
-      console.log(event);
+      let totalsAux = Object.values(categoriesValue)
+      let labelsAux = Object.values(categoriesName)
+      let backgroundColorsAux = Object.values(categoriesColor)
+
+      setTotal(totalsAux);
+      setLabels(labelsAux);
+      setBackgroundColors(backgroundColorsAux)
+      
     }
 
+    useEffect(() => {
+      getCategoriesFromTransactions()
+    }, [props.transactions]);
+
+
+
     const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-          {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-          },
-        ],
-      };
+      labels: labels,
+      datasets: [
+        {
+          data: total,
+          backgroundColor: backgroundColors,
+          borderColor: backgroundColors,
+          borderWidth: 0.1,
+        },
+      ],
+    };
 
 
-    return <Pie ref={chartRef} options={{responsive:true}} data= {data} onClick={onClick}/>
+    return (<Pie ref={chartRef} options={{responsive:true}} data= {data} />)
 }
 
 
