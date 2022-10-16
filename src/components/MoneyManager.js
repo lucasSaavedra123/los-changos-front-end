@@ -6,10 +6,10 @@ import MovementsTable from "./MovementsTable";
 import Button from '@mui/material/Button'
 import { Modal } from '@material-ui/core';
 import { Link } from "react-router-dom";
-import { GraficoPie } from "./GraficoPie";
+import {GraficoPie}  from "./GraficoPie";
 import EditExpenseModal from "./EditExpenseModal";
 import { BACKEND_URL } from "../CONSTANTS";
-
+import React from "react";
 
 export const MoneyManager = () => {
 
@@ -18,7 +18,7 @@ export const MoneyManager = () => {
   const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [transactions, setTransactions] = useState([]);
-
+  const [loading, setLoading] = React.useState(false);
 
   const getTransactions = () =>{
     fetch(BACKEND_URL+'/expense', {
@@ -39,8 +39,10 @@ export const MoneyManager = () => {
 
 }
 
+
   const handleAgregarGasto = () => setOpen(true);
   const handleClose = () => {setOpen(false);};
+
 
   useEffect(() => {
     getTransactions()
@@ -54,7 +56,6 @@ export const MoneyManager = () => {
         </div>
       </div>
       <div className="pie-chart">
-          <GraficoPie/>
       </div>
       <div className="balance">
         <MoneyDetails total={total}/>

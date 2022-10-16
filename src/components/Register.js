@@ -14,6 +14,17 @@ import { ThemeProvider } from '@mui/material/styles';
 import { THEME, useStyles } from '../CONSTANTS'
 import CustomAlert from "./CustomAlert";
 
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import FilledInput from '@mui/material/FilledInput';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -26,12 +37,13 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = React.useState(false);
+    const [showPassword, setShowPassword]=useState(false);
 
     const [openCompleteAllFieldsError, setopenCompleteAllFieldsError] = React.useState(false);
     const [openRepeatedEmailMessage, setopenRepeatedEmailMessage] = React.useState(false);
     const [openSuccessfulRegister, setOpenSuccessfulRegister] = React.useState(false);
     const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
-    
+
     const classes = useStyles();
 
     const showInvalidEmailError = () => {
@@ -66,11 +78,21 @@ const Register = () => {
         setOpenSuccessfulRegister(false);
     };
 
+ 
+    
+      const handleClickShowPassword = () => {
+        setShowPassword(!showPassword)
+      };
+    
+      const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      };
+
     const handleRegister = (e) => {
         e.preventDefault();
         setLoading(true);
 
-        if (email == '' || password == '' || name == '' || lastname == '') {
+        if (email === '' || password === '' || name === '' || lastname === '') {
             showCompleteAllFieldMessage()
             setLoading(false);
 
@@ -97,10 +119,10 @@ const Register = () => {
                     });
                 })
                 .catch((err) => {
-                    if (err.code == 'auth/email-already-in-use') {
+                    if (err.code === 'auth/email-already-in-use') {
                         showRepeatedEmailMessage()
                     }
-                    else if (err.code == 'auth/invalid-email') {
+                    else if (err.code === 'auth/invalid-email') {
                         showInvalidEmailError()
                     }
                     else {
@@ -139,7 +161,28 @@ const Register = () => {
                             <TextField label="Nombre" color="primary" className={classes.root} fullWidth onChange={(e) => setFirstName(e.target.value)} />
                             <TextField label="Apellido" color="primary" className={classes.root} fullWidth onChange={(e) => setLastName(e.target.value)} />
                             <TextField label="Correo electronico" color="primary" className={classes.root} fullWidth onChange={(e) => setEmail(e.target.value)} />
-                            <TextField label="Contraseña" color="primary" type="password" className={classes.root} fullWidth onChange={(e) => setPassword(e.target.value)} />
+                            
+                            <FormControl fullWidth className={classes.root}  >
+                            <InputLabel style={{color:'white'}} variant='outlined'>Contraseña</InputLabel>
+                            <OutlinedInput
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                                sx={{color:'white'}}
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    
+                                />
+                            </FormControl>
                             <div className="text-center">
                                 <ThemeProvider theme={THEME}>
 
@@ -153,17 +196,17 @@ const Register = () => {
                                     </LoadingButton>
                                 </ThemeProvider>
                             </div>
-                            <div className="auth-option text-center pt-2 white-font">¿Ya tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/login" >Iniciar Sesión</Link></div>
+                            <div className="auth-option text-center pt-2 white-font">¿Ya tenes cuenta? <Link style={{ color: '#5cb377' }} className="text-link" to="/login" >Iniciar Sesión</Link></div>
 
                         </Box>
                     </div>
 
                 </div>
             </div>
-            <CustomAlert text={"¡Ingrese todos los campos por favor!"} severity={"error"} open={openCompleteAllFieldsError} closeAction={closeCompleteAllFieldMessage}/>
-            <CustomAlert text={"Un usuario ya se registro con ese mail. Intenta otro."} severity={"error"} open={openRepeatedEmailMessage} closeAction={closeRepeatedEmailMessage}/>
-            <CustomAlert text={"Registro Exitoso. Revisa tu mail!"} severity={"success"} open={openSuccessfulRegister} closeAction={closeSuccessfulRegister}/>
-            <CustomAlert text={"Ingresa un mail valido!"} severity={"error"} open={openInvalidEmailError} closeAction={closeInvalidEmailError}/>
+            <CustomAlert text={"¡Ingrese todos los campos por favor!"} severity={"error"} open={openCompleteAllFieldsError} closeAction={closeCompleteAllFieldMessage} />
+            <CustomAlert text={"Un usuario ya se registro con ese mail. Intenta otro."} severity={"error"} open={openRepeatedEmailMessage} closeAction={closeRepeatedEmailMessage} />
+            <CustomAlert text={"Registro Exitoso. Revisa tu mail!"} severity={"success"} open={openSuccessfulRegister} closeAction={closeSuccessfulRegister} />
+            <CustomAlert text={"Ingresa un mail valido!"} severity={"error"} open={openInvalidEmailError} closeAction={closeInvalidEmailError} />
         </div>
     );
 }

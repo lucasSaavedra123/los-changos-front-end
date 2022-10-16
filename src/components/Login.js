@@ -15,6 +15,13 @@ import { AuthContext } from "../context/AuthContext";
 import NavigatorWithButton from "./NavigatorWithButton";
 import LoadingButton from '@mui/lab/LoadingButton';
 import CustomAlert from './CustomAlert'
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
 const Login = () => {
@@ -26,6 +33,7 @@ const Login = () => {
     const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
     const [openInvalidUserError, setopenInvalidUserError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
+    const [showPassword, setShowPassword]=useState(false);
 
     const classes = useStyles();
     
@@ -60,6 +68,14 @@ const Login = () => {
     const closeInvalidUserError = (event, reason) => {
         setopenInvalidUserError(false);
     };
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword)
+      };
+    
+      const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      };
 
     const { dispatch } = useContext(AuthContext);
 
@@ -135,7 +151,31 @@ const Login = () => {
                                     <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
                                 </div>
                                 <div>
-                                    <TextField label="Contraseña" color="primary" type="password" className={classes.root} style={{ width: "100%" }} onChange={(e) => { setPassword(e.target.value) }} />
+
+                                    <FormControl fullWidth className={classes.root}  >
+                            <InputLabel style={{color:'white'}}>Contraseña</InputLabel>
+                            <OutlinedInput
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    style={{color:'white'}}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                                sx={{color:'white'}}
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    
+                                />
+                            </FormControl>
                                 </div>
 
                                 <div className="text-center">
