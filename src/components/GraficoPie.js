@@ -68,7 +68,14 @@ export const GraficoPie = (props) =>{
         <Title>Gastos de {'Octubre'}</Title>
         <div className='prueba'>
           <div className='prueba-2'>
-          <Pie className='pie' ref={chartRef} options={{responsive:true}} data= {data} />
+          <Pie className='pie' ref={chartRef} options={
+            {responsive:true,
+              plugins: {
+                legend: {
+                  display: false
+                }
+              }
+            }} data= {data} />
           </div>
         </div>
       </React.Fragment>

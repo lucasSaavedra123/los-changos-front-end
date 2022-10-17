@@ -59,7 +59,7 @@ export default function DashboardContent(props) {
     setSelectedCategoriesArray(selectedCategory)
   }
   const applyDateFilter = () => {
-      if(selectedCategoriesArray.length === 0){
+      if(selected.length === 0){
         setTransactions([])
       }else{
       fetch(BACKEND_URL+'/expense/filter', {
