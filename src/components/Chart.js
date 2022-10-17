@@ -2,8 +2,9 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 import Title from './Title';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useContext, useState, useEffect } from "react";
+import { BACKEND_URL } from "../CONSTANTS";
+import { AuthContext } from "../context/AuthContext";
 
 
 // Generate Sales Data
@@ -24,15 +25,31 @@ const data = [
 ];
 
 export default function Chart(props) {
+  const { currentUser } = useContext(AuthContext);
   const theme = useTheme();
   const [options, setOptions] = useState([])
-  const [total, setTotal] = useState(0);
+  const [transactions, setTransactions] = useState([]);
 
-  const cargarGrafico = () =>{
-    //setTransactions(transactions)
-    
+
+  const getTransactions = () =>{
+    fetch(BACKEND_URL+'/expense', {
+     'headers': {
+       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+     }
+    })
+        .then((response) => response.json())
+        .then((actualData) =>{ 
+          cargarGrafico(actualData)
+        })
+            .catch((err) => {
+            console.log(err.message);
+        });
+
+}
+
+  const cargarGrafico = (tr) =>{  
     let totalPorMes = {}
-    props.transactions.map((transaction) => {
+    tr.map((transaction) => {
       let mes = new Date(transaction.date+"T00:00:00").getMonth() + 1
       console.log(mes)  
       totalPorMes[mes] = typeof totalPorMes[mes] === 'undefined' ? transaction.value : totalPorMes[mes] + transaction.value
@@ -56,8 +73,8 @@ export default function Chart(props) {
   }
 
   useEffect(() => {
-    cargarGrafico()
-  }, props.transactions);
+    getTransactions()
+  }, []);
 
   return (
     <React.Fragment>

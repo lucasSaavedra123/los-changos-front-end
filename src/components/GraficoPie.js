@@ -65,7 +65,7 @@ export const GraficoPie = (props) =>{
     }else{
       return (
         <React.Fragment>
-        <Title>Gastos de {'Octubre'}</Title>
+        <Title>Categorias</Title>
         <div className='prueba'>
           <div className='prueba-2'>
           <Pie className='pie' ref={chartRef} options={

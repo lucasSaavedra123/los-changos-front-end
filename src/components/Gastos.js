@@ -17,7 +17,7 @@ export default function Gastos(props) {
       $ {addCommas(props.total)}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Octubre 2022
+        {props.month}
       </Typography>
       {/* <div>
         <Link color="primary" href="#" onClick={preventDefault}>

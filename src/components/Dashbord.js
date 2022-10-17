@@ -41,8 +41,11 @@ export default function DashboardContent(props) {
   let today = new Date();
   const { currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  //Este total hay que pasarselo al nuevo componente (es el total del periodo)
   const [total, setTotal] = useState(0);
+  const [totalForMonth, setTotalForMonth] = useState(0);
   const [transactions, setTransactions] = useState([]);
+  const [historicalTransactions, setHistoricalTransactions] = useState([]);
   const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [dateTo, setDateTo] = useState(today);
   const [selected, setSelected] = useState([]);
@@ -103,7 +106,8 @@ export default function DashboardContent(props) {
     .then((res)=>res.json())
     .then((transactions) =>{
       setTransactions(transactions)
-      setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+      setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
+      setTotalForMonth(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ))
     })
 }
 
@@ -199,7 +203,7 @@ export default function DashboardContent(props) {
                     height: 240,
                   }}
                 >
-                  <Chart transactions={props.transactions} />
+                  <Chart />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -212,7 +216,7 @@ export default function DashboardContent(props) {
                     height: 240,
                   }}
                 >
-                  <Gastos total={total} />
+                  <Gastos total={totalForMonth} month={"Octubre 2022"}/>
                 </Paper>
               </Grid>
               {/* Grafico Chona */}
