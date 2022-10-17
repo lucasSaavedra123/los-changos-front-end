@@ -16,7 +16,6 @@ export const GraficoPie = (props) =>{
     const [total, setTotal] = useState();
     const [labels, setLabels] = useState();
     const [backgroundColors,setBackgroundColors] = useState();
-    const [selectedIndex, setSelectedIndex] = useState();
 
     const getCategoriesFromTransactions = () =>{
       let categoriesValue = {}
@@ -40,6 +39,7 @@ export const GraficoPie = (props) =>{
 
     useEffect(() => {
       getCategoriesFromTransactions()
+      console.log((props.transactions).length)
     }, [props.transactions]);
 
 
@@ -56,18 +56,26 @@ export const GraficoPie = (props) =>{
       ],
     };
 
-
-    return (
-      <React.Fragment>
-      <Title>Gastos de {'Octubre'}</Title>
-      <div className='prueba'>
-        <div className='prueba-2'>
-        <Pie className='pie' ref={chartRef} options={{responsive:true}} data= {data} />
+    if ((props.transactions).length === 0 ){
+      return(<React.Fragment>
+        <div className='prueba'>
+          Grafico no disponible
         </div>
-      </div>
-    </React.Fragment>
-    
-    )
+      </React.Fragment>)
+    }else{
+      return (
+        <React.Fragment>
+        <Title>Gastos de {'Octubre'}</Title>
+        <div className='prueba'>
+          <div className='prueba-2'>
+          <Pie className='pie' ref={chartRef} options={{responsive:true}} data= {data} />
+          </div>
+        </div>
+      </React.Fragment>
+      
+      )
+    }
+
 }
 
 

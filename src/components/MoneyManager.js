@@ -110,8 +110,8 @@ export const MoneyManager = () => {
 
 
   useEffect(() => {
-    //applyDateFilter()
-    getTransactions();
+    applyDateFilter()
+    //getTransactions();
   }, []);
 
   return (

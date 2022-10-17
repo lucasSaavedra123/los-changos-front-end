@@ -46,12 +46,22 @@ export default function DashboardContent(props) {
   const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [dateTo, setDateTo] = useState(today);
   const [selected, setSelected] = useState([]);
+  const [selectedCategoriesArray, setSelectedCategoriesArray] = useState([]);
   const [options, setOptions] = useState([])
 
-  console.log(transactions)
-
+  const getSelectedCategoriesArray = (e) => {
+    console.log(e)
+    setSelected(e);
+    let selectedCategory=[]
+    e.map((category)=>{
+      selectedCategory.push(category.value)
+    })
+    setSelectedCategoriesArray(selectedCategory)
+  }
   const applyDateFilter = () => {
-      console.log(dateTo.toISOString().split('T')[0])
+      if(selectedCategoriesArray.length === 0){
+        setTransactions([])
+      }else{
       fetch(BACKEND_URL+'/expense/filter', {
           method: 'POST',
           headers: {
@@ -63,13 +73,56 @@ export default function DashboardContent(props) {
           
           body: JSON.stringify({
               timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
-              //category_id: selected[0].value
+              category_id: selectedCategoriesArray,
           })
   
   
       })
       .then((res)=>res.json())
       .then((data) =>updateFilterTransactions(data))
+  }
+}
+
+  const getAllMonthTransactions = () => {
+    fetch(BACKEND_URL+'/expense/filter', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+
+        
+        body: JSON.stringify({
+            timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
+            category_id: [],
+        })
+
+
+    })
+    .then((res)=>res.json())
+    .then((transactions) =>{
+      setTransactions(transactions)
+      setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+    })
+}
+
+  const getAllCategoriesForMultiSelect = (historicalTransactions) => {
+    let categories = {}
+    historicalTransactions.map((transaction) => {
+      categories[transaction.category.name] = transaction.category.id
+    });
+    let names = Object.keys(categories);
+    let optionsAux = []
+    names.map((name)=>{
+      let option = {
+        label: name,
+        value: categories[name]
+      }
+      optionsAux.push(option)
+    })
+    setOptions(optionsAux)
+    setSelected(optionsAux)
   }
 
 
@@ -87,18 +140,6 @@ export default function DashboardContent(props) {
     transactions.map((transaction) => {
       categories[transaction.category.name] = transaction.category.id
     });
-    let names = Object.keys(categories);
-    let optionsAux = []
-    names.map((name)=>{
-      let option = {
-        label: name,
-        value: categories[name]
-      }
-      optionsAux.push(option)
-
-
-    })
-    setOptions(optionsAux)
     setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
   }
 
@@ -111,11 +152,7 @@ export default function DashboardContent(props) {
     })
         .then((response) => response.json())
         .then((actualData) =>{ 
-          setTotal(actualData.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
-          if(JSON.stringify(actualData) != JSON.stringify(transactions)){
-               setTransactions(actualData);
-               console.log(actualData)
-           }    
+          getAllCategoriesForMultiSelect(actualData)
         })
             .catch((err) => {
             console.log(err.message);
@@ -127,12 +164,10 @@ export default function DashboardContent(props) {
   const handleAgregarGasto = () => setOpen(true);
   const handleClose = () => {setOpen(false);};
 
-
-  useEffect(() => {
-    applyDateFilter()
-    //getTransactions();
-  }, []);
-
+  useEffect(()=>{
+    getTransactions()
+    getAllMonthTransactions()
+  },[])
 
   
   return (
@@ -222,14 +257,14 @@ export default function DashboardContent(props) {
           onChange={handleChangeTo}
           renderInput={(params) => <TextField {...params} />}
         />
-        <Button className="add-expense-button" variant='outlined' onClick={applyDateFilter}>Aplicar</Button>
-        
         <MultiSelect
             options={options}
             value={selected}
-            onChange={setSelected}
+            onChange={getSelectedCategoriesArray}
           labelledBy="Select"
         />
+        <Button className="add-expense-button" variant='outlined' onClick={() => {applyDateFilter()}}>Aplicar</Button>
+        
 
 
         </Stack>
