@@ -147,18 +147,50 @@ const Login = () => {
                                 }}
                             >
 
-                                <div>
-                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
+<div>
+        <TextField
+          label="Correo Electrónico"
+          id="outlined-start-adornment"
+          sx={{ m: 1, width: '25ch' }}
+          className={classes.root}
+          onChange={(e) => { setEmail(e.target.value) }}
+        />
+        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" className={classes.root}>
+          <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+        </div>
+
+                                {/* <div>
+                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%"}} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
                                 </div>
                                 <div>
 
                                     <FormControl fullWidth className={classes.root}  >
-                            <InputLabel style={{color:'white'}}>Contraseña</InputLabel>
+                            <InputLabel style={{color:'black'}}>Contraseña</InputLabel>
                             <OutlinedInput
                                     id="outlined-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
-                                    style={{color:'white'}}
+                                    style={{color:'black'}}
                                     onChange={(e) => setPassword(e.target.value)}
                                     endAdornment={
                                         <InputAdornment position="end">
@@ -167,7 +199,7 @@ const Login = () => {
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
                                                 edge="end"
-                                                sx={{color:'white'}}
+                                                
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
@@ -176,7 +208,7 @@ const Login = () => {
                                     
                                 />
                             </FormControl>
-                                </div>
+                                </div> */}
 
                                 <div className="text-center">
                                     <ThemeProvider theme={THEME}>
@@ -193,7 +225,7 @@ const Login = () => {
                                 </div>
 
                             </Box>
-                            <div className="auth-option text-center pt-2 white-font">¿No tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/register" >Registrate </Link></div>
+                            <div className="auth-option text-center pt-2 black-font">¿No tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/register" >Registrate </Link></div>
                             <div className="auth-option text-center pt-2"><Link  style={{color: '#5cb377'}}  className="text-link" to="/forgotPassword">Olvide mi contraseña </Link></div>
                         </div>
                     </div>

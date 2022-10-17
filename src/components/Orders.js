@@ -15,12 +15,12 @@ import { useContext } from "react";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { BACKEND_URL } from "../CONSTANTS";
 import { useState } from 'react';
-import { Modal } from '@mui/material';
+import { Modal, TableContainer, TablePagination } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
-import "../assets/scss/moneyManager.scss"
+import "../assets/scss/moneyManager.scss";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -33,7 +33,17 @@ export default function Orders(props) {
     const { currentUser } = useContext(AuthContext);
     const handleAgregarGasto = () => setOpen(true);
     const handleClose = () => {setOpen(false);};
-   
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = React.useState(0);
+
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
 
     const handleCategoryClose = () => {
         setCategoryOpen(false)
@@ -80,7 +90,7 @@ export default function Orders(props) {
          </Modal>
        
       </div>
-      
+      <TableContainer>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -91,7 +101,9 @@ export default function Orders(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-        {props.transactions.map((transaction) => (
+        {props.transactions
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((transaction) => (
             <TableRow hover key={transaction.id}>
                 <TableCell>{transaction.date}</TableCell>
                 <TableCell>{transaction.name}</TableCell>
@@ -123,6 +135,16 @@ export default function Orders(props) {
           ))}
         </TableBody>
       </Table>
+      </TableContainer>
+      <TablePagination
+      component="div"
+      rowsPerPageOptions={[5, 10, 25]}
+      count={props.transactions.length}
+      page={page}
+      onPageChange={handleChangePage}
+      rowsPerPage={rowsPerPage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
     </React.Fragment>
   );
 }
