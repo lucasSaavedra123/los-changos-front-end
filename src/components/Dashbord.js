@@ -180,8 +180,8 @@ export default function DashboardContent(props) {
                   <Gastos total={total} />
                 </Paper>
               </Grid>
-                            {/* Grafico Chona */}
-                            <Grid item xs={8} md={12} lg={12}>
+              {/* Grafico Chona */}
+              <Grid item xs={8} md={8} lg={8}>
               <Paper
                   sx={{
                     p: 2,
@@ -194,7 +194,7 @@ export default function DashboardContent(props) {
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}
-              <Grid item xs={4} md={12} lg={12}>
+              <Grid item xs={4} md={4} lg={4}>
                 <Paper 
                 sx={{
                   p: 2,
