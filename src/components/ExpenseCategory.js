@@ -7,6 +7,9 @@ import "../assets/scss/expenseCard.scss"
 import { Button } from 'react-bootstrap';
 import { useState } from 'react';
 import CategoryIcon from './CategoryIcon';
+import { Table } from 'material-ui';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 
 export const ExpenseCategory = (props) => {
     const [isHovering, setIsHovering] = useState(false);
@@ -27,19 +30,11 @@ export const ExpenseCategory = (props) => {
 
     return (
         <>
-        
-        <div className='type-category-container'>
-        <div className='expense-category-left-side'>
-          <div className='expense-category-icon'>
-            <CategoryIcon name={props.icon} color={props.color}></CategoryIcon>
-          </div>
-              
-          <div className='category-title'>{props.name}</div>
-         </div>
-         <div className='category-buttons'></div>      
-                            
-            
-        </div>
+        <TableRow hover key={props.id} value={props.category}>
+          <TableCell> <CategoryIcon name={props.icon} color={props.color}></CategoryIcon> </TableCell>
+          <TableCell>{props.name}</TableCell>
+          <TableCell></TableCell>
+        </TableRow>
         </>
     );
 
