@@ -6,7 +6,18 @@
   min-height: 100vh;
   //height:100%;
 }
+.table-title{
+  display: flex;
+  flex-direction: row;
+}
+.titulo-principal{
+  width:75%
+}
 
+.add-expense-button{
+  
+ 
+}
 .responsive-container {
   width: 100%;
   max-width: 550px; 
@@ -55,11 +66,9 @@
   width:50%
 
 }
-.add-expense-button{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  
+
+.table-subtitle{
+  width:50%;
 }
 
 .add-expense-modal{
