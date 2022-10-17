@@ -9,6 +9,7 @@ function preventDefault(event) {
 
 export default function Gastos(props) {
   const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // Cambiar para que sean gastos del mes actual
   return (
     <React.Fragment>
       <Title>Gastos</Title>

@@ -57,7 +57,7 @@ export default function Chart(props) {
 
   useEffect(() => {
     cargarGrafico()
-  }, []);
+  }, props.transactions);
 
   return (
     <React.Fragment>

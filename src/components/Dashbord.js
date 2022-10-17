@@ -22,10 +22,118 @@ import Gastos from './Gastos';
 import Orders from './Orders';
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useState, useEffect } from "react";
+import {GraficoPie}  from "./GraficoPie";
+import EditExpenseModal from "./EditExpenseModal";
+import { BACKEND_URL } from "../CONSTANTS";
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TextField } from '@material-ui/core';
+import { MultiSelect } from "react-multi-select-component";
+import Button from '@mui/material/Button'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import Stack from '@mui/material/Stack';
 
 const mdTheme = createTheme();
 
 export default function DashboardContent(props) {
+
+  let today = new Date();
+  const { currentUser } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [dateTo, setDateTo] = useState(today);
+  const [selected, setSelected] = useState([]);
+  const [options, setOptions] = useState([])
+
+  console.log(transactions)
+
+  const applyDateFilter = () => {
+      console.log(dateTo.toISOString().split('T')[0])
+      fetch(BACKEND_URL+'/expense/filter', {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+  
+          
+          body: JSON.stringify({
+              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
+              //category_id: selected[0].value
+          })
+  
+  
+      })
+      .then((res)=>res.json())
+      .then((data) =>updateFilterTransactions(data))
+  }
+
+
+  const handleChangeFrom = (newValue) => {
+      setDateFrom(newValue);
+  };
+
+  const handleChangeTo = (newValue) => {
+      setDateTo(newValue);
+  };
+
+  const updateFilterTransactions = (transactions) =>{
+    setTransactions(transactions)
+    let categories = {}
+    transactions.map((transaction) => {
+      categories[transaction.category.name] = transaction.category.id
+    });
+    let names = Object.keys(categories);
+    let optionsAux = []
+    names.map((name)=>{
+      let option = {
+        label: name,
+        value: categories[name]
+      }
+      optionsAux.push(option)
+
+
+    })
+    setOptions(optionsAux)
+    setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+  }
+
+
+  const getTransactions = () =>{
+    fetch(BACKEND_URL+'/expense', {
+     'headers': {
+       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+     }
+    })
+        .then((response) => response.json())
+        .then((actualData) =>{ 
+          setTotal(actualData.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+          if(JSON.stringify(actualData) != JSON.stringify(transactions)){
+               setTransactions(actualData);
+               console.log(actualData)
+           }    
+        })
+            .catch((err) => {
+            console.log(err.message);
+        });
+
+}
+
+
+  const handleAgregarGasto = () => setOpen(true);
+  const handleClose = () => {setOpen(false);};
+
+
+  useEffect(() => {
+    applyDateFilter()
+    //getTransactions();
+  }, []);
+
+
   
   return (
     <ThemeProvider theme={mdTheme}>
@@ -69,13 +177,73 @@ export default function DashboardContent(props) {
                     height: 240,
                   }}
                 >
-                  <Gastos total={props.total} />
+                  <Gastos total={total} />
+                </Paper>
+              </Grid>
+                            {/* Grafico Chona */}
+                            <Grid item xs={8} md={12} lg={12}>
+              <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 320,
+                  }}
+                >
+                <GraficoPie transactions={transactions}/>
+                </Paper>
+              </Grid>
+              {/* Filtro de Fecha */}
+              <Grid item xs={4} md={12} lg={12}>
+                <Paper 
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: 320,
+                }}
+                >
+                
+              
+        
+         <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Stack spacing={3}>
+            <DesktopDatePicker
+          label="Desde"
+          inputFormat="MM/DD/YYYY"
+          value={dateFrom}
+          onChange={handleChangeFrom}
+          renderInput={(params) => <TextField {...params} />}
+        />
+           <DesktopDatePicker
+          label="Hasta"
+          inputFormat="MM/DD/YYYY"
+          value={dateTo}
+          onChange={handleChangeTo}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        <Button className="add-expense-button" variant='outlined' onClick={applyDateFilter}>Aplicar</Button>
+        
+        <MultiSelect
+            options={options}
+            value={selected}
+            onChange={setSelected}
+          labelledBy="Select"
+        />
+
+
+        </Stack>
+        
+        
+ 
+        </LocalizationProvider>
+      
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders transactions={props.transactions}/>
+                  <Orders transactions={transactions}/>
                 </Paper>
               </Grid>
             </Grid>

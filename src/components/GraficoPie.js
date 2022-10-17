@@ -1,9 +1,15 @@
 import {Pie,getElementAtEvent, getDatasetAtEvent} from 'react-chartjs-2'
-import { useRef, React, useEffect,useState } from 'react';
+//import { useRef, React, useEffect,useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import Title from './Title';
+import {ResponsiveContainer} from 'recharts';
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useRef } from 'react';
+import "../assets/scss/moneyManager.scss"
 
-
-  export const GraficoPie = (props) =>{
+export const GraficoPie = (props) =>{
 
     const chartRef = useRef();
     ChartJS.register(ArcElement, Tooltip, Legend);
@@ -51,7 +57,17 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
     };
 
 
-    return (<Pie ref={chartRef} options={{responsive:true}} data= {data} />)
+    return (
+      <React.Fragment>
+      <Title>Gastos de {'Octubre'}</Title>
+      <div className='prueba'>
+        <div className='prueba-2'>
+        <Pie className='pie' ref={chartRef} options={{responsive:true}} data= {data} />
+        </div>
+      </div>
+    </React.Fragment>
+    
+    )
 }
 
 
