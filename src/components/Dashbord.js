@@ -222,7 +222,7 @@ export default function DashboardContent(props) {
                     height: 320,
                   }}
                 >
-                <GraficoPie transactions={transactions}/>
+                <GraficoPie transactions={transactions} total={total}/>
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}
