@@ -74,7 +74,7 @@ export default function Orders(props) {
       <div className='table-title'>
         <div className='titulo-principal'>
         <Typography component="h2" variant="h6" color="primary" gutterBottom>
-          Gastos Recientes
+          Gastos del período
         </Typography>
         </div>
         <div className='boton-principal'>
