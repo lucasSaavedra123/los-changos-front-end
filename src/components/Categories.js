@@ -25,8 +25,23 @@ import ExpenseCategory from './ExpenseCategory';
 import ExpenseDynamicCategory from './ExpenseDynamicCategory';
 import EditCategoryModal from './EditCategoryModal';
 import { BACKEND_URL } from '../CONSTANTS';
+import Title from './Title'
 
 export const Categories = () => {
+    const styles = {
+        "&.MuiButton-root": {
+          border: "2px green solid"
+        },
+        "&.MuiButton-text": {
+          color: "green"
+        },
+        "&.MuiButton-contained": {
+          color: "green"
+        },
+        "&.MuiButton-outlined": {
+          color: "green"
+        }
+      };
 
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
@@ -61,12 +76,12 @@ export const Categories = () => {
         <React.Fragment>
             <div className='table-title'>
                 <div className='titulo-principal'>
-                    <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                    <Title>
                         Categorias
-                    </Typography>
+                    </Title>
                 </div>
                 <div className='boton-principal'>
-                    <Button className="add-expense-button" variant='outlined' onClick={() => setOpen(!open)}>
+                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => setOpen(!open)}>
                         AGREGAR CATEGORIA
                     </Button>
                 </div>
