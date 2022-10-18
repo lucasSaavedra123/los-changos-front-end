@@ -9,9 +9,16 @@
 .table-title{
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 .titulo-principal{
   width:75%
+}
+.boton-principal{
+  width: 100%;
+  display: flex;
+
+
 }
 
 .add-expense-button{

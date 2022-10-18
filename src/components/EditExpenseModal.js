@@ -16,6 +16,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import CategoryIcon from "./CategoryIcon";
 import { BACKEND_URL } from "../CONSTANTS";
+import Stack from '@mui/material/Stack';
 
 export const EditExpenseModal = (props) => {
 

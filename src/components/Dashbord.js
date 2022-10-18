@@ -261,6 +261,8 @@ export default function DashboardContent(props) {
           inputFormat="MM/DD/YYYY"
           value={dateFrom}
           onChange={handleChangeFrom}
+          sx={{color:'#9CE37D;'}}
+          disableFuture='true'
           renderInput={(params) => <TextField {...params} />}
         />
            <DesktopDatePicker
@@ -268,6 +270,7 @@ export default function DashboardContent(props) {
           inputFormat="MM/DD/YYYY"
           value={dateTo}
           onChange={handleChangeTo}
+          disableFuture='true'
           renderInput={(params) => <TextField {...params} />}
         />
         <MultiSelect
@@ -291,7 +294,7 @@ export default function DashboardContent(props) {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders transactions={transactions}/>
+                  <Orders transactions={transactions} confirmAction={applyDateFilter}/>
                 </Paper>
               </Grid>
             </Grid>

@@ -78,7 +78,7 @@ export const GraficoPie = (props) => {
           <div className='boton-principal'>
           <Stack spacing={1}>
           <Title>Total del Periodo</Title>
-            <Typography component="p" variant="h4">
+            <Typography component="p" style={{textAlign:'center'}} variant="h4">
             $ {addCommas(props.total)}
             </Typography>
           </Stack>

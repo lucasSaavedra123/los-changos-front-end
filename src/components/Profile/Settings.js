@@ -67,17 +67,17 @@ const Settings = () => {
 
   const BasicCard = () => {
     return (
-      <Card style={{ borderRadius: 5, border: "1px solid #9CE37D", margin: 30, backgroundColor: "black" }}>
+      <Card style={{ borderRadius: 5, border: "1px solid #9CE37D", margin: 30, backgroundColor: "white" }}>
         <CardContent style={{ color: "black" }}>
-          <Typography variant="h5" component="div" style={{ color: "white" }}>
+          <Typography variant="h5" component="div" style={{ color: "black" }}>
             Cambiar Contraseña
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color="white">
+          <Typography sx={{ mb: 1.5 }} color="black">
             Si queres cambiar la contraseña, clickea abajo que te mandamos un mail para cambiarla.
           </Typography>
         </CardContent>
         <CardActions style={{ display: 'flex' }}>
-          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "black", color: "white" }} size="small" onClick={() => { forgotPassword() }} variant="outlined">Mandar mail</Button>
+          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "white", color: "black" }} size="small" onClick={() => { forgotPassword() }} variant="outlined">Mandar mail</Button>
         </CardActions>
       </Card>
     );

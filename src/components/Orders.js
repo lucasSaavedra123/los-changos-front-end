@@ -115,41 +115,16 @@ export default function Orders(props) {
             <TableCell style={{color: "green"}}>Fecha</TableCell>
             <TableCell style={{color: "green"}}>Nombre de Gasto</TableCell>
             <TableCell style={{color: "green"}}>Valor</TableCell>
-            <TableCell style={{color: "green"}}>Accion</TableCell>
+            <TableCell style={{color: "green" , textAlign:'center'}}>Accion</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
         {props.transactions
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((transaction) => (
-            <TableRow hover key={transaction.id}>
-                <TableCell>{transaction.date}</TableCell>
-                <TableCell>{transaction.name}</TableCell>
-                <TableCell>${addCommas(transaction.value)}</TableCell>
-                <TableCell>
-                    <div className='buttons-transactions-table'>
-                    <div className='view-detailed-expense' onClick={() => setOpen(!open)}> 
-                        <VisibilityIcon sx={{ color: "black" }}/>
-                    </div>
-                    <div className='delete-button' onClick={deleteExpenseCard}>
-                        <DeleteIcon  sx={{ color: "black" }}/>
-                    </div>
-                    <div className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
-                        <EditIcon sx={{ color: "black" }} />
 
-                    </div>
-
-                    <Modal open={openCategory}
-                        onClose={handleCategoryClose} disableBackdropClick>
-                        <EditExpenseModal confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.title} value={props.value} handleCloseModal={handleCategoryClose}/>
-
-                    </Modal>
-        
-
-                    </div>
-                </TableCell>
-              {/* <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction} ></ExpendCard> */}
-            </TableRow>
+            <ExpendCard id={transaction.id} name ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction}  />
+            
           ))}
         </TableBody>
       </Table>

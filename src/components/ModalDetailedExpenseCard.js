@@ -18,7 +18,7 @@ export const ModalDetailedExpenseCard = (props) => {
             </div>
             <div className="expense">
                 <div className='price'>${props.value}</div>
-                <div className='expense-detail'>{props.title}</div>
+                <div className='expense-detail'>{props.name}</div>
                 <div className='date'>{props.date}</div>
             </div>
 
