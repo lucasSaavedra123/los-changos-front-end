@@ -82,7 +82,7 @@ export default function Chart(props) {
 
   useEffect(() => {
     getTransactions()
-  }, []);
+  }, [props.transactions]);
 
   return (
     <React.Fragment>
