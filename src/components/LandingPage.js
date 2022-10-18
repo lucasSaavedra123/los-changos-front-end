@@ -9,9 +9,9 @@ const LandingPage = () => {
 
     return (
         <>
-            <div className="landing-page" >
+            <div className="landing-page">
                 <Navigator />
-                <LandingPageFront />
+                <LandingPageFront style={{backgroundColor:"black"}} />
             </div>
         </>
     );

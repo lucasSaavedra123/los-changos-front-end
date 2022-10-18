@@ -136,7 +136,7 @@ const Register = () => {
     }
 
     return (
-        <div className="row g-0 auth-wrapper background-color:white" >
+        <div className="row g-0 auth-wrapper landing-page" >
             <NavigatorWithButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
                 <div className="d-flex flex-column align-content-end">

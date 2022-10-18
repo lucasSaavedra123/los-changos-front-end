@@ -119,7 +119,7 @@ const Login = () => {
     }
 
     return (
-        <div className="row g-0 auth-wrapper">
+        <div className="row g-0 auth-wrapper landing-page">
 
             <NavigatorWithButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
@@ -225,7 +225,7 @@ const Login = () => {
                                 </div>
 
                             </Box>
-                            <div className="auth-option text-center pt-2 black-font">¿No tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/register" >Registrate </Link></div>
+                            <div className="auth-option text-center pt-2 white-font">¿No tenes cuenta? <Link  style={{color: '#5cb377'}}  className="text-link" to="/register" >Registrate </Link></div>
                             <div className="auth-option text-center pt-2"><Link  style={{color: '#5cb377'}}  className="text-link" to="/forgotPassword">Olvide mi contraseña </Link></div>
                         </div>
                     </div>
