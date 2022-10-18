@@ -72,7 +72,28 @@ export default function DashboardContent(props) {
   }
   const applyDateFilter = () => {
       if(selected.length === 0){
-        setTransactions([])
+        fetch(BACKEND_URL+'/expense/filter', {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+  
+          
+          body: JSON.stringify({
+              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
+              category_id: [],
+          })
+  
+  
+      })
+      .then((res)=>res.json())
+      .then((transactions) =>{
+        setTransactions(transactions)
+        setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
+        setTotalForMonth(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ))
+      })
       }else{
       fetch(BACKEND_URL+'/expense/filter', {
           method: 'POST',
@@ -95,7 +116,7 @@ export default function DashboardContent(props) {
   }
 }
 
-  const getAllMonthTransactions = () => {
+  const getAllMonthTransactionsForTotal = () => {
     fetch(BACKEND_URL+'/expense/filter', {
         method: 'POST',
         headers: {
@@ -114,8 +135,6 @@ export default function DashboardContent(props) {
     })
     .then((res)=>res.json())
     .then((transactions) =>{
-      setTransactions(transactions)
-      setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
       setTotalForMonth(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ))
     })
 }
@@ -135,7 +154,6 @@ export default function DashboardContent(props) {
       optionsAux.push(option)
     })
     setOptions(optionsAux)
-    setSelected(optionsAux)
   }
 
 
@@ -157,7 +175,7 @@ export default function DashboardContent(props) {
   }
 
 
-  const getTransactions = () =>{
+  const getTransactionsForMultiSelect = () =>{
     fetch(BACKEND_URL+'/expense', {
      'headers': {
        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
@@ -165,6 +183,7 @@ export default function DashboardContent(props) {
     })
         .then((response) => response.json())
         .then((actualData) =>{ 
+          setHistoricalTransactions(transactions)
           getAllCategoriesForMultiSelect(actualData)
         })
             .catch((err) => {
@@ -178,12 +197,12 @@ export default function DashboardContent(props) {
   const handleClose = () => {setOpen(false);};
 
   useEffect(()=>{
-    getTransactions()
-    getAllMonthTransactions()
+    applyDateFilter()
   },[])
 
   useEffect(()=>{
-
+    getTransactionsForMultiSelect()
+    getAllMonthTransactionsForTotal()
   },[transactions])
 
   
@@ -216,7 +235,7 @@ export default function DashboardContent(props) {
                     height: 240,
                   }}
                 >
-                  <Chart />
+                  <Chart transactions={historicalTransactions}/>
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
