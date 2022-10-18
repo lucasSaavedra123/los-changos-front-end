@@ -92,7 +92,6 @@ export default function DashboardContent(props) {
       .then((transactions) =>{
         setTransactions(transactions)
         setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
-        setTotalForMonth(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ))
       })
       }else{
       fetch(BACKEND_URL+'/expense/filter', {
@@ -127,7 +126,7 @@ export default function DashboardContent(props) {
 
         
         body: JSON.stringify({
-            timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
+            timeline:[new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0],today.toISOString().split('T')[0]],
             category_id: [],
         })
 
