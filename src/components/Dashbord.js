@@ -182,6 +182,10 @@ export default function DashboardContent(props) {
     getAllMonthTransactions()
   },[])
 
+  useEffect(()=>{
+
+  },[transactions])
+
   
   return (
     <ThemeProvider theme={mdTheme}>
