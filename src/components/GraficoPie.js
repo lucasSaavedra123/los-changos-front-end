@@ -71,7 +71,7 @@ export const GraficoPie = (props) => {
       <React.Fragment>
         <div className='table-title'>
           <div className='titulo-principal'>
-            <Typography component="h2" variant="h6" color="primary" gutterBottom>
+            <Typography component="h2" variant="h6" color="primary" gutterBottom style={{color: "green"}}>
               Categorias
             </Typography>
           </div>

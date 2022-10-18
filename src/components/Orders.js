@@ -21,12 +21,30 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
 import "../assets/scss/moneyManager.scss";
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
 export default function Orders(props) {
+
+
+  const styles = {
+    "&.MuiButton-root": {
+      border: "2px green solid"
+    },
+    "&.MuiButton-text": {
+      color: "green"
+    },
+    "&.MuiButton-contained": {
+      color: "green"
+    },
+    "&.MuiButton-outlined": {
+      color: "green"
+    }
+  };
 
     const [open, setOpen] = useState(false);
     const [openCategory, setCategoryOpen] = useState(false)
@@ -70,17 +88,17 @@ export default function Orders(props) {
 
     }
   return (
-    <React.Fragment>
+    <React.Fragment style={{color: "green"}}>
       <div className='table-title'>
         <div className='titulo-principal'>
-        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        <Typography component="h2" variant="h6" color="primary" gutterBottom style={{color: "green"}}>
           Gastos del período
         </Typography>
         </div>
         <div className='boton-principal'>
-          <Button className="add-expense-button" variant='outlined'onClick={handleAgregarGasto}>
+        <Button sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
               AGREGAR GASTO
-          </Button>
+        </Button>
         </div>
         <Modal
           open={open} onClose={handleClose}>
@@ -94,10 +112,10 @@ export default function Orders(props) {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Fecha</TableCell>
-            <TableCell>Nombre de Gasto</TableCell>
-            <TableCell>Valor</TableCell>
-            <TableCell>Accion</TableCell>
+            <TableCell style={{color: "green"}}>Fecha</TableCell>
+            <TableCell style={{color: "green"}}>Nombre de Gasto</TableCell>
+            <TableCell style={{color: "green"}}>Valor</TableCell>
+            <TableCell style={{color: "green"}}>Accion</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

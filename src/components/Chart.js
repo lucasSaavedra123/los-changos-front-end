@@ -5,7 +5,7 @@ import Title from './Title';
 import { useContext, useState, useEffect } from "react";
 import { BACKEND_URL } from "../CONSTANTS";
 import { AuthContext } from "../context/AuthContext";
-
+import { createTheme } from '@mui/material/styles';
 
 // Generate Sales Data
 function createData(month, amount) {
@@ -26,7 +26,17 @@ const data = [
 
 export default function Chart(props) {
   const { currentUser } = useContext(AuthContext);
-  const theme = useTheme();
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: "green",
+        main: "green",
+        dark: "green",
+        contrastText: '#000',
+      }
+    },
+  });
+
   const [options, setOptions] = useState([])
   const [transactions, setTransactions] = useState([]);
 
@@ -113,7 +123,7 @@ export default function Chart(props) {
             type="monotone"
             dataKey="amount"
             stroke={theme.palette.primary.main}
-            dot={false}
+            dot={true}
           />
         </LineChart>
       </ResponsiveContainer>

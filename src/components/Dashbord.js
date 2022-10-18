@@ -31,6 +31,22 @@ const mdTheme = createTheme();
 
 export default function DashboardContent(props) {
 
+  const styles = {
+    "&.MuiButton-root": {
+      border: "2px green solid"
+    },
+    "&.MuiButton-text": {
+      color: "green"
+    },
+    "&.MuiButton-contained": {
+      color: "green"
+    },
+    "&.MuiButton-outlined": {
+      color: "green"
+    }
+  };
+
+
   let today = new Date();
   const { currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
@@ -260,7 +276,7 @@ export default function DashboardContent(props) {
             onChange={getSelectedCategoriesArray}
           labelledBy="Select"
         />
-        <Button className="add-expense-button" variant='outlined' onClick={() => {applyDateFilter()}}>Aplicar</Button>
+        <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => {applyDateFilter()}}>Aplicar</Button>
         
 
 
