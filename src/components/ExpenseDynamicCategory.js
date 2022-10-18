@@ -58,7 +58,7 @@ export const ExpenseDynamicCategory = (props) => {
                     </div>
                 </div> 
                 <Modal open={open} onClose={handleClose} >
-                        <EditCategoryModal icon={props.icon} name={props.title} handleCloseModal={handleClose} id={props.id} confirmAction={props.confirmAction}/>
+                        <EditCategoryModal action={'Editar'} icon={props.icon} name={props.name} handleCloseModal={handleClose} id={props.id} confirmAction={props.confirmAction}/>
                 </Modal>         
 
             </TableCell>

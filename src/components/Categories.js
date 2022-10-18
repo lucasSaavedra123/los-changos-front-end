@@ -88,7 +88,7 @@ export const Categories = () => {
                 <Modal
                     open={open} onClose={handleClose}>
                     <div className="add-expense-modal">
-                        <EditCategoryModal handleCloseModal={handleClose} confirmAction={getCategories} />
+                        <EditCategoryModal action={'Nueva'} handleCloseModal={handleClose} confirmAction={getCategories} />
                     </div>
                 </Modal>
 
