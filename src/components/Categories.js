@@ -26,6 +26,7 @@ import ExpenseDynamicCategory from './ExpenseDynamicCategory';
 import EditCategoryModal from './EditCategoryModal';
 import { BACKEND_URL } from '../CONSTANTS';
 import Title from './Title'
+import { PropaneSharp } from '@mui/icons-material';
 
 export const Categories = () => {
     const styles = {
@@ -46,9 +47,11 @@ export const Categories = () => {
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
+    const [loading, setLoading] = useState(true);
 
     const { currentUser } = useContext(AuthContext);
     const getCategories = () => {
+        setLoading(true)
         fetch(BACKEND_URL + '/category', {
             headers: {
                 'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
@@ -69,11 +72,15 @@ export const Categories = () => {
 
     useEffect(() => {
         getCategories()
+        setLoading(false)
     }, [categories]);
 
-    return (
 
-        <React.Fragment>
+    let page = loading ?
+    //ACA VA EL LOADING
+    <div></div>
+    :
+    <React.Fragment>
             <div className='table-title'>
                 <div className='titulo-principal'>
                     <Title>
@@ -122,6 +129,10 @@ export const Categories = () => {
                 </TableBody>
             </Table>
         </React.Fragment>
+
+    return (
+        page
+        
     )
 }
 

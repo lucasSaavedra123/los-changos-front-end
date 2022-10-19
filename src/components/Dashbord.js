@@ -15,8 +15,7 @@ import Gastos from './Gastos';
 import Orders from './Orders';
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useState, useEffect } from "react";
-import {GraficoPie}  from "./GraficoPie";
-import EditExpenseModal from "./EditExpenseModal";
+import { GraficoPie } from "./GraficoPie";
 import { BACKEND_URL } from "../CONSTANTS";
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -26,6 +25,7 @@ import { MultiSelect } from "react-multi-select-component";
 import Button from '@mui/material/Button'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Stack from '@mui/material/Stack';
+import { DotLoader } from 'react-spinners';
 
 const mdTheme = createTheme();
 
@@ -60,83 +60,91 @@ export default function DashboardContent(props) {
   const [selected, setSelected] = useState([]);
   const [selectedCategoriesArray, setSelectedCategoriesArray] = useState([]);
   const [options, setOptions] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const getSelectedCategoriesArray = (e) => {
     console.log(e)
     setSelected(e);
-    let selectedCategory=[]
-    e.map((category)=>{
+    let selectedCategory = []
+    e.map((category) => {
       selectedCategory.push(category.value)
     })
     setSelectedCategoriesArray(selectedCategory)
   }
   const applyDateFilter = () => {
-      if(selected.length === 0){
-        fetch(BACKEND_URL+'/expense/filter', {
-          method: 'POST',
-          headers: {
-              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-  
-          
-          body: JSON.stringify({
-              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
-              category_id: [],
-          })
-  
-  
-      })
-      .then((res)=>res.json())
-      .then((transactions) =>{
-        setTransactions(transactions)
-        setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ));
-      })
-      }else{
-      fetch(BACKEND_URL+'/expense/filter', {
-          method: 'POST',
-          headers: {
-              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-          },
-  
-          
-          body: JSON.stringify({
-              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
-              category_id: selectedCategoriesArray,
-          })
-  
-  
-      })
-      .then((res)=>res.json())
-      .then((data) =>updateFilterTransactions(data))
-  }
-}
-
-  const getAllMonthTransactionsForTotal = () => {
-    fetch(BACKEND_URL+'/expense/filter', {
+    if (selected.length === 0) {
+      setLoading(true)
+      fetch(BACKEND_URL + '/expense/filter', {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         },
 
-        
+
         body: JSON.stringify({
-            timeline:[new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0],today.toISOString().split('T')[0]],
-            category_id: [],
+          timeline: [dateFrom.toISOString().split('T')[0], dateTo.toISOString().split('T')[0]],
+          category_id: [],
         })
 
 
+      })
+        .then((res) => res.json())
+        .then((transactions) => {
+          setTransactions(transactions)
+          setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
+          setLoading(false)
+        })
+    } else {
+      setLoading(true)
+      fetch(BACKEND_URL + '/expense/filter', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+
+
+        body: JSON.stringify({
+          timeline: [dateFrom.toISOString().split('T')[0], dateTo.toISOString().split('T')[0]],
+          category_id: selectedCategoriesArray,
+        })
+
+
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setLoading(false)
+          updateFilterTransactions(data)
+        })
+    }
+  }
+
+  const getAllMonthTransactionsForTotal = () => {
+    fetch(BACKEND_URL + '/expense/filter', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+
+
+      body: JSON.stringify({
+        timeline: [new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0], today.toISOString().split('T')[0]],
+        category_id: [],
+      })
+
+
     })
-    .then((res)=>res.json())
-    .then((transactions) =>{
-      setTotalForMonth(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 ))
-    })
-}
+      .then((res) => res.json())
+      .then((transactions) => {
+        setTotalForMonth(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
+        setLoading(false)
+      })
+  }
 
   const getAllCategoriesForMultiSelect = (historicalTransactions) => {
     let categories = {}
@@ -145,7 +153,7 @@ export default function DashboardContent(props) {
     });
     let names = Object.keys(categories);
     let optionsAux = []
-    names.map((name)=>{
+    names.map((name) => {
       let option = {
         label: name,
         value: categories[name]
@@ -157,55 +165,58 @@ export default function DashboardContent(props) {
 
 
   const handleChangeFrom = (newValue) => {
-      setDateFrom(newValue);
+    setDateFrom(newValue);
   };
 
   const handleChangeTo = (newValue) => {
-      setDateTo(newValue);
+    setDateTo(newValue);
   };
 
-  const updateFilterTransactions = (transactions) =>{
+  const updateFilterTransactions = (transactions) => {
     setTransactions(transactions)
     let categories = {}
     transactions.map((transaction) => {
       categories[transaction.category.name] = transaction.category.id
     });
-    setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+    setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
   }
 
 
-  const getTransactionsForMultiSelect = () =>{
-    fetch(BACKEND_URL+'/expense', {
-     'headers': {
-       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-     }
+  const getTransactionsForMultiSelect = () => {
+    fetch(BACKEND_URL + '/expense', {
+      'headers': {
+        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+      }
     })
-        .then((response) => response.json())
-        .then((actualData) =>{ 
-          setHistoricalTransactions(transactions)
-          getAllCategoriesForMultiSelect(actualData)
-        })
-            .catch((err) => {
-            console.log(err.message);
-        });
+      .then((response) => response.json())
+      .then((actualData) => {
+        setHistoricalTransactions(transactions)
+        getAllCategoriesForMultiSelect(actualData)
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
 
-}
+  }
 
 
   const handleAgregarGasto = () => setOpen(true);
-  const handleClose = () => {setOpen(false);};
+  const handleClose = () => { setOpen(false); };
 
-  useEffect(()=>{
+  useEffect(() => {
     applyDateFilter()
-  },[])
+  }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
+    setLoading(true)
     getTransactionsForMultiSelect()
     getAllMonthTransactionsForTotal()
-  },[transactions])
+  }, [transactions])
 
-  
-  return (
+  let page = loading ?
+    //ACA VA EL LOADING INDICATOR
+    <div></div>
+    :
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -221,6 +232,7 @@ export default function DashboardContent(props) {
             overflow: 'auto',
           }}
         >
+
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
@@ -234,7 +246,7 @@ export default function DashboardContent(props) {
                     height: 240,
                   }}
                 >
-                  <Chart transactions={historicalTransactions}/>
+                  <Chart transactions={historicalTransactions} />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -247,12 +259,12 @@ export default function DashboardContent(props) {
                     height: 240,
                   }}
                 >
-                  <Gastos total={totalForMonth} month={"Octubre 2022"}/>
+                  <Gastos total={totalForMonth} month={"Octubre 2022"} />
                 </Paper>
               </Grid>
               {/* Grafico Chona */}
               <Grid item xs={8} md={8} lg={8}>
-              <Paper
+                <Paper
                   sx={{
                     p: 2,
                     display: 'flex',
@@ -260,63 +272,58 @@ export default function DashboardContent(props) {
                     height: 320,
                   }}
                 >
-                <GraficoPie transactions={transactions} total={total}/>
+                  <GraficoPie transactions={transactions} total={total} />
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}
               <Grid item xs={4} md={4} lg={4}>
-                <Paper 
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 320,
-                }}
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 320,
+                  }}
                 >
-                
-              
-        
-         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Stack spacing={3}>
-            <DesktopDatePicker
-          label="Desde"
-          inputFormat="MM/DD/YYYY"
-          value={dateFrom}
-          onChange={handleChangeFrom}
-          sx={{color:'#9CE37D;'}}
-          disableFuture='true'
-          renderInput={(params) => <TextField {...params} />}
-        />
-           <DesktopDatePicker
-          label="Hasta"
-          inputFormat="MM/DD/YYYY"
-          value={dateTo}
-          onChange={handleChangeTo}
-          disableFuture='true'
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <MultiSelect
-            options={options}
-            value={selected}
-            onChange={getSelectedCategoriesArray}
-          labelledBy="Select"
-        />
-        <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => {applyDateFilter()}}>Aplicar</Button>
-        
 
 
-        </Stack>
-        
-        
- 
-        </LocalizationProvider>
-      
+
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Stack spacing={3}>
+                      <DesktopDatePicker
+                        label="Desde"
+                        inputFormat="MM/DD/YYYY"
+                        value={dateFrom}
+                        onChange={handleChangeFrom}
+                        sx={{ color: '#9CE37D;' }}
+                        disableFuture='true'
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                      <DesktopDatePicker
+                        label="Hasta"
+                        inputFormat="MM/DD/YYYY"
+                        value={dateTo}
+                        onChange={handleChangeTo}
+                        disableFuture='true'
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                      <MultiSelect
+                        options={options}
+                        value={selected}
+                        onChange={getSelectedCategoriesArray}
+                        labelledBy="Select"
+                      />
+                      <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => { applyDateFilter() }}>Aplicar</Button>
+
+
+                    </Stack>
+                  </LocalizationProvider>
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders transactions={transactions} confirmAction={applyDateFilter}/>
+                  <Orders transactions={transactions} confirmAction={applyDateFilter} />
                 </Paper>
               </Grid>
             </Grid>
@@ -324,6 +331,8 @@ export default function DashboardContent(props) {
         </Box>
       </Box>
     </ThemeProvider>
+  return (
+    page
   );
 }
 
