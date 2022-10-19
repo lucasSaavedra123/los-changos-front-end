@@ -21,6 +21,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Grid from '@mui/material/Grid';
+import CustomAlert from "./CustomAlert";
 
 
 const style = {
@@ -45,6 +46,24 @@ export const EditExpenseModal = (props) => {
     const [categories, setCategories] = useState([]);
 
     const { currentUser } = useContext(AuthContext);
+    const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
+    const [openValueError, setopenValueError] = useState(false);
+
+    const showCompleteAllFields = () => {
+        setopenCompleteAllFields(true);
+    };
+
+    const closeCompleteAllFields = () => {
+        setopenCompleteAllFields(false);
+    };
+
+    const showValueError = () => {
+        setopenValueError(true);
+    };
+
+    const closeValueError = () => {
+        setopenValueError(false);
+    };
 
     const getCategorias = () => {
         fetch(BACKEND_URL + '/category', {
@@ -88,9 +107,11 @@ export const EditExpenseModal = (props) => {
 
     const saveExpense = (e) => {
         e.preventDefault();
-        if (value === '' || name === '') {
-            console.log('Faltan campos ')
-
+        if (value === '' || name === '' || category === '') {
+            showCompleteAllFields()
+        }
+        else if (value < 0){
+            showValueError()
         }
         else {
             console.log(typeof date)
@@ -111,20 +132,19 @@ export const EditExpenseModal = (props) => {
                 })
 
 
-            }).finally(() => { props.confirmAction() })
+            }).finally(() => { props.confirmAction();props.handleCloseModal()})
 
         }
-
-        props.handleCloseModal()
-
 
     }
 
     const editExpense = (e) => {
         e.preventDefault();
-        if (value === '' || name === '') {
-            console.log('Faltan campos ')
-
+        if (value === '' || name === '' || category === '') {
+            showCompleteAllFields()
+        }
+        else if (value < 0){
+            showValueError()
         }
         else {
             fetch(BACKEND_URL + '/expense', {
@@ -145,17 +165,16 @@ export const EditExpenseModal = (props) => {
                 })
 
 
-            }).finally(() => { props.confirmAction() })
+            }).finally(() => { props.confirmAction();props.handleCloseModal();})
 
         }
-
-        props.handleCloseModal()
 
 
     }
 
 
     return (
+        <>
         <Box sx={style}>
             <Stack spacing={3}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -202,55 +221,10 @@ export const EditExpenseModal = (props) => {
             </Stack>
 
         </Box>
-        /* <div className="contenedor">
-            <div className="add-category">
-                <Box component="form" className="form-expense">
-                    <div> Nuevo Gasto </div>
-                    <div className="name-expense-category">
-                        <TextField className="textfield" label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
-                    </div>
-                    <div className="name-expense-category">
-                        <TextField className="textfield" label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
-                    </div>
-                    <div>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <MobileDatePicker
-                                className="textfield"
-                                label="Fecha del gasto"
-                                inputFormat="YYYY-MM-DD"
-                                value={date}
-                                onChange={handleChange}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        </LocalizationProvider>
-                    </div>
-                    <div className="select-expense-icon">
-                    <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={category}
-                            label="Category"
-                            onChange={handleChangeSelect}
-                        >
-                            {categories.map((category)=>(
-                                <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
-                            ))}
-                        </Select>
-                        
-                    </div>
-                    <div className="botones-formulario">
-                        <Button  style={{backgroundColor:'#9CE37D'}} onClick={cancelChanges}> <CancelIcon sx={{color:'white'}} /> </Button>
-                        <Button  style={{backgroundColor:'#9CE37D'}} onClick={createOrEditExpense}> <DoneIcon sx={{color:'white'}} /> </Button>
-                    </div>
+        <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
+        <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
 
-
-
-
-
-                </Box>
-            </div>
-        </div> */
+        </>
     )
 }
 

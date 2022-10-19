@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Grid from '@mui/material/Grid';
+import CustomAlert from "./CustomAlert";
 
 
 const style = {
@@ -35,6 +36,16 @@ export const EditCategoryModal = (props) => {
     const [icon, setIcon] = useState(typeof props.icon === "undefined" ? '' : props.icon);
     const [name, setName]= useState(typeof props.name === "undefined" ? '' : props.name);
     const { currentUser } = useContext(AuthContext);
+    const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
+
+    const showCompleteAllFields = () => {
+        setopenCompleteAllFields(true);
+    };
+
+    const closeCompleteAllFields = () => {
+        setopenCompleteAllFields(false);
+    };
+
 
     console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
@@ -52,8 +63,7 @@ export const EditCategoryModal = (props) => {
     const saveCategory = (e) => {
         e.preventDefault();
         if (name === ''  || icon ==='') {
-            console.log('Faltan campos ')
-
+            showCompleteAllFields()
         }
         else{
         fetch(BACKEND_URL+'/category', {
@@ -68,17 +78,14 @@ export const EditCategoryModal = (props) => {
         material_ui_icon_name: icon
         })
     
-        }).finally(()=>{props.confirmAction()});}
-
-        props.handleCloseModal()
+        }).finally(()=>{props.confirmAction();props.handleCloseModal()});}
 
     }
 
     const editCategory = (e) => {
         e.preventDefault();
         if (name === ''  || icon ==='') {
-            console.log('Faltan campos ')
-
+            showCompleteAllFields()
         }
         else{
         props.handleCloseModal()
@@ -95,7 +102,7 @@ export const EditCategoryModal = (props) => {
         id: props.id,
         })
     
-        }).finally(()=>{props.confirmAction()});}
+        }).finally(()=>{props.confirmAction();props.handleCloseModal()});}
 
     }
     const cancelChanges = () => {
@@ -104,6 +111,7 @@ export const EditCategoryModal = (props) => {
 
 
     return (
+        <>
         
         <Box sx={style}>
         <Stack spacing={3}>
@@ -140,7 +148,9 @@ export const EditCategoryModal = (props) => {
 
     </Box>
 
+    <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
 
+    </>
 
 
         // <div className="contenedor">
