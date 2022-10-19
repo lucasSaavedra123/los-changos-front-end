@@ -213,7 +213,7 @@ export default function DashboardContent(props) {
     getAllMonthTransactionsForTotal()
   }, [transactions])
 
-  let page = loading ?
+  let page = false ?
     //ACA VA EL LOADING INDICATOR
     <div></div>
     :

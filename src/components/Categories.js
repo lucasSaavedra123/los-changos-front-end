@@ -76,7 +76,7 @@ export const Categories = () => {
     }, [categories]);
 
 
-    let page = loading ?
+    let page = false ?
     //ACA VA EL LOADING
     <div></div>
     :
