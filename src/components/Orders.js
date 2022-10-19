@@ -103,7 +103,7 @@ export default function Orders(props) {
         <Modal
           open={open} onClose={handleClose}>
           <div className="add-expense-modal">
-             <EditExpenseModal handleCloseModal={handleClose} confirmAction={props.confirmAction}/>
+             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={props.confirmAction}/>
            </div>
          </Modal>
        
