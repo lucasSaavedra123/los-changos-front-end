@@ -212,7 +212,8 @@ export default function DashboardContent(props) {
     getTransactionsForMultiSelect()
     getAllMonthTransactionsForTotal()
   }, [transactions])
-  
+
+
 
   let page = false ?
     //ACA VA EL LOADING INDICATOR
