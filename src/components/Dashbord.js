@@ -214,6 +214,7 @@ export default function DashboardContent(props) {
   }, [transactions])
 
 
+  
 
   let page = false ?
     //ACA VA EL LOADING INDICATOR
