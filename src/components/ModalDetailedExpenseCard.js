@@ -1,8 +1,6 @@
 import "../assets/scss/expenseCard.scss"
-import { useState } from "react";
 
 export const ModalDetailedExpenseCard = (props) => {
-    const [open, setOpen] = useState(false);
  
       return(
        

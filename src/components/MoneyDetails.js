@@ -24,18 +24,4 @@ export const MoneyDetails = (props) => {
   )
 }
 
-{/* <div className="money-details-container">
-<div className="expenses-container">
-  {//Agregar div para ajustar texto con el box 
-  }
-  <div className="data-container">
-    <p className="details-text">Tus gastos</p>
-    <p className="details-money" testid="expensesAmount">
-      $ {total}
-    </p>
-  </div>
-</div>
-</div>
-) */}
-
 export default MoneyDetails

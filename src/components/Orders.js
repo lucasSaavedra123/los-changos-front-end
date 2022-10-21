@@ -1,32 +1,16 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from './Title';
 import ExpendCard from './ExpendCard';
-import ModalDetailedExpenseCard from './ModalDetailedExpenseCard';
 import EditExpenseModal from './EditExpenseModal';
-import CategoryIcon from './CategoryIcon';
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { BACKEND_URL } from "../CONSTANTS";
 import { useState } from 'react';
 import { Modal, TableContainer, TablePagination } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
 import { Button } from "@mui/material";
 import "../assets/scss/moneyManager.scss";
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/material/styles';
-
-function preventDefault(event) {
-  event.preventDefault();
-}
 
 export default function Orders(props) {
 
@@ -47,8 +31,6 @@ export default function Orders(props) {
   };
 
     const [open, setOpen] = useState(false);
-    const [openCategory, setCategoryOpen] = useState(false)
-    const { currentUser } = useContext(AuthContext);
     const handleAgregarGasto = () => setOpen(true);
     const handleClose = () => {setOpen(false);};
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -63,30 +45,7 @@ export default function Orders(props) {
       setPage(0);
     };
 
-    const handleCategoryClose = () => {
-        setCategoryOpen(false)
-    }
 
-    const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    const deleteExpenseCard = (e) => {
-        e.preventDefault();
-        if(window.confirm("¿Estas seguro que queres borrar este gasto?")){
-        fetch(BACKEND_URL+'/expense', {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-            },
-            body: JSON.stringify({
-                id: props.id
-            })
-
-
-        }).then(() => {props.confirmAction()})
-    }
-
-    }
   return (
     <React.Fragment style={{color: "green"}}>
       <div className='table-title'>

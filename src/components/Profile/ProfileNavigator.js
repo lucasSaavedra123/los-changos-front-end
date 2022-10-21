@@ -28,14 +28,13 @@ import { AuthContext } from "../../context/AuthContext";
 export const ProfileNavigator = () => {
 
     const { dispatch } = useContext(AuthContext);
-    const { currentUser } = useContext(AuthContext);
 
     const logOut = () => {
         signOut(auth).then(() => {
             dispatch({ type: "LOGOUT", payload: null })
             window.location.href = "/"
         }).catch((error) => {
-            alert("FallO!!!!")
+            alert("Log Out Fallo")
         });
     }
 

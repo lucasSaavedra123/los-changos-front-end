@@ -6,23 +6,6 @@ import { BACKEND_URL } from "../CONSTANTS";
 import { AuthContext } from "../context/AuthContext";
 import { createTheme } from '@mui/material/styles';
 
-// Generate Sales Data
-function createData(month, amount) {
-  return { month, amount };
-}
-
-const data = [
-  createData('4', 0),
-  createData('7', 300),
-  createData('10', 600),
-  createData('11', 800),
-  createData('12', 1500),
-  createData('13', 2000),
-  createData('14', 2400),
-  createData('15', 2400),
-  createData('17', undefined),
-];
-
 export default function Chart(props) {
   const { currentUser } = useContext(AuthContext);
   const theme = createTheme({
@@ -37,7 +20,6 @@ export default function Chart(props) {
   });
 
   const [options, setOptions] = useState([])
-  const [transactions, setTransactions] = useState([]);
 
 
   const getTransactions = () =>{

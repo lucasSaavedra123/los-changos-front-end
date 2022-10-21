@@ -7,8 +7,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import MuiAlert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useContext } from 'react';
@@ -16,16 +14,9 @@ import { AuthContext } from '../../context/AuthContext';
 import CustomAlert from '../CustomAlert';
 
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-
-
 const Settings = () => {
   const [openError, setOpenError] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
-  const [openWarning, setOpenWarning] = React.useState(false);
 
   const { currentUser } = useContext(AuthContext);
 
@@ -37,20 +28,12 @@ const Settings = () => {
     setOpenError(true);
   };
 
-  const showWarningMessage = () => {
-    setOpenWarning(true);
-  };
-
   const closeSuccessMessage = (event, reason) => {
     setOpenSuccess(false);
   };
 
   const closeErrorMessage = (event, reason) => {
     setOpenError(false);
-  };
-
-  const closeWarningMessage = () => {
-    setOpenWarning(false);
   };
 
   const forgotPassword = (e) => {
