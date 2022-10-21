@@ -1,12 +1,4 @@
 import React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import "../assets/scss/settings.scss"
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
@@ -15,10 +7,8 @@ import { useState } from 'react';
 import TableCell from '@mui/material/TableCell';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { Modal } from '@material-ui/core';
 import "../assets/scss/expenseCard.scss"
 import ExpenseCategory from './ExpenseCategory';
@@ -26,7 +16,6 @@ import ExpenseDynamicCategory from './ExpenseDynamicCategory';
 import EditCategoryModal from './EditCategoryModal';
 import { BACKEND_URL } from '../CONSTANTS';
 import Title from './Title'
-import { PropaneSharp } from '@mui/icons-material';
 
 export const Categories = () => {
     const styles = {

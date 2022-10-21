@@ -1,8 +1,7 @@
-import { Pie, getElementAtEvent, getDatasetAtEvent } from 'react-chartjs-2'
+import { Pie } from 'react-chartjs-2'
 //import { useRef, React, useEffect,useState } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import Title from './Title';
-import { ResponsiveContainer } from 'recharts';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';

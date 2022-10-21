@@ -1,19 +1,7 @@
-import MoneyDetails from "./MoneyDetails";
 import "../assets/scss/moneyManager.scss"
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useState, useEffect } from "react";
-import MovementsTable from "./MovementsTable";
-import Button from '@mui/material/Button'
-import { Modal } from '@material-ui/core';
-import { Link } from "react-router-dom";
-import {GraficoPie}  from "./GraficoPie";
-import EditExpenseModal from "./EditExpenseModal";
 import { BACKEND_URL } from "../CONSTANTS";
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TextField } from '@material-ui/core';
-import { MultiSelect } from "react-multi-select-component";
 import DashboardContent from "./Dashbord";
 
 

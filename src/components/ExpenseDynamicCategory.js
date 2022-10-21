@@ -1,8 +1,4 @@
 import * as React from 'react';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import "../assets/scss/expenseCard.scss"
 import { Button } from '@mui/material';
 import { useState } from 'react';

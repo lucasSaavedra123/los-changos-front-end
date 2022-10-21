@@ -1,8 +1,4 @@
 import "../assets/scss/moneyDetails.scss"
-import { useState } from "react";
-import { useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
 
 export const MoneyDetails = (props) => {
   

@@ -9,7 +9,6 @@ import "../assets/scss/settings.scss"
 import Paper from '@mui/material/Paper';
 import "../assets/scss/expenseCard.scss"
 import Categories from './Categories';
-import { useState } from 'react';
 
 const mdTheme = createTheme();
 

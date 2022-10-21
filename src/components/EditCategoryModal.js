@@ -15,7 +15,6 @@ import DoneIcon from '@mui/icons-material/Done';
 import "../assets/scss/expenseCard.scss"
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Grid from '@mui/material/Grid';
 import CustomAlert from "./CustomAlert";
 
