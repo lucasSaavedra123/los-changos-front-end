@@ -13,7 +13,6 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import { GraficoPie } from "./GraficoPie";
 import { BACKEND_URL } from "../CONSTANTS";
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TextField } from '@material-ui/core';

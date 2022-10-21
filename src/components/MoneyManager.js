@@ -2,7 +2,7 @@ import "../assets/scss/moneyManager.scss"
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import { BACKEND_URL } from "../CONSTANTS";
-import DashboardContent from "./Dashbord";
+import DashboardContent from "./Dashboard";
 
 
 export const MoneyManager = () => {
