@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Form from '../assets/Forms';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { sendPasswordResetEmail } from "firebase/auth";

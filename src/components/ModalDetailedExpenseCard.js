@@ -1,10 +1,6 @@
 import "../assets/scss/expenseCard.scss"
-import { useState } from "react";
 
 export const ModalDetailedExpenseCard = (props) => {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
  
       return(
        
@@ -18,7 +14,7 @@ export const ModalDetailedExpenseCard = (props) => {
             </div>
             <div className="expense">
                 <div className='price'>${props.value}</div>
-                <div className='expense-detail'>{props.title}</div>
+                <div className='expense-detail'>{props.name}</div>
                 <div className='date'>{props.date}</div>
             </div>
 

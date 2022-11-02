@@ -7,8 +7,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import MuiAlert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useContext } from 'react';
@@ -16,16 +14,9 @@ import { AuthContext } from '../../context/AuthContext';
 import CustomAlert from '../CustomAlert';
 
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-
-
 const Settings = () => {
   const [openError, setOpenError] = React.useState(false);
   const [openSuccess, setOpenSuccess] = React.useState(false);
-  const [openWarning, setOpenWarning] = React.useState(false);
 
   const { currentUser } = useContext(AuthContext);
 
@@ -37,20 +28,12 @@ const Settings = () => {
     setOpenError(true);
   };
 
-  const showWarningMessage = () => {
-    setOpenWarning(true);
-  };
-
   const closeSuccessMessage = (event, reason) => {
     setOpenSuccess(false);
   };
 
   const closeErrorMessage = (event, reason) => {
     setOpenError(false);
-  };
-
-  const closeWarningMessage = () => {
-    setOpenWarning(false);
   };
 
   const forgotPassword = (e) => {
@@ -67,17 +50,17 @@ const Settings = () => {
 
   const BasicCard = () => {
     return (
-      <Card style={{ borderRadius: 5, border: "1px solid #9CE37D", margin: 30, backgroundColor: "black" }}>
+      <Card style={{ borderRadius: 5, border: "1px solid #9CE37D", margin: 30, backgroundColor: "white" }}>
         <CardContent style={{ color: "black" }}>
-          <Typography variant="h5" component="div" style={{ color: "white" }}>
+          <Typography variant="h5" component="div" style={{ color: "black" }}>
             Cambiar Contraseña
           </Typography>
-          <Typography sx={{ mb: 1.5 }} color="white">
+          <Typography sx={{ mb: 1.5 }} color="black">
             Si queres cambiar la contraseña, clickea abajo que te mandamos un mail para cambiarla.
           </Typography>
         </CardContent>
         <CardActions style={{ display: 'flex' }}>
-          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "black", color: "white" }} size="small" onClick={() => { forgotPassword() }} variant="outlined">Mandar mail</Button>
+          <Button style={{ marginLeft: 'auto', border: "1px solid #9CE37D", backgroundColor: "white", color: "black" }} size="small" onClick={() => { forgotPassword() }} variant="outlined">Mandar mail</Button>
         </CardActions>
       </Card>
     );

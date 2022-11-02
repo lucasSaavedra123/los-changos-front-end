@@ -11,8 +11,14 @@
 .form-expense{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+}
+
+.add-category{
+    background-color: white;
+    display: flex;
+    width: 100%;
 }
 .name-expense-category{
     width: 100%;
@@ -39,9 +45,13 @@
     width: 50%;
 
 }
-.cancel-button{
-    
+.boton-aceptar{
+    display: flex;
+    justify-content: center;
+    background: none;
 }
-.save-button{
-    
+.boton-cancelar{
+    display: flex;
+    justify-content: center;
+    background: none;
 }

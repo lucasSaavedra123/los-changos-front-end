@@ -1,5 +1,5 @@
 import LandingPage from "./components/LandingPage";
-import { BrowserRouter as Router, Switch, Route, Redirect, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Home from "./components/Profile/Home";
 import ProfileNavigator from "./components/Profile/ProfileNavigator";
 import Settings from "./components/Profile/Settings";
@@ -8,8 +8,6 @@ import Register from "./components/Register";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import Forgot from "./components/Forgot";
-import EditExpenseModal from "./components/EditExpenseModal";
-import { PropaneSharp } from "@mui/icons-material";
 import CategoriesPage from "./components/CategoriesPage";
 
 const App = () => {

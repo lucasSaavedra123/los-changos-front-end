@@ -4,8 +4,21 @@
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
+  //height:100%;
+}
+.table-title{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.titulo-principal{
+  width:75%
 }
 
+.boton-agregar-gastos-dashboard{
+  display: flex;
+  justify-content: center;
+}
 .responsive-container {
   width: 100%;
   max-width: 550px; 
@@ -20,6 +33,25 @@
   margin-top:10px;
 
 }
+.prueba{
+  width:100%;
+  display:flex;
+  justify-content: center;
+}
+.prueba-2{
+  width:200px;
+  height:200px;
+  display:flex;
+  
+}
+.pie{
+
+
+}
+.boton-principal{
+  display: flex;
+  justify-content: right;
+}
 .see-categories{
   display:flex;
   justify-content: center;
@@ -33,6 +65,7 @@
   margin-top: 10px;
   text-align: center;
   color: white;
+  margin-bottom: 20px;
   
 }
 .header-container {
@@ -53,10 +86,9 @@
   width:50%
 
 }
-.add-expense-button{
-  display:flex;
-  justify-content: center;
-  align-items: center;
+
+.table-subtitle{
+  width:50%;
 }
 
 .add-expense-modal{

@@ -5,12 +5,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useState } from 'react';
 import ExpendCard from './ExpendCard';
 import "../assets/scss/expenseCard.scss"
-import { useEffect } from 'react';
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
 
 export default function MovementsTable(props) {
   return (

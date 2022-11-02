@@ -1,8 +1,4 @@
 import "../assets/scss/moneyDetails.scss"
-import { useState } from "react";
-import { useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
 
 export const MoneyDetails = (props) => {
   
@@ -27,19 +23,5 @@ export const MoneyDetails = (props) => {
     </div>
   )
 }
-
-{/* <div className="money-details-container">
-<div className="expenses-container">
-  {//Agregar div para ajustar texto con el box 
-  }
-  <div className="data-container">
-    <p className="details-text">Tus gastos</p>
-    <p className="details-money" testid="expensesAmount">
-      $ {total}
-    </p>
-  </div>
-</div>
-</div>
-) */}
 
 export default MoneyDetails

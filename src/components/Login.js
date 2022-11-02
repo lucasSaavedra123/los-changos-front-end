@@ -15,6 +15,13 @@ import { AuthContext } from "../context/AuthContext";
 import NavigatorWithButton from "./NavigatorWithButton";
 import LoadingButton from '@mui/lab/LoadingButton';
 import CustomAlert from './CustomAlert'
+import IconButton from '@mui/material/IconButton';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
 const Login = () => {
@@ -26,6 +33,7 @@ const Login = () => {
     const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
     const [openInvalidUserError, setopenInvalidUserError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
+    const [showPassword, setShowPassword]=useState(false);
 
     const classes = useStyles();
     
@@ -60,6 +68,14 @@ const Login = () => {
     const closeInvalidUserError = (event, reason) => {
         setopenInvalidUserError(false);
     };
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword)
+      };
+    
+      const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      };
 
     const { dispatch } = useContext(AuthContext);
 
@@ -103,7 +119,7 @@ const Login = () => {
     }
 
     return (
-        <div className="row g-0 auth-wrapper">
+        <div className="row g-0 auth-wrapper landing-page">
 
             <NavigatorWithButton />
             <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
@@ -131,12 +147,69 @@ const Login = () => {
                                 }}
                             >
 
-                                <div>
-                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%" }} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
+<div>
+        <TextField
+          label="Correo Electrónico"
+          id="outlined-start-adornment"
+          sx={{ m: 1, width: '25ch' }}
+          className={classes.root}
+          onChange={(e) => { setEmail(e.target.value) }}
+        />
+        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" className={classes.root}>
+          <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                  sx={{color:'white'}}
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+        </div>
+
+                                {/* <div>
+                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%"}} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
                                 </div>
                                 <div>
-                                    <TextField label="Contraseña" color="primary" type="password" className={classes.root} style={{ width: "100%" }} onChange={(e) => { setPassword(e.target.value) }} />
-                                </div>
+
+                                    <FormControl fullWidth className={classes.root}  >
+                            <InputLabel style={{color:'black'}}>Contraseña</InputLabel>
+                            <OutlinedInput
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    style={{color:'black'}}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                                
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    
+                                />
+                            </FormControl>
+                                </div> */}
 
                                 <div className="text-center">
                                     <ThemeProvider theme={THEME}>

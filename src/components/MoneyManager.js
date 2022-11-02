@@ -1,91 +1,72 @@
-import MoneyDetails from "./MoneyDetails";
 import "../assets/scss/moneyManager.scss"
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useState, useEffect } from "react";
-import MovementsTable from "./MovementsTable";
-import Button from '@mui/material/Button'
-import { Modal } from '@material-ui/core';
-import { Link } from "react-router-dom";
-import { GraficoPie } from "./GraficoPie";
-import EditExpenseModal from "./EditExpenseModal";
 import { BACKEND_URL } from "../CONSTANTS";
+import DashboardContent from "./Dashboard";
 
 
 export const MoneyManager = () => {
-
+  
+  let today = new Date();
   const { currentUser } = useContext(AuthContext);
-
-  const [open, setOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [transactions, setTransactions] = useState([]);
+  const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [dateTo, setDateTo] = useState(today);
+  const [selected, setSelected] = useState([]);
+  const [options, setOptions] = useState([])
+
+  console.log(transactions)
+
+  const applyDateFilter = () => {
+      console.log(dateTo.toISOString().split('T')[0])
+      fetch(BACKEND_URL+'/expense/filter', {
+          method: 'POST',
+          headers: {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+  
+          
+          body: JSON.stringify({
+              timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
+              //category_id: selected[0].value
+          })
+  
+  
+      })
+      .then((res)=>res.json())
+      .then((data) =>updateFilterTransactions(data))
+  }
+
+  const updateFilterTransactions = (transactions) =>{
+    setTransactions(transactions)
+    let categories = {}
+    transactions.map((transaction) => {
+      categories[transaction.category.name] = transaction.category.id
+    });
+    let names = Object.keys(categories);
+    let optionsAux = []
+    names.map((name)=>{
+      let option = {
+        label: name,
+        value: categories[name]
+      }
+      optionsAux.push(option)
 
 
-  const getTransactions = () =>{
-    fetch(BACKEND_URL+'/expense', {
-     'headers': {
-       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-     }
     })
-        .then((response) => response.json())
-        .then((actualData) =>{ 
-          setTotal(actualData.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
-          console.log("New Transactions:", JSON.stringify(actualData))
-          console.log("Current Transactions:", JSON.stringify(transactions))
-          if(JSON.stringify(actualData) != JSON.stringify(transactions)){
-               setTransactions(actualData);
-           }    
-        })
-            .catch((err) => {
-            console.log(err.message);
-        });
-
-}
-
-  const handleAgregarGasto = () => setOpen(true);
-  const handleClose = () => {setOpen(false);};
+    setOptions(optionsAux)
+    setTotal(transactions.reduce((total,transaction) =>  total = total + parseFloat(transaction.value) , 0 )); 
+  }
 
   useEffect(() => {
-    getTransactions()
-  }, [transactions]);
+    applyDateFilter()
+  }, []);
 
   return (
-    <div className="app-container">
-      <div className="responsive-container">
-        <div className="header-container">
-          <h1 className="heading">¡Bienvenido a Walletify {currentUser.displayName}!</h1>
-        </div>
-      </div>
-      <div>
-{/*         <GraficoPie/> */}
-      </div>
-      <div className="balance">
-        <MoneyDetails total={total}/>
-      </div>
-      <div className="add-expense-modal">
-        <div className="add-expense" style={ {borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black"}} >
-          <Button className="add-expense-button" style={{color:"white", textDecoration:"none"}} onClick={handleAgregarGasto}>
-            AGREGAR GASTO
-          </Button>
-        </div>
- {/*        <div className="see-categories" style={{borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black" }} >
-          <Button style={{fontFamily: "UnB-Light"}}>
-            <Link style={{color:"white", textDecoration:"none"}} to='/profile/categories'>CATEGORIAS</Link>
-          </Button>
-        </div> */}
-        <Modal
-          open={open} onClose={handleClose}>
-          <div className="add-expense-modal">
-            <EditExpenseModal handleCloseModal={handleClose} confirmAction={getTransactions}/>
-          </div>
-        </Modal>
-      </div>
-      {/* <div className="chart"> Hola Chart</div> */}
-      <div className="movements" >
-        <MovementsTable transactions={transactions} confirmAction={getTransactions}/>
-      </div>
-
-    </div>
-    
+    <DashboardContent total={total} transactions={transactions}/>
   )
 }
 
