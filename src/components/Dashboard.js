@@ -20,6 +20,9 @@ import { MultiSelect } from "react-multi-select-component";
 import Button from '@mui/material/Button'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Stack from '@mui/material/Stack';
+import EditExpenseModal from './EditExpenseModal';
+import { Modal } from '@mui/material';
+import "../assets/scss/moneyManager.scss";
 
 const mdTheme = createTheme();
 
@@ -53,8 +56,10 @@ export default function DashboardContent(props) {
   const [dateTo, setDateTo] = useState(today);
   const [selected, setSelected] = useState([]);
   const [selectedCategoriesArray, setSelectedCategoriesArray] = useState([]);
-  const [options, setOptions] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [options, setOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const handleAgregarGasto = () => setOpen(true)
+  const handleClose = () => {setOpen(false);}
 
   const getSelectedCategoriesArray = (e) => {
     console.log(e)
@@ -194,8 +199,6 @@ export default function DashboardContent(props) {
   }
 
 
-  const handleAgregarGasto = () => setOpen(true);
-  const handleClose = () => { setOpen(false); };
 
   useEffect(() => {
     applyDateFilter()
@@ -256,7 +259,23 @@ export default function DashboardContent(props) {
                     height: 240,
                   }}
                 >
-                  <Gastos total={totalForMonth} month={"Octubre 2022"} />
+                  <Stack spacing={3}>
+                    <div>
+                    <Gastos total={totalForMonth} month={"Octubre 2022"} />
+                    </div>
+                    <div className='boton-agregar-gastos-dashboard'>
+                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
+                    AGREGAR GASTO
+                  </Button>
+                    </div>
+                  </Stack>
+                  <Modal
+          open={open} onClose={handleClose}>
+          <div className="add-expense-modal">
+             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={props.confirmAction}/>
+           </div>
+         </Modal>
+                
                 </Paper>
               </Grid>
               {/* Grafico Chona */}

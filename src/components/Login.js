@@ -169,6 +169,7 @@ const Login = () => {
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
+                  sx={{color:'white'}}
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>

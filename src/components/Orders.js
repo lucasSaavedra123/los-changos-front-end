@@ -5,11 +5,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import ExpendCard from './ExpendCard';
-import EditExpenseModal from './EditExpenseModal';
 import { useState } from 'react';
-import { Modal, TableContainer, TablePagination } from '@mui/material';
+import { TableContainer, TablePagination } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Button } from "@mui/material";
 import "../assets/scss/moneyManager.scss";
 
 export default function Orders(props) {
@@ -54,17 +52,6 @@ export default function Orders(props) {
           Gastos del período
         </Typography>
         </div>
-        <div className='boton-principal'>
-        <Button sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
-              AGREGAR GASTO
-        </Button>
-        </div>
-        <Modal
-          open={open} onClose={handleClose}>
-          <div className="add-expense-modal">
-             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={props.confirmAction}/>
-           </div>
-         </Modal>
        
       </div>
       <TableContainer>
