@@ -23,6 +23,15 @@
   width: 100%;
   max-width: 550px; 
 }
+.linea-progreso{
+  display:flex;
+  align-items: center;
+  width:100%;
+  flex-direction: row;
+}
+.progress{
+  margin-top:15px;
+}
 .chart{
   background-color: white;
 }

@@ -22,6 +22,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Stack from '@mui/material/Stack';
 import EditExpenseModal from './EditExpenseModal';
 import { Modal } from '@mui/material';
+import Presupuesto from './Presupuesto';
 import "../assets/scss/moneyManager.scss";
 
 const mdTheme = createTheme();
@@ -236,6 +237,21 @@ export default function DashboardContent(props) {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
+              {/* Presupuesto */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 130,
+                  }}
+                >
+                  <Presupuesto/>
+                
+                  
+                </Paper>
+              </Grid>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper

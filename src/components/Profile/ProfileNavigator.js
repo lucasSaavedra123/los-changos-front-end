@@ -16,6 +16,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
+import SavingsIcon from '@mui/icons-material/Savings'
 import CategorySharpIcon from '@mui/icons-material/CategorySharp';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
@@ -23,6 +24,7 @@ import { auth } from "../../firebase"
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { RequestQuote } from "@mui/icons-material";
 
 
 export const ProfileNavigator = () => {
@@ -76,7 +78,7 @@ export const ProfileNavigator = () => {
                 <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/profile/home"} />
                 <ProfileNavigatorItem name={"Categorias"} icon={<CategorySharpIcon sx={{ color: "white" }} />} path={"/profile/categories"} />
                 <ProfileNavigatorItem name={"Configuración"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/profile/settings"} />
-                
+                <ProfileNavigatorItem name={"Mis Presupuestos"} icon={<RequestQuote sx={{color:"white"}}/>} path={"/profile/budget"}/>
             </List>
 
             <Divider sx={{ color: "white" }} />
