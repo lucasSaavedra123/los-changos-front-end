@@ -20,7 +20,12 @@ export default function Presupuesto(props) {
     const { currentUser } = useContext(AuthContext);
     const [openBudget, setBudgetOpen] = useState(false);
     const [height,setHeight]= useState(130);
-    const now = props.percentage;
+    const budget = props.budget;
+    const percentage = Math.round(budget.total_spent*100/budget.total_limit);
+    const variant = percentage > 100 ? "danger" :  percentage > 70 ?  "warning" : "success";
+    const quantityOfCategorys = typeof budget.details === "undefined" ? 0 : budget.details.length;
+
+
     const funcion = () => {
         let newHeight= 130 + 3*15
         setBudgetOpen(!openBudget)
@@ -74,7 +79,7 @@ export default function Presupuesto(props) {
                     <div className='table-title'>
                         <div className='titulo-principal'>
                             <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
-                                Presupuesto del periodo
+                                {"Presupuesto del periodo " + budget.initial_date + " " + budget.final_date}
                             </Typography>
                         </div>
 
@@ -86,38 +91,38 @@ export default function Presupuesto(props) {
                                 
                                 <Grid container spacing={0.5}>
                                     <Grid item lg={10} xs={10} md={10}>
-                                    <ProgressBar className='linea-progreso' now={now} variant="success" label={`${now}%`} />
+                                    <ProgressBar className='linea-progreso' now={percentage} variant={variant} label={`${percentage}%`} />
                                     </Grid>
                                     <Grid item lg={2} xs={2} md={2}>
                                         <div>
-                                            {props.spent_budget}/{props.limit_budget}
+                                            {budget.total_spent}/{budget.total_limit}
                                         </div>
                                     </Grid>
                                 </Grid>
                                 
+                                {budget.details.map((categoryBudget) => {
+                                    let spent = Math.round(categoryBudget.spent)
+                                    let limit = Math.round(categoryBudget.limit)
+                                    let categoryPercentage = Math.round((spent*100/limit))
+                                    let categoryName = categoryBudget.category.name;
+                                    let categoryVariant = categoryPercentage > 100 ? "danger" :  categoryPercentage > 70 ?  "warning" : "success";
+                                    return(
+                                    <Grid container spacing={0.5} style={{marginLeft:5}}>
+                                        <Grid item lg={10} xs={10} md={10}>
+                                        <ProgressBar className='linea-progreso' now={categoryPercentage} variant={categoryVariant} label={`${categoryPercentage}%`} />
+                                        </Grid>
+                                        <Grid item lg={2} xd={2} md={2}>
+                                            <div>
+                                            {spent}/{limit}
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                    )
+                                })}
                                 
-                                <Grid container spacing={0.5} style={{marginLeft:5}}>
-                                    <Grid item lg={10} xs={10} md={10}>
-                                    <ProgressBar className='linea-progreso' now={80} variant="danger" label={`${now}%`} />
-                                    </Grid>
-                                    <Grid item lg={2} xd={2} md={2}>
-                                        <div>
-                                        {props.spent_budget}/{props.limit_budget}
-                                        </div>
-                                    </Grid>
-                                </Grid>
+
                 
                                 
-                                <Grid container spacing={0.5} style={{marginLeft:5}}>
-                                    <Grid item lg={10} xs={10} md={10}>
-                                    <ProgressBar className='linea-progreso' now={30} variant="success" label={`${now}%`} />
-                                    </Grid>
-                                    <Grid item lg={2} xs={2} md={2}>
-                                        <div>
-                                        {props.spent_budget}/{props.limit_budget}
-                                        </div>
-                                    </Grid>
-                                </Grid>
                                 
                             </Stack>
                             
@@ -132,12 +137,12 @@ export default function Presupuesto(props) {
                         <div>
                                 <Grid container spacing={0.5}>
                                     <Grid item lg={10} xs={10} md={10}>
-                                    <ProgressBar className='linea-progreso' now={Math.round(now)} variant="success" label={`${now}%`} />
+                                    <ProgressBar className='linea-progreso' now={percentage} variant={variant} label={`${percentage}%`} />
                                     </Grid>
                                     {/* Probar onblur  */}
                                     <Grid item lg={2} xs={2} md={2}>
                                         <div>
-                                        {props.spent_budget}/{props.limit_budget}
+                                        {budget.total_spent}/{budget.total_limit}
                                         </div>
                                     </Grid>
                                 </Grid>
