@@ -46,8 +46,12 @@ export default function DashboardContent(props) {
 
 
   let today = new Date();
+  let months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   const { currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const [budgetPercentage, setBudgetPercentage] = useState(0);
+  const [limitBudget, setLimitBudget] = useState(0);
+  const [totalSpentBudget, setTotalSpentBudget] = useState(0);
   //Este total hay que pasarselo al nuevo componente (es el total del periodo)
   const [total, setTotal] = useState(0);
   const [totalForMonth, setTotalForMonth] = useState(0);
@@ -121,6 +125,26 @@ export default function DashboardContent(props) {
         })
     }
   }
+
+  const getCurrentBudget = () =>{
+    fetch(BACKEND_URL+'/budget', {
+     'headers': {
+       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+     }
+    })
+        .then((response) => response.json())
+        .then((res) =>{ 
+          setTotalSpentBudget(res[0].total_spent)
+          setLimitBudget(res[0].total_limit)
+          setBudgetPercentage((res[0].total_spent/res[0].total_limit)*100)
+
+
+        })
+            .catch((err) => {
+            console.log(err.message);
+        });
+
+}
 
   const getAllMonthTransactionsForTotal = () => {
     fetch(BACKEND_URL + '/expense/filter', {
@@ -203,6 +227,7 @@ export default function DashboardContent(props) {
 
   useEffect(() => {
     applyDateFilter()
+    getCurrentBudget()
   }, [])
 
   useEffect(() => {
@@ -219,6 +244,7 @@ export default function DashboardContent(props) {
     <div></div>
     :
     <ThemeProvider theme={mdTheme}>
+      <div>ACAAAAA {budgetPercentage}</div>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <Box
@@ -238,7 +264,7 @@ export default function DashboardContent(props) {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Presupuesto */}
-              <Presupuesto/>
+              <Presupuesto percentage={budgetPercentage} limit_budget={limitBudget} spent_budget={totalSpentBudget}/>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
@@ -264,7 +290,7 @@ export default function DashboardContent(props) {
                 >
                   <Stack spacing={3}>
                     <div>
-                    <Gastos total={totalForMonth} month={"Octubre 2022"} />
+                    <Gastos total={totalForMonth} month={months[today.getMonth()] + " " + today.getFullYear()} />
                     </div>
                     <div className='boton-agregar-gastos-dashboard'>
                     <Button sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
