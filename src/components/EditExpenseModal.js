@@ -113,7 +113,6 @@ export const EditExpenseModal = (props) => {
             showValueError()
         }
         else {
-            console.log(typeof date)
             fetch(BACKEND_URL + '/expense', {
                 method: 'POST',
                 headers: {

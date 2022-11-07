@@ -296,7 +296,7 @@ export default function DashboardContent(props) {
                   <Modal
           open={open} onClose={handleClose}>
           <div className="add-expense-modal">
-             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={props.confirmAction}/>
+             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={applyDateFilter}/>
            </div>
          </Modal>
                 

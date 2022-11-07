@@ -42,7 +42,6 @@ export const GraficoPie = (props) => {
 
   useEffect(() => {
     getCategoriesFromTransactions()
-    console.log((props.transactions).length)
   }, [props.transactions]);
 
 

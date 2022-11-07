@@ -39,30 +39,6 @@ export default function Presupuesto(props) {
         setHeight(130)
     }
 
-    useEffect(() => {
-      }, [])
-
-    const createBudget = () => {
-
-          fetch(BACKEND_URL + '/budget', {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-    
-    
-            body: JSON.stringify({
-              initial_date: "2022-11-01",
-              final_date: "2022-11-30",
-              details:[{category_id:1,limit:10000}]
-            })
-    
-    
-          }).then((res) => console.log(res))
-
-      }
 
     return (
 

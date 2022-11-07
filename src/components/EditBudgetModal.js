@@ -59,6 +59,28 @@ export const EditBudgetModal = (props) => {
         setopenCompleteAllFields(true);
     };
 
+    const createBudget = () => {
+
+        fetch(BACKEND_URL + '/budget', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+      
+      
+          body: JSON.stringify({
+            initial_date: "2022-12-01",
+            final_date: "2022-12-30",
+            details:[{category_id:1,limit:10000}]
+          })
+      
+      
+        }).then((res) => console.log(res))
+      
+      }
+
     const closeCompleteAllFields = () => {
         setopenCompleteAllFields(false);
     };
@@ -72,7 +94,7 @@ export const EditBudgetModal = (props) => {
       };
 
 
-    console.log(ALLOWS_ICONS_FOR_CATEGORY)
+    
     const handleChange = (event) => {
         setIcon(event.target.value);
     };
@@ -169,7 +191,7 @@ export const EditBudgetModal = (props) => {
                     <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                 </Grid>
                 <Grid item xs={6} className="boton-aceptar">
-                    <Button style={{ backgroundColor: '#9CE37D' }} > <DoneIcon sx={{ color: 'white' }} /> </Button>
+                    <Button style={{ backgroundColor: '#9CE37D' }} onClick={createBudget}><DoneIcon sx={{ color: 'white' }} /> </Button>
                 </Grid>
             </Grid>
         </Stack>

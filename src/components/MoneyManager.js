@@ -16,10 +16,8 @@ export const MoneyManager = () => {
   const [selected, setSelected] = useState([]);
   const [options, setOptions] = useState([])
 
-  console.log(transactions)
 
   const applyDateFilter = () => {
-      console.log(dateTo.toISOString().split('T')[0])
       fetch(BACKEND_URL+'/expense/filter', {
           method: 'POST',
           headers: {
@@ -31,7 +29,7 @@ export const MoneyManager = () => {
           
           body: JSON.stringify({
               timeline:[dateFrom.toISOString().split('T')[0],dateTo.toISOString().split('T')[0]],
-              //category_id: selected[0].value
+              category_id: []
           })
   
   
@@ -40,10 +38,11 @@ export const MoneyManager = () => {
       .then((data) =>updateFilterTransactions(data))
   }
 
-  const updateFilterTransactions = (transactions) =>{
-    setTransactions(transactions)
+  const updateFilterTransactions = (newTransactions) =>{
+    console.log("MeEjecute")
+    setTransactions(newTransactions)
     let categories = {}
-    transactions.map((transaction) => {
+    newTransactions.map((transaction) => {
       categories[transaction.category.name] = transaction.category.id
     });
     let names = Object.keys(categories);

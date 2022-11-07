@@ -9,12 +9,14 @@ import "../assets/scss/settings.scss"
 import Paper from '@mui/material/Paper';
 import "../assets/scss/expenseCard.scss"
 import EditBudgetModal from './EditBudgetModal';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Title from './Title';
 import { Button, ButtonBase } from '@mui/material';
 import {Modal} from '@mui/material';
 import Presupuesto from './Presupuesto';
 import {Stack} from '@mui/material';
+import { BACKEND_URL } from "../CONSTANTS";
+import { AuthContext } from "../context/AuthContext";
 
 const mdTheme = createTheme();
 
@@ -36,8 +38,31 @@ const BudgetPage = () => {
 
   const [open, setOpen] = useState(false);
   const handleClose = () => {setOpen(false);}
-  const budgets = JSON.parse('[{"id": 1, "initial_date": "2020-01-01", "final_date": "2025-01-01", "details": [{"category": {"id": 1, "material_ui_icon_name": "AccountBalance", "static": true, "name": "Impuestos Y Servicios", "color": "rgba(117,155,164,1)"}, "limit": "10000.00", "spent": "283.00"}, {"category": {"id": 2, "material_ui_icon_name": "Casino", "static": true, "name": "Entretenimiento Y Ocio", "color": "rgba(224,138,204,1)"}, "limit": "10000.00", "spent": "12100.00"}, {"category": {"id": 3, "material_ui_icon_name": "Home", "static": true, "name": "Hogar Y Mercado", "color": "rgba(150,95,139,1)"}, "limit": "15000.00", "spent": "10723.00"}], "total_limit": 35000.0, "total_spent": 23106.0},{"id": 1, "initial_date": "2020-01-01", "final_date": "2025-01-01", "details": [{"category": {"id": 1, "material_ui_icon_name": "AccountBalance", "static": true, "name": "Impuestos Y Servicios", "color": "rgba(117,155,164,1)"}, "limit": "10000.00", "spent": "283.00"}, {"category": {"id": 2, "material_ui_icon_name": "Casino", "static": true, "name": "Entretenimiento Y Ocio", "color": "rgba(224,138,204,1)"}, "limit": "10000.00", "spent": "12100.00"}, {"category": {"id": 3, "material_ui_icon_name": "Home", "static": true, "name": "Hogar Y Mercado", "color": "rgba(150,95,139,1)"}, "limit": "15000.00", "spent": "10723.00"}], "total_limit": 37000.0, "total_spent": 36000},{"id": 1, "initial_date": "2020-01-01", "final_date": "2025-01-01", "details": [{"category": {"id": 1, "material_ui_icon_name": "AccountBalance", "static": true, "name": "Impuestos Y Servicios", "color": "rgba(117,155,164,1)"}, "limit": "10000.00", "spent": "283.00"}, {"category": {"id": 2, "material_ui_icon_name": "Casino", "static": true, "name": "Entretenimiento Y Ocio", "color": "rgba(224,138,204,1)"}, "limit": "10000.00", "spent": "12100.00"}, {"category": {"id": 3, "material_ui_icon_name": "Home", "static": true, "name": "Hogar Y Mercado", "color": "rgba(150,95,139,1)"}, "limit": "15000.00", "spent": "10723.00"}], "total_limit": 34000.0, "total_spent": 40000}]')
-  console.log(budgets)
+  const [budgets, setBudgets] = useState([]);
+  const { currentUser } = useContext(AuthContext);
+
+  const getBudgets = () =>{
+    fetch(BACKEND_URL+'/budget', {
+     'headers': {
+       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+     }
+    })
+        .then((response) => response.json())
+        .then((res) =>{ 
+          setBudgets(res)
+
+
+        })
+            .catch((err) => {
+            console.log(err.message);
+        });
+
+}
+
+
+  useEffect(() => {
+    getBudgets();
+  }, [budgets])
 
 
   return (
