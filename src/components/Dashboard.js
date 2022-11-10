@@ -125,6 +125,7 @@ export default function DashboardContent(props) {
   }
 
   const getCurrentBudget = () =>{
+    setLoading(true)
     fetch(BACKEND_URL+'/budget/current', {
      'headers': {
        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
@@ -133,6 +134,7 @@ export default function DashboardContent(props) {
         .then((response) => response.json())
         .then((res) =>{ 
           setBudget(res)
+          setLoading(false)
 
 
         })
@@ -230,6 +232,7 @@ export default function DashboardContent(props) {
     setLoading(true)
     getTransactionsForMultiSelect()
     getAllMonthTransactionsForTotal()
+    getCurrentBudget()
   }, [transactions])
 
 
@@ -259,7 +262,7 @@ export default function DashboardContent(props) {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Presupuesto */}
-              <Presupuesto budget={budget}/>
+              <Presupuesto budget={budget} isLoading={loading}/>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
