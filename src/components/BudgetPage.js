@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import "../assets/scss/settings.scss"
 import Paper from '@mui/material/Paper';
 import "../assets/scss/expenseCard.scss"
-import EditBudgetModal from './EditBudgetModal';
+import AddBudgetModal from './AddBudgetModal';
 import { useState, useContext, useEffect } from 'react';
 import Title from './Title';
 import { Button, ButtonBase } from '@mui/material';
@@ -109,7 +109,7 @@ const BudgetPage = () => {
                 <Modal
                     open={open} onClose={handleClose}>
                     <div className="add-expense-modal">
-                        <EditBudgetModal action={'Nueva'} handleCloseModal={handleClose}  />
+                        <AddBudgetModal action={'Nueva'} handleCloseModal={handleClose}  />
                     </div>
                 </Modal>
 

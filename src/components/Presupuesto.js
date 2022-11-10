@@ -27,7 +27,7 @@ export default function Presupuesto(props) {
 
 
     const funcion = () => {
-        let newHeight= 130 + 3*15
+        let newHeight= 130 + (quantityOfCategorys+1)*48
         setBudgetOpen(!openBudget)
         console.log(newHeight)
         setHeight(newHeight)
@@ -63,8 +63,7 @@ export default function Presupuesto(props) {
                     {openBudget ? (
                         <div>
                             
-                            <Stack>
-                                
+                            <Stack spacing={1}>
                                 <Grid container spacing={0.5}>
                                     <Grid item lg={10} xs={10} md={10}>
                                     <ProgressBar className='linea-progreso' now={percentage} variant={variant} label={`${percentage}%`} />
@@ -83,16 +82,19 @@ export default function Presupuesto(props) {
                                     let categoryName = categoryBudget.category.name;
                                     let categoryVariant = categoryPercentage > 100 ? "danger" :  categoryPercentage > 70 ?  "warning" : "success";
                                     return(
-                                    <Grid container spacing={0.5} style={{marginLeft:5}}>
+                                    <Stack>
+                                    <Grid><div style={{marginLeft:10}}> {categoryName} </div></Grid>
+                                    <Grid container spacing={0.5} style={{marginLeft:'auto'}}>
                                         <Grid item lg={10} xs={10} md={10}>
                                         <ProgressBar className='linea-progreso' now={categoryPercentage} variant={categoryVariant} label={`${categoryPercentage}%`} />
                                         </Grid>
                                         <Grid item lg={2} xd={2} md={2}>
-                                            <div>
+                                            <div style={{marginTop:'auto'}}>
                                             {spent}/{limit}
                                             </div>
                                         </Grid>
                                     </Grid>
+                                    </Stack>
                                     )
                                 })}
                                 
