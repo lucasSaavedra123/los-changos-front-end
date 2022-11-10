@@ -26,6 +26,9 @@ export default function Presupuesto(props) {
     const quantityOfCategorys = typeof budget.details === "undefined" ? 0 : budget.details.length;
 
 
+    const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+
     const funcion = () => {
         let newHeight= 130 + (quantityOfCategorys+1)*48
         setBudgetOpen(!openBudget)
@@ -82,7 +85,7 @@ export default function Presupuesto(props) {
                             </Grid>
                             <Grid item lg={2} xs={2} md={2}>
                                 <div>
-                                    {budget.total_spent}/{budget.total_limit}
+                                    {addCommas(budget.total_spent)}/{addCommas(budget.total_limit)}
                                 </div>
                             </Grid>
                         </Grid>
@@ -102,7 +105,7 @@ export default function Presupuesto(props) {
                                 </Grid>
                                 <Grid item lg={2} xd={2} md={2}>
                                     <div style={{marginTop:'auto'}}>
-                                    {spent}/{limit}
+                                    {addCommas(spent)}/{addCommas(limit)}
                                     </div>
                                 </Grid>
                             </Grid>
@@ -132,7 +135,7 @@ export default function Presupuesto(props) {
                             {/* Probar onblur  */}
                             <Grid item lg={2} xs={2} md={2}>
                                 <div>
-                                {budget.total_spent}/{budget.total_limit}
+                                {addCommas(budget.total_spent)}/{addCommas(budget.total_limit)}
                                 </div>
                             </Grid>
                         </Grid>
