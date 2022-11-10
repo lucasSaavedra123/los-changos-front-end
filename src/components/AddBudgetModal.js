@@ -28,21 +28,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { TablePagination, TableContainer } from '@mui/material';
 import { Modal } from "@mui/material";
-import CategoryBudget from "./CategoryBudget";
 
 
-
-const style = {
+const budgetModal= {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-};
+
+}
 
 export const AddBudgetModal = (props) => {
 
@@ -153,7 +152,7 @@ export const AddBudgetModal = (props) => {
     return (
         <>
 
-            <Box sx={style}>
+            <Box sx={budgetModal}>
                 <Stack spacing={0.5}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Nuevo presupuesto
@@ -190,12 +189,19 @@ export const AddBudgetModal = (props) => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {
-                                        categories.map((category) => (
-                                            
-                                            <CategoryBudget categoryProp={category} />
+                                {
+                                        categories
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((category) => (
+                                                
+                                            <TableRow key={category.id}>
+                                            <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
+                                            <TableCell> <TextField></TextField> </TableCell>
+                                        </TableRow>
+                                                
 
                                         ))}
+                                
                                 </TableBody>
                             </Table>
                         </TableContainer>
