@@ -18,6 +18,7 @@ import {Stack} from '@mui/material';
 import { BACKEND_URL } from "../CONSTANTS";
 import { AuthContext } from "../context/AuthContext";
 import DeleteIcon from '@mui/icons-material/Delete';
+import CustomAlert from "./CustomAlert";
 
 const mdTheme = createTheme();
 
@@ -40,7 +41,10 @@ const BudgetPage = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => {setOpen(false);}
   const [budgets, setBudgets] = useState([]);
+  const [openValueError, setopenValueError] = useState(false);
   const { currentUser } = useContext(AuthContext);
+
+  const closeValueError = () => setopenValueError(false);
 
   const getBudgets = () =>{
     fetch(BACKEND_URL+'/budget', {
@@ -65,7 +69,9 @@ const BudgetPage = () => {
     getBudgets();
   }, [])
 
-  const deleteBudget = (budget) => {
+  const deleteBudget = (budget,e) => {
+    e.preventDefault(e);
+    if (window.confirm("¿Estas seguro que queres borrar este presupuesto?")) {
     fetch(BACKEND_URL + '/budget', {
       method: 'DELETE',
       headers: {
@@ -80,6 +86,7 @@ const BudgetPage = () => {
 
   }).then(() => { getBudgets() })
   }
+}
 
 
   return (
@@ -156,7 +163,15 @@ const BudgetPage = () => {
                   }}
                 >
                 <div className='borrar-presupuesto'>
-                <Button onClick={() => deleteBudget(budgetItem)}><DeleteIcon sx={{ color: "green" }} /></Button>
+                <Button onClick={(e) => {
+
+                  if(budgetItem.active){
+                    setopenValueError(true);
+                  }else{
+                    deleteBudget(budgetItem,e);
+                  }
+                  
+                  }}><DeleteIcon sx={{ color: "green" }} /></Button>
                 </div>
                 
               </Paper>
@@ -174,6 +189,7 @@ const BudgetPage = () => {
         </Container>
       </Box>
     </Box>
+    <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />
   </ThemeProvider>);
 
 }
