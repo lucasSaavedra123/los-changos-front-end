@@ -28,6 +28,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { TablePagination, TableContainer } from '@mui/material';
 import { Modal } from "@mui/material";
+import CategoryBudget from "./CategoryBudget";
 
 
 
@@ -191,11 +192,9 @@ export const AddBudgetModal = (props) => {
                                 <TableBody>
                                     {
                                         categories.map((category) => (
+                                            
+                                            <CategoryBudget categoryProp={category} />
 
-                                            <TableRow key={category.id}>
-                                                <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
-                                                <TableCell> <TextField></TextField> </TableCell>
-                                            </TableRow>
                                         ))}
                                 </TableBody>
                             </Table>

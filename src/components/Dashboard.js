@@ -303,7 +303,7 @@ export default function DashboardContent(props) {
                 </Paper>
               </Grid>
               {/* Grafico Chona */}
-              <Grid item xs={8} md={8} lg={8}>
+              <Grid item xs={12} md={8} lg={8}>
                 <Paper
                   sx={{
                     p: 2,
@@ -316,7 +316,7 @@ export default function DashboardContent(props) {
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}
-              <Grid item xs={4} md={4} lg={4}>
+              <Grid item xs={12} md={4} lg={4}>
                 <Paper
                   sx={{
                     p: 2,
