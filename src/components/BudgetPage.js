@@ -17,6 +17,7 @@ import Presupuesto from './Presupuesto';
 import {Stack} from '@mui/material';
 import { BACKEND_URL } from "../CONSTANTS";
 import { AuthContext } from "../context/AuthContext";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const mdTheme = createTheme();
 
@@ -142,22 +143,23 @@ const BudgetPage = () => {
                 <>
                 <Grid item xs={12} lg={10} md={10}>
             
-                <Presupuesto budget={budgetItem}/> 
+                  <Presupuesto budget={budgetItem}/> 
               
               </Grid>
               <Grid item xs={2} lg={2} md={2}>
               <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <Stack>
-                <Button onClick={() => deleteBudget(budgetItem)}>DELETE</Button>
-                <Button>EDIT</Button>
-                </Stack>
-                </Paper>
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 150,
+                  }}
+                >
+                <div className='borrar-presupuesto'>
+                <Button onClick={() => deleteBudget(budgetItem)}><DeleteIcon sx={{ color: "green" }} /></Button>
+                </div>
+                
+              </Paper>
               </Grid>
               </>
               )
