@@ -30,7 +30,7 @@ import { TablePagination, TableContainer } from '@mui/material';
 import { Modal } from "@mui/material";
 
 
-const budgetModal= {
+const budgetModal = {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -59,6 +59,9 @@ export const AddBudgetModal = (props) => {
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
+    const [invalidDates, setInvalidDates] = useState(false);
+    const [invalidCategoryValue, setInvalidCategoryValue] = useState(false);
+    const [overlapping, setOverlapping] = useState(false);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -76,7 +79,7 @@ export const AddBudgetModal = (props) => {
     };
 
     const createBudget = () => {
-
+        if(checkDates() && checkCategoryValue() && checkOverlapping()){
         fetch(BACKEND_URL + '/budget', {
             method: 'POST',
             headers: {
@@ -87,14 +90,16 @@ export const AddBudgetModal = (props) => {
 
 
             body: JSON.stringify({
-                initial_date:  dateFrom.toISOString().split('T')[0],
-                final_date:  dateTo.toISOString().split('T')[0],
+                initial_date: dateFrom.toISOString().split('T')[0],
+                final_date: dateTo.toISOString().split('T')[0],
                 details: Object.values(limitArray),
             })
 
 
-        }).then((res) => {props.handleCloseModal(); props.getBudgets();})
+        }).then((res) => { 
+            props.handleCloseModal(); props.getBudgets(); })
 
+    }
     }
 
     const closeCompleteAllFields = () => {
@@ -135,7 +140,11 @@ export const AddBudgetModal = (props) => {
 
     }
 
-    const addLimit = (e,category) => {
+    const addLimit = (e, category) => {
+            let re = /^[0-9\b]+$/;
+            if (!re.test(e.target.value)) {
+               e.target.value = '';
+            }
         let limit = {
             category_id: category.id,
             limit: parseInt(e.target.value)
@@ -143,9 +152,55 @@ export const AddBudgetModal = (props) => {
 
         let limitArrayAux = limitArray;
         limitArrayAux[category.id] = limit;
-        setLimitArray(limitArrayAux);
-        console.log(Object.values(limitArray))
+        let filtered = {}
+        Object.keys(limitArrayAux).forEach((key) => {
+            if (!(limitArrayAux[key].limit <= 0 || isNaN(limitArrayAux[key].limit))) {
+                filtered[key] = limitArrayAux[key]
+            }
+        });
+
+        setLimitArray(filtered);
+
     }
+
+    const checkDates = () => {
+        if(dateFrom>dateTo){
+            setInvalidDates(true);
+            return false;
+        }else{
+            setInvalidDates(false);
+            return true;
+        }
+    }
+
+    const checkOverlapping = () => {
+        
+        let overlapping = false;
+        props.budgets.forEach((budget)=>{
+            let initial_date = new Date(budget.initial_date+ "T00:00:00")
+            let final_date = new Date(budget.final_date+ "T00:00:00")
+            let dateToParsed = new Date(dateTo.toISOString().split('T')[0]+ "T00:00:00")
+            let dateFromParsed = new Date(dateFrom.toISOString().split('T')[0]+ "T00:00:00")
+            if((initial_date<= dateToParsed && dateToParsed<= final_date) || (initial_date<= dateFromParsed && dateFromParsed<= final_date)){
+                overlapping = true;
+            }
+        })
+
+        setOverlapping(overlapping);
+        return !overlapping
+    }
+
+    const checkCategoryValue = () => {
+        if(Object.keys(limitArray).length==0){
+            setInvalidCategoryValue(true);
+            return false
+        }else{
+            setInvalidCategoryValue(false);
+            return true
+        }
+    
+    }
+
 
     useEffect(() => {
         getCategorias()
@@ -199,19 +254,19 @@ export const AddBudgetModal = (props) => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {
+                                    {
                                         categories
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map((category) => (
-                                                
-                                            <TableRow key={category.id}>
-                                            <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
-                                            <TableCell> <TextField onChange={(e) => {addLimit(e,category)}}></TextField> </TableCell>
-                                        </TableRow>
-                                                
 
-                                        ))}
-                                
+                                                <TableRow key={category.id}>
+                                                    <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
+                                                    <TableCell> <TextField onChange={(e) => { addLimit(e, category) }}></TextField> </TableCell>
+                                                </TableRow>
+
+
+                                            ))}
+
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -235,15 +290,18 @@ export const AddBudgetModal = (props) => {
                             <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                         </Grid>
                         <Grid item xs={6} className="boton-aceptar">
-                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={createBudget}><DoneIcon sx={{ color: 'white' }} /> </Button>
+                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={() => {createBudget()}}><DoneIcon sx={{ color: 'white' }} /> </Button>
                         </Grid>
                     </Grid>
                 </Stack>
 
             </Box>
 
-            <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
 
+            <CustomAlert text={"Completá todo los campos!"} severity={"warning"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
+            <CustomAlert text={"Las fechas son invalidas"} severity={"warning"} open={invalidDates} closeAction={()=>setInvalidDates(false)} />
+            <CustomAlert text={"Ya existe un presupuesto para ese periodo"} severity={"error"} open={overlapping} closeAction={()=>setOverlapping(false)} />
+            <CustomAlert text={"Ingrese un valor valido para al menos una categoria"} severity={"warning"} open={invalidCategoryValue} closeAction={()=>setInvalidCategoryValue(false)} />
         </>
     )
 }

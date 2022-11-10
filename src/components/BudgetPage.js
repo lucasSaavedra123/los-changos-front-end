@@ -133,7 +133,7 @@ const BudgetPage = () => {
                 <Modal
                     open={open} onClose={handleClose}>
                     <div className="add-expense-modal">
-                        <AddBudgetModal action={'Nueva'} handleCloseModal={handleClose} getBudgets={getBudgets} />
+                        <AddBudgetModal action={'Nueva'} handleCloseModal={handleClose} getBudgets={getBudgets} budgets={budgets}/>
                     </div>
                 </Modal>
 
