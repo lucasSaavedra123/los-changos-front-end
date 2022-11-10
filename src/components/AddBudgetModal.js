@@ -49,6 +49,7 @@ export const AddBudgetModal = (props) => {
     const [icon, setIcon] = useState(typeof props.icon === "undefined" ? '' : props.icon);
     const [name, setName] = useState(typeof props.name === "undefined" ? '' : props.name);
     const [monto, setMonto] = useState(0);
+    const [limitArray, setLimitArray] = useState({});
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
@@ -86,13 +87,13 @@ export const AddBudgetModal = (props) => {
 
 
             body: JSON.stringify({
-                initial_date: "2022-12-01",
-                final_date: "2022-12-30",
-                details: [{ category_id: 1, limit: 10000 }]
+                initial_date:  dateFrom.toISOString().split('T')[0],
+                final_date:  dateTo.toISOString().split('T')[0],
+                details: Object.values(limitArray),
             })
 
 
-        }).then((res) => console.log(res))
+        }).then((res) => {props.handleCloseModal(); props.getBudgets();})
 
     }
 
@@ -134,6 +135,18 @@ export const AddBudgetModal = (props) => {
 
     }
 
+    const addLimit = (e,category) => {
+        let limit = {
+            category_id: category.id,
+            limit: parseInt(e.target.value)
+        }
+
+        let limitArrayAux = limitArray;
+        limitArrayAux[category.id] = limit;
+        setLimitArray(limitArrayAux);
+        console.log(Object.values(limitArray))
+    }
+
     useEffect(() => {
         getCategorias()
     }, []);
@@ -157,7 +170,6 @@ export const AddBudgetModal = (props) => {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Nuevo presupuesto
                     </Typography>
-                    <TextField defaultValue={name} label="Nombre del presupuesto" onChange={(e) => { setName(e.target.value) }} />
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                             label="Desde"
@@ -165,7 +177,6 @@ export const AddBudgetModal = (props) => {
                             value={dateFrom}
                             onChange={handleChangeFrom}
                             sx={{ color: '#9CE37D;' }}
-                            disableFuture='true'
                             renderInput={(params) => <TextField {...params} />}
                         />
                         <DesktopDatePicker
@@ -173,7 +184,6 @@ export const AddBudgetModal = (props) => {
                             inputFormat="MM/DD/YYYY"
                             value={dateTo}
                             onChange={handleChangeTo}
-                            disableFuture='true'
                             renderInput={(params) => <TextField {...params} />}
                         />
 
@@ -196,7 +206,7 @@ export const AddBudgetModal = (props) => {
                                                 
                                             <TableRow key={category.id}>
                                             <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
-                                            <TableCell> <TextField></TextField> </TableCell>
+                                            <TableCell> <TextField onChange={(e) => {addLimit(e,category)}}></TextField> </TableCell>
                                         </TableRow>
                                                 
 
