@@ -9,6 +9,7 @@ import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import Forgot from "./components/Forgot";
 import CategoriesPage from "./components/CategoriesPage";
+import BudgetPage from "./components/BudgetPage";
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
         <Route path='/profile/home'><RequireAuth><ProfileNavigator /><Home /></RequireAuth></Route>
         <Route path='/profile/settings'><RequireAuth><ProfileNavigator /><Settings /></RequireAuth></Route>
         <Route path='/profile/categories'><RequireAuth><ProfileNavigator/><CategoriesPage/> </RequireAuth></Route>
+        <Route path='/profile/budget'><RequireAuth><ProfileNavigator/> <BudgetPage/> </RequireAuth></Route>
         <Redirect to="/" />
       </Switch>
     </Router>

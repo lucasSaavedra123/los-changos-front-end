@@ -54,7 +54,6 @@ export default function Chart(props) {
         amount: totalPorMes[mes]
         }
     dataAux.push(option)
-    console.log(dataAux)
 
 
     })

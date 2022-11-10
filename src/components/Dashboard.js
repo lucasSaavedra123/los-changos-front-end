@@ -22,6 +22,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Stack from '@mui/material/Stack';
 import EditExpenseModal from './EditExpenseModal';
 import { Modal } from '@mui/material';
+import Presupuesto from './Presupuesto';
 import "../assets/scss/moneyManager.scss";
 
 const mdTheme = createTheme();
@@ -45,8 +46,10 @@ export default function DashboardContent(props) {
 
 
   let today = new Date();
+  let months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
   const { currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const [budget, setBudget] = useState({});
   //Este total hay que pasarselo al nuevo componente (es el total del periodo)
   const [total, setTotal] = useState(0);
   const [totalForMonth, setTotalForMonth] = useState(0);
@@ -120,6 +123,26 @@ export default function DashboardContent(props) {
         })
     }
   }
+
+  const getCurrentBudget = () =>{
+    setLoading(true)
+    fetch(BACKEND_URL+'/budget/current', {
+     'headers': {
+       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+     }
+    })
+        .then((response) => response.json())
+        .then((res) =>{ 
+          setBudget(res)
+          setLoading(false)
+
+
+        })
+            .catch((err) => {
+            console.log(err.message);
+        });
+
+}
 
   const getAllMonthTransactionsForTotal = () => {
     fetch(BACKEND_URL + '/expense/filter', {
@@ -202,12 +225,14 @@ export default function DashboardContent(props) {
 
   useEffect(() => {
     applyDateFilter()
+    getCurrentBudget()
   }, [])
 
   useEffect(() => {
     setLoading(true)
     getTransactionsForMultiSelect()
     getAllMonthTransactionsForTotal()
+    getCurrentBudget()
   }, [transactions])
 
 
@@ -236,6 +261,8 @@ export default function DashboardContent(props) {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
+              {/* Presupuesto */}
+              <Presupuesto budget={budget} isLoading={loading}/>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
@@ -261,7 +288,7 @@ export default function DashboardContent(props) {
                 >
                   <Stack spacing={3}>
                     <div>
-                    <Gastos total={totalForMonth} month={"Octubre 2022"} />
+                    <Gastos total={totalForMonth} month={months[today.getMonth()] + " " + today.getFullYear()} />
                     </div>
                     <div className='boton-agregar-gastos-dashboard'>
                     <Button sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
@@ -272,14 +299,14 @@ export default function DashboardContent(props) {
                   <Modal
           open={open} onClose={handleClose}>
           <div className="add-expense-modal">
-             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={props.confirmAction}/>
+             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={applyDateFilter}/>
            </div>
          </Modal>
                 
                 </Paper>
               </Grid>
               {/* Grafico Chona */}
-              <Grid item xs={8} md={8} lg={8}>
+              <Grid item xs={12} md={8} lg={8}>
                 <Paper
                   sx={{
                     p: 2,
@@ -292,7 +319,7 @@ export default function DashboardContent(props) {
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}
-              <Grid item xs={4} md={4} lg={4}>
+              <Grid item xs={12} md={4} lg={4}>
                 <Paper
                   sx={{
                     p: 2,

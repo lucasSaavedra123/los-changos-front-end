@@ -23,6 +23,33 @@
   width: 100%;
   max-width: 550px; 
 }
+.linea-progreso{
+  display:flex;
+  align-items: center;
+  width:100%;
+  flex-direction: row;
+
+}
+.total-gastado{
+  display: flex;
+  justify-content: right;
+  margin-top:auto
+
+}
+.categoria-budget{
+  display:flex;
+  margin-top:10px;
+  margin-bottom:-4px;
+}
+.progress{
+  margin-top:10px;
+}
+.flecha-abajo{
+  display: flex;
+  justify-content: right;
+  margin-top:10px;
+  
+}
 .chart{
   background-color: white;
 }
