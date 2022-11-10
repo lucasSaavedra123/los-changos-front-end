@@ -125,14 +125,14 @@ export default function DashboardContent(props) {
   }
 
   const getCurrentBudget = () =>{
-    fetch(BACKEND_URL+'/budget', {
+    fetch(BACKEND_URL+'/budget/current', {
      'headers': {
        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
      }
     })
         .then((response) => response.json())
         .then((res) =>{ 
-          setBudget(res[0])
+          setBudget(res)
 
 
         })

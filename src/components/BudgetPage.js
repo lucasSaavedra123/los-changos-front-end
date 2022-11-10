@@ -62,7 +62,23 @@ const BudgetPage = () => {
 
   useEffect(() => {
     getBudgets();
-  }, [budgets])
+  }, [])
+
+  const deleteBudget = (budget) => {
+    fetch(BACKEND_URL + '/budget', {
+      method: 'DELETE',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+      },
+      body: JSON.stringify({
+          id: budget.id
+      })
+
+
+  }).then(() => { getBudgets() })
+  }
 
 
   return (
@@ -138,7 +154,7 @@ const BudgetPage = () => {
                 }}
               >
                 <Stack>
-                <Button>DELETE</Button>
+                <Button onClick={() => deleteBudget(budgetItem)}>DELETE</Button>
                 <Button>EDIT</Button>
                 </Stack>
                 </Paper>
