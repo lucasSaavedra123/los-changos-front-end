@@ -9,6 +9,7 @@ import "../assets/scss/settings.scss"
 import Paper from '@mui/material/Paper';
 import "../assets/scss/expenseCard.scss"
 import AddBudgetModal from './AddBudgetModal';
+import EditBudgetModal from './EditBudgetModal';
 import { useState, useContext, useEffect } from 'react';
 import Title from './Title';
 import { Button, ButtonBase } from '@mui/material';
@@ -47,14 +48,19 @@ const BudgetPage = () => {
 
   const [open, setOpen] = useState(false);
   const handleClose = () => { setOpen(false); }
+  const handleCloseEdit = () => { setOpenEdit(false); }
+  const [openEdit, setOpenEdit] = useState(false);
   const [budgets, setBudgets] = useState([]);
   const [openValueError, setopenValueError] = useState(false);
+  const [openEditError, setOpenEditError] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
+  const [editBudgetItem, setEditBudgetItem] = useState({});
 
 
   const closeValueError = () => setopenValueError(false);
+  const closeEditError = () => setOpenEditError(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -64,6 +70,11 @@ const BudgetPage = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const openBudgetModal = (budgetItem) => {
+    setEditBudgetItem(budgetItem);
+    setOpenEdit(true);
+  }
 
 
   const getBudgets = () => {
@@ -153,7 +164,14 @@ const BudgetPage = () => {
                         <Modal
                           open={open} onClose={handleClose}>
                           <div className="add-expense-modal">
-                            <AddBudgetModal action={'Nueva'} handleCloseModal={handleClose} getBudgets={getBudgets} />
+                            <AddBudgetModal action={'Nueva'} handleCloseModal={handleClose} budgets={budgets} getBudgets={getBudgets} />
+                          </div>
+                        </Modal>
+
+                        <Modal
+                          open={openEdit} onClose={handleCloseEdit}>
+                          <div className="add-expense-modal">
+                            <EditBudgetModal action={'Nueva'} handleCloseModal={handleCloseEdit} budgets={budgets} budget={editBudgetItem} getBudgets={getBudgets} />
                           </div>
                         </Modal>
 
@@ -179,6 +197,7 @@ const BudgetPage = () => {
 
                             <Presupuesto budget={budgetItem} />
 
+
                           </Grid>
                           <Grid item xs={2} lg={2} md={2}>
                           <Paper
@@ -202,7 +221,14 @@ const BudgetPage = () => {
                               }}><DeleteIcon sx={{ color: "green" }} /></Button>
                             </Grid>
                             <Grid item xs={6}>
-                              <Button>Edit</Button>
+                              <Button onClick={()=>{
+                                if(new Date(budgetItem.initial_date + "T00:00:00") <= new Date()){
+                                  setOpenEditError(true);
+                                }else{
+                                  openBudgetModal(budgetItem)
+                                }
+                                
+                                }}>Edit</Button>
                             </Grid>
                             {/* </div> */}
                             
@@ -315,6 +341,7 @@ const BudgetPage = () => {
         </Box>
       </Box>
       <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+      <CustomAlert text={"No se puede editar un presupuesto finalizado o en curso"} severity={"warning"} open={openEditError} closeAction={closeEditError} />
     </ThemeProvider>);
 
 }

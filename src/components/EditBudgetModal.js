@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { TextField } from '@material-ui/core';
 import { Box } from '@mui/system';
 import FormControl from '@mui/material/FormControl';
@@ -43,7 +43,7 @@ const budgetModal = {
 
 }
 
-export const AddBudgetModal = (props) => {
+export const EditBudgetModal = (props) => {
 
     let today = new Date();
     const [icon, setIcon] = useState(typeof props.icon === "undefined" ? '' : props.icon);
@@ -52,19 +52,23 @@ export const AddBudgetModal = (props) => {
     const [limitArray, setLimitArray] = useState({});
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
-    const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-    const [dateTo, setDateTo] = useState(today);
+    const [dateFrom, setDateFrom] = useState(new Date(props.budget.initial_date + "T00:00:00"));
+    const [dateTo, setDateTo] = useState(new Date(props.budget.final_date + "T00:00:00"));
     const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
     const [categories, setCategories] = useState([]);
+
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [page, setPage] = useState(0);
+    const refValue = useRef({});
     const [invalidDates, setInvalidDates] = useState(false);
     const [invalidCategoryValue, setInvalidCategoryValue] = useState(false);
     const [overlapping, setOverlapping] = useState(false);
 
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [page, setPage] = useState(0);
     const onKeyDown = (e) => {
         e.preventDefault();
     };
+
+
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -80,12 +84,51 @@ export const AddBudgetModal = (props) => {
     const showCompleteAllFields = () => {
         setopenCompleteAllFields(true);
     };
+    const checkDates = () => {
+        if (dateFrom > dateTo) {
+            setInvalidDates(true);
+            return false;
+        } else {
+            setInvalidDates(false);
+            return true;
+        }
+    }
 
-    const createBudget = () => {
-        console.log(checkOverlapping())
-        if (checkDates() && checkCategoryValue() && checkOverlapping()) {
+    const checkOverlapping = () => {
+        let overlapping = false;
+        props.budgets.forEach((budget) => {
+            let initial_date = new Date(budget.initial_date + "T00:00:00")
+            let final_date = new Date(budget.final_date + "T00:00:00")
+            let dateToParsed = new Date(dateTo.toISOString().split('T')[0] + "T00:00:00")
+            let dateFromParsed = new Date(dateFrom.toISOString().split('T')[0] + "T00:00:00")
+            if ((initial_date <= dateToParsed && dateToParsed <= final_date) || (initial_date <= dateFromParsed && dateFromParsed <= final_date)) {
+                overlapping = true;
+                if (props.budget.id === budget.id) {
+                    overlapping = false;
+                }
+            }
+        })
+
+        setOverlapping(overlapping);
+        return !overlapping
+    }
+
+    const checkCategoryValue = () => {
+        if (Object.keys(refValue.current).length == 0) {
+            setInvalidCategoryValue(true);
+            return false
+        } else {
+            setInvalidCategoryValue(false);
+            return true
+        }
+
+    }
+
+    const editBudget = (e) => {
+        e.preventDefault();
+        if(checkDates() && checkCategoryValue() && checkOverlapping()){
             fetch(BACKEND_URL + '/budget', {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
                     'Accept': 'application/json',
@@ -96,13 +139,16 @@ export const AddBudgetModal = (props) => {
                 body: JSON.stringify({
                     initial_date: dateFrom.toISOString().split('T')[0],
                     final_date: dateTo.toISOString().split('T')[0],
-                    details: Object.values(limitArray),
+                    details: Object.values(refValue.current),
+                    id: props.budget.id,
                 })
 
 
             }).then((res) => { props.handleCloseModal(); props.getBudgets(); })
-
         }
+
+
+
     }
 
     const closeCompleteAllFields = () => {
@@ -153,7 +199,7 @@ export const AddBudgetModal = (props) => {
             limit: parseInt(e.target.value)
         }
 
-        let limitArrayAux = limitArray;
+        let limitArrayAux = refValue.current;
         limitArrayAux[category.id] = limit;
         let filtered = {}
         Object.keys(limitArrayAux).forEach((key) => {
@@ -162,46 +208,9 @@ export const AddBudgetModal = (props) => {
             }
         });
 
-        setLimitArray(filtered);
+        console.log(filtered)
 
-    }
-
-
-    const checkDates = () => {
-        if (dateFrom > dateTo) {
-            setInvalidDates(true);
-            return false;
-        } else {
-            setInvalidDates(false);
-            return true;
-        }
-    }
-
-    const checkOverlapping = () => {
-
-        let overlapping = false;
-        props.budgets.forEach((budget) => {
-            let initial_date = new Date(budget.initial_date + "T00:00:00")
-            let final_date = new Date(budget.final_date + "T00:00:00")
-            let dateToParsed = new Date(dateTo.toISOString().split('T')[0] + "T00:00:00")
-            let dateFromParsed = new Date(dateFrom.toISOString().split('T')[0] + "T00:00:00")
-            if ((initial_date <= dateToParsed && dateToParsed <= final_date) || (initial_date <= dateFromParsed && dateFromParsed <= final_date)) {
-                overlapping = true;
-            }
-        })
-
-        setOverlapping(overlapping);
-        return !overlapping
-    }
-
-    const checkCategoryValue = () => {
-        if (Object.keys(limitArray).length == 0) {
-            setInvalidCategoryValue(true);
-            return false
-        } else {
-            setInvalidCategoryValue(false);
-            return true
-        }
+        refValue.current = filtered;
 
     }
 
@@ -209,6 +218,9 @@ export const AddBudgetModal = (props) => {
         getCategorias()
     }, []);
 
+    useEffect(() => {
+        getCategorias()
+    }, [invalidCategoryValue]);
 
 
     const cancelChanges = () => {
@@ -235,14 +247,14 @@ export const AddBudgetModal = (props) => {
                             value={dateFrom}
                             onChange={handleChangeFrom}
                             sx={{ color: '#9CE37D;' }}
-                            renderInput={(params) => <TextField {...params} onKeyDown={onKeyDown} {...params} />}
+                            renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                         />
                         <DesktopDatePicker
                             label="Hasta"
                             inputFormat="MM/DD/YYYY"
                             value={dateTo}
                             onChange={handleChangeTo}
-                            renderInput={(params) => <TextField {...params} onKeyDown={onKeyDown} {...params} />}
+                            renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                         />
 
 
@@ -258,17 +270,34 @@ export const AddBudgetModal = (props) => {
                                 </TableHead>
                                 <TableBody>
                                     {
+
                                         categories
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map((category) => (
+                                            .map((category) => {
+                                                let categoryMatch = props.budget.details.find((detail) => detail.category.id === category.id)
+                                                let categoryValue = typeof categoryMatch === "undefined" ? 0 : categoryMatch.limit
 
-                                                <TableRow key={category.id}>
-                                                    <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
-                                                    <TableCell> <TextField onChange={(e) => { addLimit(e, category) }}></TextField> </TableCell>
-                                                </TableRow>
+                                                if (typeof categoryMatch !== "undefined") {
+                                                    let limit = {
+                                                        category_id: categoryMatch.category.id,
+                                                        limit: parseInt(categoryMatch.limit)
+                                                    }
+
+                                                    let aux = refValue.current;
+                                                    aux[categoryMatch.category.id] = typeof aux[categoryMatch.category.id] === "undefined" ? limit : aux[categoryMatch.category.id];
+                                                    refValue.current = aux;
+                                                }
+
+                                                return (
+                                                    <TableRow key={category.id}>
+                                                        <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
+                                                        <TableCell> <TextField defaultValue={categoryValue} onChange={(e) => { addLimit(e, category) }}></TextField> </TableCell>
+                                                    </TableRow>
+                                                )
 
 
-                                            ))}
+                                            })
+                                    }
 
                                 </TableBody>
                             </Table>
@@ -293,13 +322,14 @@ export const AddBudgetModal = (props) => {
                             <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                         </Grid>
                         <Grid item xs={6} className="boton-aceptar">
-                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={createBudget}><DoneIcon sx={{ color: 'white' }} /> </Button>
+                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e)=>{editBudget(e)}}><DoneIcon sx={{ color: 'white' }} /> </Button>
                         </Grid>
                     </Grid>
                 </Stack>
 
             </Box>
 
+            <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
             <CustomAlert text={"Las fechas son invalidas"} severity={"warning"} open={invalidDates} closeAction={() => setInvalidDates(false)} />
             <CustomAlert text={"Ya existe un presupuesto para ese periodo"} severity={"error"} open={overlapping} closeAction={() => setOverlapping(false)} />
             <CustomAlert text={"Ingrese un valor valido para al menos una categoria"} severity={"warning"} open={invalidCategoryValue} closeAction={() => setInvalidCategoryValue(false)} />
@@ -308,4 +338,4 @@ export const AddBudgetModal = (props) => {
     )
 }
 
-export default AddBudgetModal;
+export default EditBudgetModal;
