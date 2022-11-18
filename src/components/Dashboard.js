@@ -230,6 +230,7 @@ export default function DashboardContent(props) {
     setLoading(true)
     getTransactionsForMultiSelect()
     getAllMonthTransactionsForTotal()
+    getCurrentBudget()
   }, [transactions])
 
 
