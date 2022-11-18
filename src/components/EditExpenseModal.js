@@ -167,8 +167,19 @@ export const EditExpenseModal = (props) => {
 
         }
 
+        
+
 
     }
+
+    const validateDate = (date) => {
+        const today = new Date();
+        const dateToValidate = new Date(date);
+        if (dateToValidate < today) {
+          return false;
+        }
+        return true;
+      }
 
 
     return (
