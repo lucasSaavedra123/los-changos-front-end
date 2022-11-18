@@ -44,18 +44,18 @@ const budgetModal = {
 }
 
 export const EditBudgetModal = (props) => {
+    let detail_index = 0
 
-    let today = new Date();
-    const [icon, setIcon] = useState(typeof props.icon === "undefined" ? '' : props.icon);
-    const [name, setName] = useState(typeof props.name === "undefined" ? '' : props.name);
-    const [monto, setMonto] = useState(0);
-    const [limitArray, setLimitArray] = useState({});
+    while (detail_index < props.budget.details.length) {
+        props.budget.details[detail_index].category_id = props.budget.details[detail_index].category.id
+        detail_index += 1
+    }
+
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [dateFrom, setDateFrom] = useState(new Date(props.budget.initial_date + "T00:00:00"));
     const [dateTo, setDateTo] = useState(new Date(props.budget.final_date + "T00:00:00"));
-    const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
-    const [categories, setCategories] = useState([]);
+    const [budget, setBudget] = useState(props.budget);
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
@@ -68,8 +68,6 @@ export const EditBudgetModal = (props) => {
         e.preventDefault();
     };
 
-
-
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -78,8 +76,6 @@ export const EditBudgetModal = (props) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-
 
     const showCompleteAllFields = () => {
         setopenCompleteAllFields(true);
@@ -114,7 +110,12 @@ export const EditBudgetModal = (props) => {
     }
 
     const checkCategoryValue = () => {
-        if (Object.keys(refValue.current).length == 0) {
+
+        var sum_value = budget.details.reduce((accumulator, currentValue) => accumulator + currentValue.limit, 0)
+
+        console.log(sum_value)
+
+        if (sum_value == 0) {
             setInvalidCategoryValue(true);
             return false
         } else {
@@ -126,7 +127,7 @@ export const EditBudgetModal = (props) => {
 
     const editBudget = (e) => {
         e.preventDefault();
-        if(checkDates() && checkCategoryValue() && checkOverlapping()){
+        if (checkDates() && checkCategoryValue() && checkOverlapping()) {
             fetch(BACKEND_URL + '/budget', {
                 method: 'PATCH',
                 headers: {
@@ -134,20 +135,16 @@ export const EditBudgetModal = (props) => {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-
-
                 body: JSON.stringify({
                     initial_date: dateFrom.toISOString().split('T')[0],
                     final_date: dateTo.toISOString().split('T')[0],
-                    details: Object.values(refValue.current),
+                    details: Object.values(budget.details),
                     id: props.budget.id,
                 })
 
 
             }).then((res) => { props.handleCloseModal(); props.getBudgets(); })
         }
-
-
 
     }
 
@@ -163,73 +160,29 @@ export const EditBudgetModal = (props) => {
         setDateTo(newValue);
     };
 
+    const changeLimit = (e, detail) => {
 
-
-    const handleChange = (event) => {
-        setIcon(event.target.value);
-    };
-
-
-
-
-
-    const getCategorias = () => {
-        fetch(BACKEND_URL + '/category', {
-            headers: { 'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken }
-        })
-            .then((response) => response.json())
-            .then((actualData) => {
-                setCategories(actualData);
-
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-
-
-    }
-
-    const addLimit = (e, category) => {
         let re = /^[0-9\b]+$/;
         if (!re.test(e.target.value)) {
             e.target.value = '';
         }
-        let limit = {
-            category_id: category.id,
-            limit: parseInt(e.target.value)
-        }
 
-        let limitArrayAux = refValue.current;
-        limitArrayAux[category.id] = limit;
-        let filtered = {}
-        Object.keys(limitArrayAux).forEach((key) => {
-            if (!(limitArrayAux[key].limit <= 0 || isNaN(limitArrayAux[key].limit))) {
-                filtered[key] = limitArrayAux[key]
-            }
-        });
-
-        console.log(filtered)
-
-        refValue.current = filtered;
+        budget.details[budget.details.indexOf(detail)].limit = parseInt(e.target.value)
 
     }
 
     useEffect(() => {
-        getCategorias()
+        //getCategorias()
     }, []);
 
     useEffect(() => {
-        getCategorias()
+        //getCategorias()
     }, [invalidCategoryValue]);
 
 
     const cancelChanges = () => {
         props.handleCloseModal()
     }
-
-    const handleChangeSelect = (event) => {
-        setCategory(event.target.value);
-    };
 
 
     return (
@@ -271,30 +224,15 @@ export const EditBudgetModal = (props) => {
                                 <TableBody>
                                     {
 
-                                        categories
+                                        budget.details
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map((category) => {
-                                                let categoryMatch = props.budget.details.find((detail) => detail.category.id === category.id)
-                                                let categoryValue = typeof categoryMatch === "undefined" ? 0 : categoryMatch.limit
-
-                                                if (typeof categoryMatch !== "undefined") {
-                                                    let limit = {
-                                                        category_id: categoryMatch.category.id,
-                                                        limit: parseInt(categoryMatch.limit)
-                                                    }
-
-                                                    let aux = refValue.current;
-                                                    aux[categoryMatch.category.id] = typeof aux[categoryMatch.category.id] === "undefined" ? limit : aux[categoryMatch.category.id];
-                                                    refValue.current = aux;
-                                                }
-
+                                            .map((detail) => {
                                                 return (
-                                                    <TableRow key={category.id}>
-                                                        <TableCell value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</TableCell>
-                                                        <TableCell> <TextField defaultValue={categoryValue} onChange={(e) => { addLimit(e, category) }}></TextField> </TableCell>
+                                                    <TableRow key={detail.category.id}>
+                                                        <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
+                                                        <TableCell> <TextField defaultValue={detail.limit} onChange={(e) => { changeLimit(e, detail) }}></TextField> </TableCell>
                                                     </TableRow>
                                                 )
-
 
                                             })
                                     }
@@ -305,7 +243,7 @@ export const EditBudgetModal = (props) => {
                         <TablePagination
                             component="div"
                             rowsPerPageOptions={[5, 10]}
-                            count={categories.length}
+                            count={budget.details.length}
                             page={page}
                             onPageChange={handleChangePage}
                             rowsPerPage={rowsPerPage}
@@ -322,7 +260,7 @@ export const EditBudgetModal = (props) => {
                             <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                         </Grid>
                         <Grid item xs={6} className="boton-aceptar">
-                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e)=>{editBudget(e)}}><DoneIcon sx={{ color: 'white' }} /> </Button>
+                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { editBudget(e) }}><DoneIcon sx={{ color: 'white' }} /> </Button>
                         </Grid>
                     </Grid>
                 </Stack>
