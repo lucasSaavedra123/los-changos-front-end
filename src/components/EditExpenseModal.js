@@ -47,6 +47,9 @@ export const EditExpenseModal = (props) => {
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
+    const onKeyDown = (e) => {
+        e.preventDefault();
+     };
 
     const showCompleteAllFields = () => {
         setopenCompleteAllFields(true);
@@ -167,8 +170,19 @@ export const EditExpenseModal = (props) => {
 
         }
 
+        
+
 
     }
+
+    const validateDate = (date) => {
+        const today = new Date();
+        const dateToValidate = new Date(date);
+        if (dateToValidate < today) {
+          return false;
+        }
+        return true;
+      }
 
 
     return (
@@ -189,7 +203,7 @@ export const EditExpenseModal = (props) => {
                         onChange={handleChange}
                         sx={{ color: '#9CE37D;' }}
                         disableFuture='true'
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params}/>}
                     />
 
                 </LocalizationProvider>

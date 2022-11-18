@@ -34,7 +34,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = React.useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword]=useState(false);
 
     const [openCompleteAllFieldsError, setopenCompleteAllFieldsError] = React.useState(false);
     const [openRepeatedEmailMessage, setopenRepeatedEmailMessage] = React.useState(false);
@@ -75,15 +75,15 @@ const Register = () => {
         setOpenSuccessfulRegister(false);
     };
 
-
-
-    const handleClickShowPassword = () => {
+ 
+    
+      const handleClickShowPassword = () => {
         setShowPassword(!showPassword)
-    };
-
-    const handleMouseDownPassword = (event) => {
+      };
+    
+      const handleMouseDownPassword = (event) => {
         event.preventDefault();
-    };
+      };
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -158,28 +158,26 @@ const Register = () => {
                             <TextField label="Nombre" color="primary" className={classes.root} fullWidth onChange={(e) => setFirstName(e.target.value)} />
                             <TextField label="Apellido" color="primary" className={classes.root} fullWidth onChange={(e) => setLastName(e.target.value)} />
                             <TextField label="Correo electronico" color="primary" className={classes.root} fullWidth onChange={(e) => setEmail(e.target.value)} />
-
-                            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" className={classes.root}  >
-                                <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-password"
+                            
+                            <FormControl fullWidth className={classes.root}  >
+                            <InputLabel style={{color:'white'}} variant='outlined'>Contraseña</InputLabel>
+                            <OutlinedInput
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
-                                                aria-label="toggle password visibility"
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
                                                 edge="end"
-                                                sx={{ color: 'white' }}
+                                                sx={{color:'white'}}
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="Password"
+                                    
                                 />
                             </FormControl>
                             <div className="text-center">
