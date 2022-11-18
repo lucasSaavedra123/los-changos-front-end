@@ -9,6 +9,7 @@ import "../assets/scss/settings.scss"
 import Paper from '@mui/material/Paper';
 import "../assets/scss/expenseCard.scss"
 import AddBudgetModal from './AddBudgetModal';
+import EditBudgetModal from './EditBudgetModal';
 import { useState, useContext, useEffect } from 'react';
 import Title from './Title';
 import { Button, ButtonBase } from '@mui/material';
@@ -47,11 +48,14 @@ const BudgetPage = () => {
 
   const [open, setOpen] = useState(false);
   const handleClose = () => { setOpen(false); }
+  const handleCloseEdit = () => { setOpenEdit(false); }
+  const [openEdit, setOpenEdit] = useState(false);
   const [budgets, setBudgets] = useState([]);
   const [openValueError, setopenValueError] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
+  const [editBudgetItem, setEditBudgetItem] = useState({});
 
 
   const closeValueError = () => setopenValueError(false);
@@ -64,6 +68,12 @@ const BudgetPage = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const openBudgetModal = (budgetItem) => {
+    setEditBudgetItem(budgetItem);
+    setOpenEdit(true);
+    console.log(budgetItem);
+  }
 
 
   const getBudgets = () => {
@@ -157,6 +167,13 @@ const BudgetPage = () => {
                           </div>
                         </Modal>
 
+                        <Modal
+                          open={openEdit} onClose={handleCloseEdit}>
+                          <div className="add-expense-modal">
+                            <EditBudgetModal action={'Nueva'} handleCloseModal={handleCloseEdit} budget={editBudgetItem} getBudgets={getBudgets} />
+                          </div>
+                        </Modal>
+
                       </div>
                     </React.Fragment>
                   </Paper>
@@ -178,6 +195,7 @@ const BudgetPage = () => {
                           <Grid item xs={12} lg={10} md={10}>
 
                             <Presupuesto budget={budgetItem} />
+
 
                           </Grid>
                           <Grid item xs={2} lg={2} md={2}>
@@ -202,7 +220,7 @@ const BudgetPage = () => {
                               }}><DeleteIcon sx={{ color: "green" }} /></Button>
                             </Grid>
                             <Grid item xs={6}>
-                              <Button>Edit</Button>
+                              <Button onClick={()=>{openBudgetModal(budgetItem)}}>Edit</Button>
                             </Grid>
                             {/* </div> */}
                             
