@@ -12,13 +12,20 @@ import AddBudgetModal from './AddBudgetModal';
 import { useState, useContext, useEffect } from 'react';
 import Title from './Title';
 import { Button, ButtonBase } from '@mui/material';
-import {Modal} from '@mui/material';
+import { Modal } from '@mui/material';
 import Presupuesto from './Presupuesto';
-import {Stack} from '@mui/material';
+import { Stack } from '@mui/material';
 import { BACKEND_URL } from "../CONSTANTS";
 import { AuthContext } from "../context/AuthContext";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CustomAlert from "./CustomAlert";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { TableContainer, TablePagination } from '@mui/material';
 
 const mdTheme = createTheme();
 
@@ -39,77 +46,195 @@ const BudgetPage = () => {
   };
 
   const [open, setOpen] = useState(false);
-  const handleClose = () => {setOpen(false);}
+  const handleClose = () => { setOpen(false); }
   const [budgets, setBudgets] = useState([]);
   const [openValueError, setopenValueError] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = React.useState(0);
+
 
   const closeValueError = () => setopenValueError(false);
 
-  const getBudgets = () =>{
-    fetch(BACKEND_URL+'/budget', {
-     'headers': {
-       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-     }
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+
+  const getBudgets = () => {
+    fetch(BACKEND_URL + '/budget', {
+      'headers': {
+        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+      }
     })
-        .then((response) => response.json())
-        .then((res) =>{ 
-          setBudgets(res)
+      .then((response) => response.json())
+      .then((res) => {
+        setBudgets(res)
 
 
-        })
-            .catch((err) => {
-            console.log(err.message);
-        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
 
-}
+  }
 
 
   useEffect(() => {
     getBudgets();
   }, [])
 
-  const deleteBudget = (budget,e) => {
+  const deleteBudget = (budget, e) => {
     e.preventDefault(e);
     if (window.confirm("¿Estas seguro que queres borrar este presupuesto?")) {
-    fetch(BACKEND_URL + '/budget', {
-      method: 'DELETE',
-      headers: {
+      fetch(BACKEND_URL + '/budget', {
+        method: 'DELETE',
+        headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-      },
-      body: JSON.stringify({
+        },
+        body: JSON.stringify({
           id: budget.id
-      })
+        })
 
 
-  }).then(() => { getBudgets() })
+      }).then(() => { getBudgets() })
+    }
   }
-}
 
 
   return (
-  <ThemeProvider theme={mdTheme}>
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
-        }}
-      >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <ThemeProvider theme={mdTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+           
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <React.Fragment>
+                      <div className='table-title'>
+                        <div className='titulo-principal'>
+                          <Title>
+                            Mis Presupuestos
+                          </Title>
+                        </div>
+                        <div className='boton-principal'>
+                          <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => setOpen(!open)}>
+                            AGREGAR PRESUPUESTO
+                          </Button>
+                        </div>
+                        <Modal
+                          open={open} onClose={handleClose}>
+                          <div className="add-expense-modal">
+                            <AddBudgetModal action={'Nueva'} handleCloseModal={handleClose} getBudgets={getBudgets} />
+                          </div>
+                        </Modal>
+
+                      </div>
+                    </React.Fragment>
+                  </Paper>
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <TableContainer>
+                  <Table >
+                    <TableHead>
+                      <TableRow>
+
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {budgets
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((budgetItem) => (
+                          <Grid container spacing={3}>
+                          <Grid item xs={12} lg={10} md={10}>
+
+                            <Presupuesto budget={budgetItem} />
+
+                          </Grid>
+                          <Grid item xs={2} lg={2} md={2}>
+                          <Paper
+                              sx={{
+                                p: 2,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                height: 150,
+                              }}
+                            >
+                            {/* <div className='borrar-presupuesto'> */}
+                            <Grid item xs={6}>
+                            <Button onClick={(e) => {
+            
+                              if(budgetItem.active){
+                                setopenValueError(true);
+                              }else{
+                                deleteBudget(budgetItem,e);
+                              }
+                              
+                              }}><DeleteIcon sx={{ color: "green" }} /></Button>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <Button>Edit</Button>
+                            </Grid>
+                            {/* </div> */}
+                            
+                          </Paper>
+                          </Grid>
+                          </Grid>
+
+                        ))}
+                    </TableBody>
+                  </Table>
+                  </TableContainer>
+                  <TablePagination 
+                  style={{display:'flex',justifyContent:'right'}}
+                  component="div"
+                  rowsPerPageOptions={[5, 10, 25]}
+                  count={budgets.length}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </Grid>
+                </Grid>
+          
+           
+          </Container>
+
+          );
+          {/* <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Stack>
           <Grid container spacing={3}>
-            {/* Chart */}
+            
             <Grid item xs={12}>
             <Paper
               sx={{
@@ -186,11 +311,11 @@ const BudgetPage = () => {
           
             
           </Stack>
-        </Container>
+        </Container> */}
+        </Box>
       </Box>
-    </Box>
-    <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />
-  </ThemeProvider>);
+      <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+    </ThemeProvider>);
 
 }
 
