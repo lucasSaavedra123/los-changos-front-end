@@ -233,7 +233,9 @@ export default function DashboardContent(props) {
   }, [transactions])
 
 
-  
+  const onKeyDown = (e) => {
+    e.preventDefault();
+};
 
   let page = false ?
     //ACA VA EL LOADING INDICATOR
@@ -337,7 +339,7 @@ export default function DashboardContent(props) {
                         onChange={handleChangeFrom}
                         sx={{ color: '#9CE37D;' }}
                         disableFuture='true'
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                       />
                       <DesktopDatePicker
                         label="Hasta"
@@ -345,7 +347,7 @@ export default function DashboardContent(props) {
                         value={dateTo}
                         onChange={handleChangeTo}
                         disableFuture='true'
-                        renderInput={(params) => <TextField {...params} />}
+                        renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                       />
                       <MultiSelect
                         options={options}
