@@ -27,6 +27,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { TableContainer, TablePagination } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 const mdTheme = createTheme();
 
@@ -204,12 +205,12 @@ const BudgetPage = () => {
                               sx={{
                                 p: 2,
                                 display: 'flex',
-                                flexDirection: 'column',
+                                flexDirection: 'row',
                                 height: 150,
                               }}
                             >
                             {/* <div className='borrar-presupuesto'> */}
-                            <Grid item xs={6}>
+                            
                             <Button onClick={(e) => {
             
                               if(budgetItem.active){
@@ -219,17 +220,17 @@ const BudgetPage = () => {
                               }
                               
                               }}><DeleteIcon sx={{ color: "green" }} /></Button>
-                            </Grid>
-                            <Grid item xs={6}>
-                              <Button onClick={()=>{
+                            
+                            
+                              <Button style={{marginLeft:'5px'}} onClick={()=>{
                                 if(new Date(budgetItem.initial_date + "T00:00:00") <= new Date()){
                                   setOpenEditError(true);
                                 }else{
                                   openBudgetModal(budgetItem)
                                 }
                                 
-                                }}>Edit</Button>
-                            </Grid>
+                                }}><EditIcon sx={{color:'green'}}/></Button>
+                            
                             {/* </div> */}
                             
                           </Paper>
