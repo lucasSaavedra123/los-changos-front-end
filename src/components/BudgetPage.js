@@ -206,7 +206,7 @@ const BudgetPage = () => {
                                 p: 2,
                                 display: 'flex',
                                 flexDirection: 'row',
-                                height: 150,
+                                height: 130,
                               }}
                             >
                             {/* <div className='borrar-presupuesto'> */}

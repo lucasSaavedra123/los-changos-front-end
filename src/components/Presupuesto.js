@@ -133,6 +133,7 @@ export default function Presupuesto(props) {
                                 {addCommas(budget.total_spent)}/{addCommas(budget.total_limit)}
                                 </div>
                             </Grid>
+                            
                         </Grid>
 
                     <div className='flecha-abajo'>
