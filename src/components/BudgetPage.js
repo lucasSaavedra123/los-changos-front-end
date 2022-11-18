@@ -341,7 +341,7 @@ const BudgetPage = () => {
         </Box>
       </Box>
       <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />
-      <CustomAlert text={"No se puede editar un presupuesto en finalizado o en curso"} severity={"warning"} open={openEditError} closeAction={closeEditError} />
+      <CustomAlert text={"No se puede editar un presupuesto finalizado o en curso"} severity={"warning"} open={openEditError} closeAction={closeEditError} />
     </ThemeProvider>);
 
 }
