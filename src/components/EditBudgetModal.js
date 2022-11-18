@@ -192,7 +192,7 @@ export const EditBudgetModal = (props) => {
             <Box sx={budgetModal}>
                 <Stack spacing={0.5}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Nuevo presupuesto
+                        Editar Presupuesto
                     </Typography>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
