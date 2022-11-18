@@ -15,7 +15,6 @@ import { AuthContext } from "../context/AuthContext";
 //Hay que cambiar que en vez de pasar cada valor, pasarle el presupuesto y uqe itere cada categoria y los totales
 
 
-
 export default function Presupuesto(props) {
     const { currentUser } = useContext(AuthContext);
     const [openBudget, setBudgetOpen] = useState(false);
@@ -23,7 +22,7 @@ export default function Presupuesto(props) {
     const budget = props.budget;
     const percentage = Math.round(budget.total_spent*100/budget.total_limit);
     const variant = percentage > 100 ? "danger" :  percentage > 70 ?  "warning" : "success";
-    const quantityOfCategorys = typeof budget.details === "undefined" ? 0 : budget.details.length;
+    const quantityOfCategorys = typeof budget.details === "undefined" ? 0 : budget.details.filter(detail => detail.limit > 0);
 
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -89,8 +88,8 @@ export default function Presupuesto(props) {
                                 </div>
                             </Grid>
                         </Grid>
-                        
-                        {budget.details.map((categoryBudget) => {
+
+                        {budget.details.filter(detail => detail.limit > 0).map((categoryBudget) => {
                             let spent = Math.round(categoryBudget.spent)
                             let limit = Math.round(categoryBudget.limit)
                             let categoryPercentage = Math.round((spent*100/limit))
@@ -112,11 +111,7 @@ export default function Presupuesto(props) {
                             </Stack>
                             )
                         })}
-                        
 
-        
-                        
-                        
                     </Stack>
                     
                     
@@ -138,6 +133,7 @@ export default function Presupuesto(props) {
                                 {addCommas(budget.total_spent)}/{addCommas(budget.total_limit)}
                                 </div>
                             </Grid>
+                            
                         </Grid>
 
                     <div className='flecha-abajo'>
