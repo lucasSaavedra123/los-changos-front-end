@@ -52,6 +52,7 @@ const BudgetPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [budgets, setBudgets] = useState([]);
   const [openValueError, setopenValueError] = useState(false);
+  const [openEditError, setOpenEditError] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
@@ -59,6 +60,7 @@ const BudgetPage = () => {
 
 
   const closeValueError = () => setopenValueError(false);
+  const closeEditError = () => setOpenEditError(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -72,7 +74,6 @@ const BudgetPage = () => {
   const openBudgetModal = (budgetItem) => {
     setEditBudgetItem(budgetItem);
     setOpenEdit(true);
-    console.log(budgetItem);
   }
 
 
@@ -220,7 +221,14 @@ const BudgetPage = () => {
                               }}><DeleteIcon sx={{ color: "green" }} /></Button>
                             </Grid>
                             <Grid item xs={6}>
-                              <Button onClick={()=>{openBudgetModal(budgetItem)}}>Edit</Button>
+                              <Button onClick={()=>{
+                                if(new Date(budgetItem.initial_date + "T00:00:00") <= new Date()){
+                                  setOpenEditError(true);
+                                }else{
+                                  openBudgetModal(budgetItem)
+                                }
+                                
+                                }}>Edit</Button>
                             </Grid>
                             {/* </div> */}
                             
@@ -333,6 +341,7 @@ const BudgetPage = () => {
         </Box>
       </Box>
       <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+      <CustomAlert text={"No se puede editar un presupuesto en finalizado o en curso"} severity={"warning"} open={openEditError} closeAction={closeEditError} />
     </ThemeProvider>);
 
 }
