@@ -112,6 +112,29 @@ export default function Presupuesto(props) {
                             )
                         })}
 
+{/*                         {budget.details.filter(detail => detail.value != undefined).map((categoryBudget) => {
+                            let spent = Math.round(categoryBudget.spent)
+                            let limit = Math.round(categoryBudget.limit)
+                            let categoryPercentage = Math.round((spent*100/limit))
+                            let categoryName = categoryBudget.category.name;
+                            let categoryVariant = categoryPercentage > 100 ? "danger" :  categoryPercentage > 70 ?  "warning" : "success";
+                            return(
+                            <Stack>
+                            <Grid><div style={{marginLeft:10}}> {categoryName} </div></Grid>
+                            <Grid container spacing={0.5} style={{marginLeft:'auto'}}>
+                                <Grid item lg={10} xs={10} md={10}>
+                                <ProgressBar className='linea-progreso' now={categoryPercentage} variant={categoryVariant} label={`${categoryPercentage}%`} />
+                                </Grid>
+                                <Grid item lg={2} xd={2} md={2}>
+                                    <div style={{marginTop:'auto'}}>
+                                    {addCommas(spent)}/{addCommas(limit)}
+                                    </div>
+                                </Grid>
+                            </Grid>
+                            </Stack>
+                            )
+                        })} */}
+
                     </Stack>
                     
                     
