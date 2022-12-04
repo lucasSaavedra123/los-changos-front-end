@@ -1,17 +1,14 @@
 import { useState, useRef } from "react";
 import { TextField } from '@material-ui/core';
 import { Box } from '@mui/system';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import { Button } from "@mui/material";
-import { ALLOWS_ICONS_FOR_CATEGORY, BACKEND_URL } from "../CONSTANTS";
+import { BACKEND_URL } from "../CONSTANTS";
 import CategoryIcon from "./CategoryIcon";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
 import DoneIcon from '@mui/icons-material/Done';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import "../assets/scss/expenseCard.scss"
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -25,10 +22,9 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TableRow from '@mui/material/TableRow';
 import { TablePagination, TableContainer } from '@mui/material';
-import { Modal } from "@mui/material";
-
 
 const budgetModal = {
     position: 'absolute',
@@ -63,6 +59,7 @@ export const EditBudgetModal = (props) => {
     const [invalidDates, setInvalidDates] = useState(false);
     const [invalidCategoryValue, setInvalidCategoryValue] = useState(false);
     const [overlapping, setOverlapping] = useState(false);
+    const [activeStep, setActiveStep] = useState(0);
 
     const onKeyDown = (e) => {
         e.preventDefault();
@@ -180,7 +177,6 @@ export const EditBudgetModal = (props) => {
         //getCategorias()
     }, [invalidCategoryValue]);
 
-
     const cancelChanges = () => {
         props.handleCloseModal()
     }
@@ -190,81 +186,145 @@ export const EditBudgetModal = (props) => {
         <>
 
             <Box sx={budgetModal}>
-                <Stack spacing={0.5}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Editar Presupuesto
-                    </Typography>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DesktopDatePicker
-                            label="Desde"
-                            inputFormat="MM/DD/YYYY"
-                            value={dateFrom}
-                            onChange={handleChangeFrom}
-                            sx={{ color: '#9CE37D;' }}
-                            renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
-                        />
-                        <DesktopDatePicker
-                            label="Hasta"
-                            inputFormat="MM/DD/YYYY"
-                            value={dateTo}
-                            onChange={handleChangeTo}
-                            renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
-                        />
+                {activeStep === 0 ? (
+                    <Stack spacing={0.5}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Editar Presupuesto
+                        </Typography>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DesktopDatePicker
+                                label="Desde"
+                                inputFormat="MM/DD/YYYY"
+                                value={dateFrom}
+                                onChange={handleChangeFrom}
+                                sx={{ color: '#9CE37D;' }}
+                                renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
+                            />
+                            <DesktopDatePicker
+                                label="Hasta"
+                                inputFormat="MM/DD/YYYY"
+                                value={dateTo}
+                                onChange={handleChangeTo}
+                                renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
+                            />
 
 
-                    </LocalizationProvider>
-                    <Grid container spacing={0.5}>
+                        </LocalizationProvider>
+                        <Grid container spacing={0.5}>
+                            <TableContainer>
+                                <Table size='small'>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell >Categoria</TableCell>
+                                            <TableCell >Presupuesto</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {
+
+                                            budget.details
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map((detail) => {
+                                                    return (
+                                                        <TableRow key={detail.category.id}>
+                                                            <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
+                                                            <TableCell> <TextField defaultValue={detail.limit} onChange={(e) => { changeLimit(e, detail) }}></TextField> </TableCell>
+                                                        </TableRow>
+                                                    )
+
+                                                })
+                                        }
+
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                component="div"
+                                rowsPerPageOptions={[5, 10]}
+                                count={budget.details.length}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                rowsPerPage={rowsPerPage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                            <Grid>
+
+                            </Grid>
+
+
+                        </Grid>
+                        <Grid container spacing={0.5}>
+                            <Grid item xs={6} className="boton-cancelar" >
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
+                            </Grid>
+                            <Grid item xs={6} className="boton-adelante">
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { console.log("Se hace"); setActiveStep(1); console.log(activeStep); }}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
+                            </Grid>
+                        </Grid>
+                    </Stack>
+                ) : (
+                    <Stack spacing={0.5}>
+                        {"Aca van los gastos futuros"}
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DesktopDatePicker
+                                label="Fecha de caducidad"
+                                inputFormat="MM/DD/YYYY"
+                                sx={{ color: '#9CE37D;' }}
+                                renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
+                            />
+                        </LocalizationProvider>
+                        <TextField label="Nombre"></TextField>
+
                         <TableContainer>
-                            <Table size='small'>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell >Categoria</TableCell>
-                                        <TableCell >Presupuesto</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
+                                <Table size='small'>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell >Nombre</TableCell>
+                                            <TableCell >Valor</TableCell>
+                                            <TableCell >¿Eliminar?</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {
 
-                                        budget.details
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map((detail) => {
-                                                return (
-                                                    <TableRow key={detail.category.id}>
-                                                        <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
-                                                        <TableCell> <TextField defaultValue={detail.limit} onChange={(e) => { changeLimit(e, detail) }}></TextField> </TableCell>
-                                                    </TableRow>
-                                                )
+                                            budget.details
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map((detail) => {
+                                                    return (
+                                                        <TableRow key={detail.category.id}>
+                                                            <TableCell>Valor</TableCell>
+                                                            <TableCell> 564 </TableCell>
+                                                            <TableCell> Boton </TableCell>
+                                                        </TableRow>
+                                                    )
 
-                                            })
-                                    }
+                                                })
+                                        }
 
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <TablePagination
-                            component="div"
-                            rowsPerPageOptions={[5, 10]}
-                            count={budget.details.length}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            rowsPerPage={rowsPerPage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                        <Grid>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                component="div"
+                                rowsPerPageOptions={[5, 10]}
+                                count={budget.details.length}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                rowsPerPage={rowsPerPage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
 
+                        <Grid container spacing={0.5}>
+                            <Grid item xs={6} className="boton-atras" >
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { console.log("Se hace"); setActiveStep(0) }}> <ArrowBackIcon sx={{ color: 'white' }} /> </Button>
+                            </Grid>
+                            <Grid item xs={6} className="boton-aceptar">
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { editBudget(e) }}><DoneIcon sx={{ color: 'white' }} /> </Button>
+                            </Grid>
                         </Grid>
-
-
-                    </Grid>
-                    <Grid container spacing={0.5}>
-                        <Grid item xs={6} className="boton-cancelar" >
-                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
-                        </Grid>
-                        <Grid item xs={6} className="boton-aceptar">
-                            <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { editBudget(e) }}><DoneIcon sx={{ color: 'white' }} /> </Button>
-                        </Grid>
-                    </Grid>
-                </Stack>
+                    </Stack>
+                )}
 
             </Box>
 

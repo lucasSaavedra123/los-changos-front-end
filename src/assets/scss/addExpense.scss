@@ -45,13 +45,9 @@
     width: 50%;
 
 }
-.boton-aceptar{
+.boton-aceptar, .boton-cancelar, .boton-atras, .boton-adelante{
     display: flex;
     justify-content: center;
     background: none;
 }
-.boton-cancelar{
-    display: flex;
-    justify-content: center;
-    background: none;
-}
+
