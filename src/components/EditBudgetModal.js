@@ -9,6 +9,7 @@ import { useContext } from "react";
 import CancelIcon from '@mui/icons-material/Cancel';
 import DoneIcon from '@mui/icons-material/Done';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AddIcon from '@mui/icons-material/Add';
 import "../assets/scss/expenseCard.scss"
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -25,6 +26,10 @@ import TableHead from '@mui/material/TableHead';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TableRow from '@mui/material/TableRow';
 import { TablePagination, TableContainer } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 const budgetModal = {
     position: 'absolute',
@@ -41,9 +46,14 @@ const budgetModal = {
 
 export const EditBudgetModal = (props) => {
     let detail_index = 0
+    let categories = []
 
     while (detail_index < props.budget.details.length) {
         props.budget.details[detail_index].category_id = props.budget.details[detail_index].category.id
+
+        if (props.budget.details[detail_index].limit !== undefined) {
+            categories.push(props.budget.details[detail_index].category)
+        }
         detail_index += 1
     }
 
@@ -99,7 +109,6 @@ export const EditBudgetModal = (props) => {
                     overlapping = true;
                 }
             }
-
 
         })
 
@@ -276,44 +285,61 @@ export const EditBudgetModal = (props) => {
                         </LocalizationProvider>
                         <TextField label="Nombre"></TextField>
 
+                        <FormControl sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-helper-label"
+                                id="demo-simple-select-helper"
+                                label="Categoria"
+                            >
+                                {categories.map((category) => (
+                                    <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        <Button style={{ backgroundColor: '#9CE37D' }}> <AddIcon sx={{ color: 'white' }} /> </Button>
+
                         <TableContainer>
-                                <Table size='small'>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell >Nombre</TableCell>
-                                            <TableCell >Valor</TableCell>
-                                            <TableCell >¿Eliminar?</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {
+                            <Table size='small'>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell >Nombre</TableCell>
+                                        <TableCell >Valor</TableCell>
+                                        <TableCell >Categoria</TableCell>
+                                        <TableCell >¿Eliminar?</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
 
-                                            budget.details
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map((detail) => {
-                                                    return (
-                                                        <TableRow key={detail.category.id}>
-                                                            <TableCell>Valor</TableCell>
-                                                            <TableCell> 564 </TableCell>
-                                                            <TableCell> Boton </TableCell>
-                                                        </TableRow>
-                                                    )
+                                        budget.details
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((detail) => {
+                                                return (
+                                                    <TableRow key={detail.category.id}>
+                                                        <TableCell>Valor</TableCell>
+                                                        <TableCell> 564 </TableCell>
+                                                        <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
+                                                        <TableCell> Boton </TableCell>
+                                                    </TableRow>
+                                                )
 
-                                                })
-                                        }
+                                            })
+                                    }
 
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <TablePagination
-                                component="div"
-                                rowsPerPageOptions={[5, 10]}
-                                count={budget.details.length}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                rowsPerPage={rowsPerPage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            />
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <TablePagination
+                            component="div"
+                            rowsPerPageOptions={[5, 10]}
+                            count={budget.details.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
 
                         <Grid container spacing={0.5}>
                             <Grid item xs={6} className="boton-atras" >
