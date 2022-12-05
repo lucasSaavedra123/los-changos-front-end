@@ -21,7 +21,7 @@ import Stack from '@mui/material/Stack';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import Grid from '@mui/material/Grid';
 import CustomAlert from "./CustomAlert";
-
+import Paper from '@mui/material/Paper';
 
 const style = {
     position: 'absolute',
@@ -32,6 +32,7 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
+    backgroundColor: "white",
     p: 4,
 };
 
@@ -43,7 +44,7 @@ export const EditExpenseModal = (props) => {
     const [name, setName] = useState(typeof props.name === "undefined" ? '' : props.name)
     const [value, setValue] = useState(typeof props.value === "undefined" ? '' : props.value)
     const [categories, setCategories] = useState([]);
-
+    const [gastoCompartido,SetGastoCompartido]= useState(false); 
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
@@ -188,6 +189,8 @@ export const EditExpenseModal = (props) => {
     return (
         <>
         <Box sx={style}>
+     
+     
             <Stack spacing={3}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {props.action} Gasto
@@ -215,6 +218,7 @@ export const EditExpenseModal = (props) => {
                         value={category}
                         label="Categoria"
                         onChange={handleChangeSelect}
+                        style={{height:'48px'}}
                         
                     >
                     {categories.map((category)=>(
@@ -232,6 +236,7 @@ export const EditExpenseModal = (props) => {
                 </Grid>
             </Stack>
 
+            
         </Box>
         <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />

@@ -128,6 +128,7 @@ export const EditCategoryModal = (props) => {
                     value={icon}
                     label="Icono"
                     onChange={handleChange}
+                    style={{height:'48px'}}
                 >
            {ALLOWS_ICONS_FOR_CATEGORY.map((icon)=>(
         <MenuItem value={icon}><CategoryIcon style={{display:'flex',justifyContent:'center'}} name={icon} color={'black'}></CategoryIcon></MenuItem>))
