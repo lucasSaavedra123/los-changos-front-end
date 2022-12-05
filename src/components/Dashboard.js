@@ -23,11 +23,16 @@ import Stack from '@mui/material/Stack';
 import EditExpenseModal from './EditExpenseModal';
 import { Modal } from '@mui/material';
 import Presupuesto from './Presupuesto';
+import EditIncome from './EditIncome';
+import SendMoney from './SendMoney';
 import "../assets/scss/moneyManager.scss";
+import Typography from '@mui/material/Typography';
+
 
 const mdTheme = createTheme();
 
 export default function DashboardContent(props) {
+  const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   const styles = {
     "&.MuiButton-root": {
@@ -46,7 +51,7 @@ export default function DashboardContent(props) {
 
 
   let today = new Date();
-  let months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  let months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
   const { currentUser } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [budget, setBudget] = useState({});
@@ -62,8 +67,11 @@ export default function DashboardContent(props) {
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const handleAgregarGasto = () => setOpen(true)
-  const handleClose = () => {setOpen(false);}
-
+  const handleClose = () => { setOpen(false); }
+  const [openIncome, setOpenIncome] = useState(false);
+  const handleCloseIncome = () => { setOpenIncome(false); }
+  const [sendMoney, setSendMoney] = useState(false);
+  const handleCloseSendMoney = () => { setSendMoney(false); }
   const getSelectedCategoriesArray = (e) => {
     console.log(e)
     setSelected(e);
@@ -124,23 +132,23 @@ export default function DashboardContent(props) {
     }
   }
 
-  const getCurrentBudget = () =>{
-    fetch(BACKEND_URL+'/budget/current', {
-     'headers': {
-       'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
-     }
+  const getCurrentBudget = () => {
+    fetch(BACKEND_URL + '/budget/current', {
+      'headers': {
+        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+      }
     })
-        .then((response) => response.json())
-        .then((res) =>{ 
-          setBudget(res)
+      .then((response) => response.json())
+      .then((res) => {
+        setBudget(res)
 
 
-        })
-            .catch((err) => {
-            console.log(err.message);
-        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
 
-}
+  }
 
   const getAllMonthTransactionsForTotal = () => {
     fetch(BACKEND_URL + '/expense/filter', {
@@ -236,7 +244,7 @@ export default function DashboardContent(props) {
 
   const onKeyDown = (e) => {
     e.preventDefault();
-};
+  };
 
   let page = false ?
     //ACA VA EL LOADING INDICATOR
@@ -262,7 +270,7 @@ export default function DashboardContent(props) {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Presupuesto */}
-              <Presupuesto budget={budget}/>
+              <Presupuesto budget={budget} />
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
@@ -276,7 +284,7 @@ export default function DashboardContent(props) {
                   <Chart transactions={historicalTransactions} />
                 </Paper>
               </Grid>
-              {/* Recent Deposits */}
+
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
@@ -288,21 +296,70 @@ export default function DashboardContent(props) {
                 >
                   <Stack spacing={3}>
                     <div>
-                    <Gastos total={totalForMonth} month={months[today.getMonth()] + " " + today.getFullYear()} />
+                      <Gastos total={totalForMonth} month={months[today.getMonth()] + " " + today.getFullYear()} />
                     </div>
                     <div className='boton-agregar-gastos-dashboard'>
-                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
-                    AGREGAR GASTO
-                  </Button>
+
+                    </div>
+                  </Stack>
+
+                </Paper>
+              </Grid>
+
+
+              {/* Recent Deposits */}
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: 180,
+                    textAlign: 'center'
+                  }}
+                >
+                  <Stack spacing={3}>
+                    <div>
+                    <Typography color="text.secondary" sx={{ flex: 1 }}>
+                        Saldo
+                      </Typography>
+                      <Typography component="p" variant="h4">
+                        $ {addCommas(15000)}
+                      </Typography>
+                    </div>
+                    <div className='boton-agregar-gastos-dashboard'>
+                      <Button style={{ marginRight: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
+                        AGREGAR GASTO
+                      </Button>
+                      <Button style={{ marginRight: "10px", marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={()=>{setOpenIncome(true)}}>
+                        AGREGAR INGRESO
+                      </Button>
+                      <Button style={{ marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={() => {setSendMoney(true)}}>
+                        ENVIAR DINERO
+                      </Button>
                     </div>
                   </Stack>
                   <Modal
-          open={open} onClose={handleClose}>
-          <div className="add-expense-modal">
-             <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={applyDateFilter}/>
-           </div>
-         </Modal>
-                
+                    open={open} onClose={handleClose}>
+                    <div className="add-expense-modal">
+                      <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={applyDateFilter} />
+                    </div>
+                  </Modal>
+
+                  <Modal
+                    open={sendMoney} onClose={handleCloseSendMoney}>
+                    <div className="add-expense-modal">
+                      <SendMoney action={'Nuevo'} handleCloseModal={handleCloseSendMoney} confirmAction={applyDateFilter} />
+                    </div>
+                  </Modal>
+
+                  <Modal
+                    open={openIncome} onClose={handleCloseIncome}>
+                    <div className="add-expense-modal">
+                      <EditIncome action={'Nuevo'} handleCloseModal={handleCloseIncome} confirmAction={applyDateFilter} />
+                    </div>
+                  </Modal>
+
                 </Paper>
               </Grid>
               {/* Grafico Chona */}

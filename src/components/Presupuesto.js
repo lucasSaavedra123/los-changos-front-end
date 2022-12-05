@@ -116,10 +116,10 @@ export default function Presupuesto(props) {
                     
                     
                     <div className='flecha-abajo'>
-                        <ArrowDropUpIcon onClick={funcion2} />
-                        
-                    </div>
-                </div>
+                         <ArrowDropUpIcon onClick={funcion2} />
+
+                     </div>
+                 </div>
 
             ) : (
                 <div>
