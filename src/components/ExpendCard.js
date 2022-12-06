@@ -96,13 +96,13 @@ export const ExpendCard = (props) => {
                     <Modal open={openCategory}
                         onClose={handleCategoryClose} disableBackdropClick>
                         
-                        <EditExpenseModal action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} />
+                        <EditExpenseModal action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} balance={props.balance}/>
                     </Modal>
 
                     <Modal open={incomeOpen}
                         onClose={handleIncomeClose} disableBackdropClick>
                         
-                        <EditIncome action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleIncomeClose} />
+                        <EditIncome action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleIncomeClose} balance={props.balance} />
                     </Modal>
 
 

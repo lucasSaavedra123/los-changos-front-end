@@ -47,6 +47,9 @@ export const EditExpenseModal = (props) => {
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
+    const [balance, setBalance] = useState(props.balance - props.value)
+    const [negativeBalanceError, setNegativeBalanceError] = useState(false)
+    const handleCloseNegativeBalanceError = () => { setNegativeBalanceError(false) }
     const onKeyDown = (e) => {
         e.preventDefault();
      };
@@ -108,14 +111,15 @@ export const EditExpenseModal = (props) => {
     }
 
     const saveExpense = (e) => {
+        console.log(balance)
         e.preventDefault();
         if (value === '' || name === '') {
             showCompleteAllFields()
         }
         else if (value < 0){
             showValueError()
-        }
-        else {
+        
+        }else {
             fetch(BACKEND_URL + '/expense', {
                 method: 'POST',
                 headers: {
@@ -141,14 +145,16 @@ export const EditExpenseModal = (props) => {
     }
 
     const editExpense = (e) => {
+        console.log(parseInt(balance) + parseInt(value)>=0)
         e.preventDefault();
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
         else if (value < 0){
             showValueError()
-        }
-        else {
+        }else if(parseInt(balance) + parseInt(value)<0){
+            setNegativeBalanceError(true)
+        }else {
             fetch(BACKEND_URL + '/expense', {
                 method: 'PATCH',
                 headers: {
@@ -222,6 +228,7 @@ export const EditExpenseModal = (props) => {
         </Box>
         <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+        <CustomAlert text={"El saldo no puede quedar en negativo, proba con otro monto"} severity={"error"} open={negativeBalanceError} closeAction={handleCloseNegativeBalanceError} />
 
         </>
     )
