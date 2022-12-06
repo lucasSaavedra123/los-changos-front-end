@@ -63,6 +63,7 @@ export default function DashboardContent(props) {
   const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [dateTo, setDateTo] = useState(today);
   const [selected, setSelected] = useState([]);
+  const [balance, setBalance] = useState(0);
   const [selectedCategoriesArray, setSelectedCategoriesArray] = useState([]);
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,6 +73,7 @@ export default function DashboardContent(props) {
   const handleCloseIncome = () => { setOpenIncome(false); }
   const [sendMoney, setSendMoney] = useState(false);
   const handleCloseSendMoney = () => { setSendMoney(false); }
+  
   const getSelectedCategoriesArray = (e) => {
     console.log(e)
     setSelected(e);
@@ -103,7 +105,8 @@ export default function DashboardContent(props) {
         .then((res) => res.json())
         .then((transactions) => {
           setTransactions(transactions)
-          setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
+          let expenses = transactions.filter((transaction) => transaction.type === "expense")
+          setTotal(expenses.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
           setLoading(false)
         })
     } else {
@@ -169,7 +172,8 @@ export default function DashboardContent(props) {
     })
       .then((res) => res.json())
       .then((transactions) => {
-        setTotalForMonth(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
+        let expenses = transactions.filter((transaction) => transaction.type === "expense")
+        setTotalForMonth(expenses.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
         setLoading(false)
       })
   }
@@ -206,7 +210,22 @@ export default function DashboardContent(props) {
     transactions.map((transaction) => {
       categories[transaction.category.name] = transaction.category.id
     });
-    setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
+    let expenses = transactions.filter((transaction) => transaction.type==="expense")
+    setTotal(expenses.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
+  }
+
+  const calculateBalance = (transactions) => {
+    let total = 0
+    transactions.forEach(transaction => {
+      if (transaction.type === "income" ||  transaction.type ==="transfer"){
+        total = total + parseFloat(transaction.value)
+      }else{
+        total = total - parseFloat(transaction.value)
+      }
+
+      setBalance(total)
+      
+    });
   }
 
 
@@ -219,6 +238,9 @@ export default function DashboardContent(props) {
       .then((response) => response.json())
       .then((actualData) => {
         setHistoricalTransactions(transactions)
+
+        calculateBalance(actualData)
+        
         getAllCategoriesForMultiSelect(actualData)
       })
       .catch((err) => {
@@ -324,7 +346,7 @@ export default function DashboardContent(props) {
                         Saldo
                       </Typography>
                       <Typography component="p" variant="h4">
-                        $ {addCommas(15000)}
+                        $ {addCommas(balance)}
                       </Typography>
                     </div>
                     <div className='boton-agregar-gastos-dashboard'>
@@ -372,7 +394,7 @@ export default function DashboardContent(props) {
                     height: 320,
                   }}
                 >
-                  <GraficoPie transactions={transactions} total={total} />
+                  <GraficoPie transactions={transactions.filter(transaction => transaction.type==="expense")} total={total} />
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}
@@ -423,7 +445,7 @@ export default function DashboardContent(props) {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders transactions={transactions} confirmAction={applyDateFilter} />
+                  <Orders transactions={transactions} confirmAction={applyDateFilter} balance={balance}/>
                 </Paper>
               </Grid>
             </Grid>

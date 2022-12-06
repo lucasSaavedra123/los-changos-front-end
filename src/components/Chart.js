@@ -43,8 +43,9 @@ export default function Chart(props) {
     let nombreDeMeses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
     tr.map((transaction) => {
       let mes = new Date(transaction.date+"T00:00:00").getMonth()
+      if(transaction.type==="expense"){
       totalPorMes[mes] = typeof totalPorMes[mes] === 'undefined' ? transaction.value : totalPorMes[mes] + transaction.value
-    
+      }
     });
     let meses = Object.keys(totalPorMes);
     let dataAux = []

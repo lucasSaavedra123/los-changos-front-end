@@ -73,7 +73,7 @@ export const EditExpenseModal = (props) => {
         })
             .then((response) => response.json())
             .then((actualData) => {
-                setCategories(actualData);
+                setCategories(actualData.filter((category) => category.id !== 6));
 
             })
             .catch((err) => {
@@ -129,7 +129,8 @@ export const EditExpenseModal = (props) => {
                     value: value,
                     category_id: category,
                     date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
-                    name: name
+                    name: name,
+                    type: "expense"
                 })
 
 
@@ -162,7 +163,8 @@ export const EditExpenseModal = (props) => {
                     value: value,
                     category_id: category,
                     date: typeof date === '' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
-                    name: name
+                    name: name,
+                    type: "expense",
                 })
 
 

@@ -10,6 +10,7 @@ import { TableContainer, TablePagination } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import "../assets/scss/moneyManager.scss";
 
+
 export default function Orders(props) {
 
 
@@ -33,6 +34,7 @@ export default function Orders(props) {
     const handleClose = () => {setOpen(false);};
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(0);
+
 
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -69,7 +71,7 @@ export default function Orders(props) {
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((transaction) => (
 
-            <ExpendCard id={transaction.id} name ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction}  />
+            <ExpendCard balance={props.balance} id={transaction.id} name ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} type={transaction.type} confirmAction={props.confirmAction}/>
             
           ))}
         </TableBody>

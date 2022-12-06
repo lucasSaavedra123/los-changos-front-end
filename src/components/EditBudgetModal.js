@@ -228,13 +228,15 @@ export const EditBudgetModal = (props) => {
                                         budget.details
                                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                             .map((detail) => {
-                                                return (
-                                                    <TableRow key={detail.category.id}>
-                                                        <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
-                                                        <TableCell> <TextField defaultValue={detail.limit} onChange={(e) => { changeLimit(e, detail) }}></TextField> </TableCell>
-                                                    </TableRow>
-                                                )
+                                                if (detail.category.id != 6) {
+                                                    return (
+                                                        <TableRow key={detail.category.id}>
+                                                            <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
+                                                            <TableCell> <TextField defaultValue={detail.limit} onChange={(e) => { changeLimit(e, detail) }}></TextField> </TableCell>
+                                                        </TableRow>
+                                                    )
 
+                                                }
                                             })
                                     }
 
@@ -244,7 +246,7 @@ export const EditBudgetModal = (props) => {
                         <TablePagination
                             component="div"
                             rowsPerPageOptions={[5, 10]}
-                            count={budget.details.length}
+                            count={budget.details.length -1}
                             page={page}
                             onPageChange={handleChangePage}
                             rowsPerPage={rowsPerPage}

@@ -182,7 +182,7 @@ export const AddBudgetModal = (props) => {
                 actualData.forEach(category => {
                     category.limit=0;
                 })
-                setCategories(actualData);
+                setCategories(actualData.filter(category => category.id != 6));
 
             })
             .catch((err) => {

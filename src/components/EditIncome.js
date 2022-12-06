@@ -109,7 +109,7 @@ export const EditExpenseModal = (props) => {
 
     const saveExpense = (e) => {
         e.preventDefault();
-        if (value === '' || name === '' || category === '') {
+        if (value === '' || name === '') {
             showCompleteAllFields()
         }
         else if (value < 0){
@@ -127,9 +127,10 @@ export const EditExpenseModal = (props) => {
 
                 body: JSON.stringify({
                     value: value,
-                    category_id: category,
+                    category_id: 6,
                     date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
-                    name: name
+                    name: name,
+                    type: "income"
                 })
 
 
@@ -160,9 +161,10 @@ export const EditExpenseModal = (props) => {
                 body: JSON.stringify({
                     id: props.id,
                     value: value,
-                    category_id: category,
+                    category_id: 6,
                     date: typeof date === '' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
-                    name: name
+                    name: name,
+                    type: "income"
                 })
 
 
