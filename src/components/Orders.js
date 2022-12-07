@@ -51,7 +51,7 @@ export default function Orders(props) {
       <div className='table-title'>
         <div className='titulo-principal'>
         <Typography component="h2" variant="h6" color="primary" gutterBottom style={{color: "green"}}>
-          Gastos del período
+          Transacciones del período
         </Typography>
         </div>
        
@@ -61,9 +61,9 @@ export default function Orders(props) {
         <TableHead>
           <TableRow>
             <TableCell style={{color: "green"}}>Fecha</TableCell>
-            <TableCell style={{color: "green"}}>Nombre de Gasto</TableCell>
-            <TableCell style={{color: "green"}}>Valor</TableCell>
-            <TableCell style={{color: "green" , textAlign:'center'}}>Accion</TableCell>
+            <TableCell style={{color: "green"}}>Nombre</TableCell>
+            <TableCell style={{color: "green"}}>Monto</TableCell>
+            <TableCell style={{color: "green" , textAlign:'center'}}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

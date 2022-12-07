@@ -73,7 +73,7 @@ export const EditExpenseModal = (props) => {
         })
             .then((response) => response.json())
             .then((actualData) => {
-                setCategories(actualData);
+                setCategories(actualData.filter(category => category.id != 6));
 
             })
             .catch((err) => {
@@ -100,16 +100,19 @@ export const EditExpenseModal = (props) => {
     }
 
     const createOrEditExpense = (e) => {
-        if (typeof props.id === "undefined") {
+/*         if (typeof props.id === "undefined") {
             saveExpense(e)
         } else {
             editExpense(e)
-        }
+        } */
+
+        saveExpense(e)
     }
 
     const saveExpense = (e) => {
         e.preventDefault();
-        if (value === '' || name === '' || category === '') {
+        //ACA HAY QUE CHEQUEAR EL BALANCES
+        if(value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
         else if (value < 0){
@@ -129,7 +132,8 @@ export const EditExpenseModal = (props) => {
                     value: value,
                     category_id: category,
                     date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
-                    name: name
+                    type: "transfer_send",
+                    alias: name
                 })
 
 
@@ -139,7 +143,7 @@ export const EditExpenseModal = (props) => {
 
     }
 
-    const editExpense = (e) => {
+/*     const editExpense = (e) => {
         e.preventDefault();
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
@@ -173,7 +177,7 @@ export const EditExpenseModal = (props) => {
         
 
 
-    }
+    } */
 
     const validateDate = (date) => {
         const today = new Date();
@@ -192,8 +196,24 @@ export const EditExpenseModal = (props) => {
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Enviar Dinero
                 </Typography>
-                <TextField label="Correo electronico" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
+                <TextField label="Alias" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
                 <TextField label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-helper-label"
+                        id="demo-simple-select-helper"
+                        value={category}
+                        label="Categoria"
+                        onChange={handleChangeSelect}
+                        
+                    >
+                    {categories.map((category)=>(
+
+                        <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                    ))}
+                    </Select>
+                </FormControl>
                 <Grid container spacing={0.5}>
                     <Grid item xs={6} className="boton-cancelar" >
                         <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>

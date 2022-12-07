@@ -22,11 +22,11 @@ export const ExpendCard = (props) => {
     const [open, setOpen] = useState(false);
     const [balanceError, setBalanceError] = useState(false)
     const [openCategory, setCategoryOpen] = useState(false)
-    const handleCategoryClose = () => {setCategoryOpen(false)}
+    const handleCategoryClose = () => { setCategoryOpen(false) }
     const [incomeOpen, setIncomeOpen] = useState(false)
-    const handleIncomeClose = () => {setIncomeOpen(false)}
+    const handleIncomeClose = () => { setIncomeOpen(false) }
     const handleClose = () => setOpen(false)
-    const handleBalanceErrorClose = () =>{setBalanceError(false)}
+    const handleBalanceErrorClose = () => { setBalanceError(false) }
     const { currentUser } = useContext(AuthContext);
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -56,57 +56,73 @@ export const ExpendCard = (props) => {
         <TableRow hover key={props.id}>
             <TableCell>{props.date}</TableCell>
             <TableCell>{props.name}</TableCell>
-            <TableCell>{props.type === "expense" ? "-" + "$" + addCommas(props.value) : "$" + addCommas(props.value)}</TableCell>
+            <TableCell>{(props.type === "expense" || props.type === "transfer_send") ? "-" + "$" + addCommas(props.value) : "$" + addCommas(props.value)}</TableCell>
+
             <TableCell>
-                <div className='buttons-transactions-table'>
-                    
+
+                {(props.type === "expense" || props.type === "income") ?
+                    <div className='buttons-transactions-table'>
+                        <div style={{width:"80%"}}>
                         <Button className='view-detailed-expense' onClick={() => setOpen(!open)}>
-                        <VisibilityIcon sx={{ color: "black" }} />
+                            <VisibilityIcon sx={{ color: "black" }} />
                         </Button>
-                    
-                    
-                        <Button className='delete-button' onClick={(e)=>{
-                            if(props.type === "income"){
-                                if(props.balance - props.value>=0){
+
+
+                        <Button className='delete-button' onClick={(e) => {
+                            if (props.type === "income") {
+                                if (props.balance - props.value >= 0) {
                                     deleteExpenseCard(e)
-                                }else{
+                                } else {
                                     setBalanceError(true)
                                 }
-                            }else{
+                            } else {
                                 deleteExpenseCard(e)
                             }
-                            }}>
-                        <DeleteIcon sx={{ color: "black" }} />
+                        }}>
+                            <DeleteIcon sx={{ color: "black" }} />
                         </Button>
-                    
-                    
-                        <Button className='edit-button' onClick={() => {if(props.type==="expense")
-                                                                            {setCategoryOpen(!openCategory)}
-                                                                            else if(props.type==="income"){
-                                                                                setIncomeOpen(true)
-                                                                            }}}>
-                        <EditIcon sx={{ color: "black" }} />
+
+
+                        <Button className='edit-button' onClick={() => {
+                            if (props.type === "expense") { setCategoryOpen(!openCategory) }
+                            else if (props.type === "income") {
+                                setIncomeOpen(true)
+                            }
+                        }}>
+                            <EditIcon sx={{ color: "black" }} />
                         </Button>
-                    
-
-                    <Modal open={open} onClose={handleClose} >
-                        <ModalDetailedExpenseCard name={props.name} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon size={'60px'} name={props.category.material_ui_icon_name} />} />
-                    </Modal>
-
-                    <Modal open={openCategory}
-                        onClose={handleCategoryClose} disableBackdropClick>
-                        
-                        <EditExpenseModal action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} balance={props.balance}/>
-                    </Modal>
-
-                    <Modal open={incomeOpen}
-                        onClose={handleIncomeClose} disableBackdropClick>
-                        
-                        <EditIncome action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleIncomeClose} balance={props.balance} />
-                    </Modal>
 
 
-                </div>
+                        <Modal open={open} onClose={handleClose} >
+                            <ModalDetailedExpenseCard name={props.name} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon size={'60px'} name={props.category.material_ui_icon_name} />} />
+                        </Modal>
+
+                        <Modal open={openCategory}
+                            onClose={handleCategoryClose} disableBackdropClick>
+
+                            <EditExpenseModal action={'Editar'} confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} balance={props.balance} />
+                        </Modal>
+
+                        <Modal open={incomeOpen}
+                            onClose={handleIncomeClose} disableBackdropClick>
+
+                            <EditIncome action={'Editar'} confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleIncomeClose} balance={props.balance} />
+                        </Modal>
+                        </div>
+
+
+                    </div> : <div className='buttons-transactions-table'>
+                        <div style={{width:"80%"}}>
+                        <Button className='view-detailed-expense' onClick={() => setOpen(!open)}>
+                            <VisibilityIcon sx={{ color: "black" }} />
+                        </Button>
+                        <Modal open={open} onClose={handleClose} >
+                            <ModalDetailedExpenseCard name={props.name} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon size={'60px'} name={props.category.material_ui_icon_name} />} />
+                        </Modal>
+                        </div>
+
+                    </div>}
+
             </TableCell>
             <CustomAlert text={"No podes borrar este gasto porque quedarias en negativo"} severity={"error"} open={balanceError} closeAction={handleBalanceErrorClose} />
 
@@ -150,7 +166,7 @@ export const ExpendCard = (props) => {
         // </div>
         //</div>
 
-        
+
 
     )
 

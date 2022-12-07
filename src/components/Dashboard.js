@@ -105,7 +105,7 @@ export default function DashboardContent(props) {
         .then((res) => res.json())
         .then((transactions) => {
           setTransactions(transactions)
-          let expenses = transactions.filter((transaction) => transaction.type === "expense")
+          let expenses = transactions.filter((transaction) => transaction.type === "expense" || transaction.type === "transfer_send")
           setTotal(expenses.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
           setLoading(false)
         })
@@ -172,7 +172,7 @@ export default function DashboardContent(props) {
     })
       .then((res) => res.json())
       .then((transactions) => {
-        let expenses = transactions.filter((transaction) => transaction.type === "expense")
+        let expenses = transactions.filter((transaction) => transaction.type === "expense"|| transaction.type === "transfer_send")
         setTotalForMonth(expenses.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
         setLoading(false)
       })
@@ -217,7 +217,7 @@ export default function DashboardContent(props) {
   const calculateBalance = (transactions) => {
     let total = 0
     transactions.forEach(transaction => {
-      if (transaction.type === "income" ||  transaction.type ==="transfer"){
+      if (transaction.type === "income" ||  transaction.type ==="transfer_received"){
         total = total + parseFloat(transaction.value)
       }else{
         total = total - parseFloat(transaction.value)
@@ -354,7 +354,7 @@ export default function DashboardContent(props) {
                         AGREGAR GASTO
                       </Button>
                       <Button style={{ marginRight: "10px", marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={()=>{setOpenIncome(true)}}>
-                        AGREGAR INGRESO
+                        INGRESAR DINERO
                       </Button>
                       <Button style={{ marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={() => {setSendMoney(true)}}>
                         ENVIAR DINERO
@@ -394,7 +394,7 @@ export default function DashboardContent(props) {
                     height: 320,
                   }}
                 >
-                  <GraficoPie transactions={transactions.filter(transaction => transaction.type==="expense")} total={total} />
+                  <GraficoPie transactions={transactions.filter(transaction => (transaction.type==="expense" || transaction.type==="transfer_send"))} total={total} />
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}

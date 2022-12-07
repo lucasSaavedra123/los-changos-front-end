@@ -110,13 +110,15 @@ export const EditExpenseModal = (props) => {
     }
 
     const saveExpense = (e) => {
+        console.log(currentUser.stsTokenManager.accessToken)
+        console.log()
         e.preventDefault();
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
         else if (value < 0){
             showValueError()
-        }else if (balance<value) {
+        }else if (balance<parseInt(value)) {
             setNotEnoughtBalance(true)
         }else {
             fetch(BACKEND_URL + '/expense', {
