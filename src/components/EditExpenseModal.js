@@ -47,8 +47,11 @@ export const EditExpenseModal = (props) => {
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
+    const [balanceAtDate, setBalanceAtDate] = useState(props.balance);
     const [notEnoughtBalance, setNotEnoughtBalance] = useState(false);
+    const [notEnoughtBalanceAtDate, setNotEnoughtBalanceAtDate] = useState(false);
     const handleNotEnoughtClose = () => { setNotEnoughtBalance(false) }
+    const handleNotEnoughtBalanceAtDateClose = () => { setNotEnoughtBalanceAtDate(false) }
     const onKeyDown = (e) => {
         e.preventDefault();
      };
@@ -92,8 +95,10 @@ export const EditExpenseModal = (props) => {
 
     const handleChange = (newValue) => {
         setDate(newValue);
+        getBalanceAtDate(newValue)
     };
     const handleChangeSelect = (event) => {
+        getBalanceAtDate(date)
         setCategory(event.target.value);
     };
 
@@ -109,9 +114,46 @@ export const EditExpenseModal = (props) => {
         }
     }
 
+
+    const getBalanceAtDate = (newDate)=>{
+        
+        fetch(BACKEND_URL + '/expense/filter', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+    
+    
+            body: JSON.stringify({
+              timeline: ["2000-01-01", typeof date === '' ? new Date().toISOString().split('T')[0] : newDate.toISOString().split('T')[0],],
+              category_id: [],
+            })
+    
+    
+          })
+            .then((res) => res.json())
+            .then((transactions) => {
+                console.log(transactions)
+                let balance = 0
+                transactions.forEach((transaction) => {
+                    if(transaction.type === "income" || transaction.type === "transfer_receive"){
+                        balance += transaction.value
+                }else if(transaction.type === "expense" || transaction.type === "transfer_send"){
+                        balance -= transaction.value
+                }
+                
+                
+                
+            })
+            console.log("balance hasta la fecha: " + balance)
+            setBalanceAtDate(balance)
+            })
+    }
+
+
     const saveExpense = (e) => {
-        console.log(currentUser.stsTokenManager.accessToken)
-        console.log()
         e.preventDefault();
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
@@ -120,7 +162,10 @@ export const EditExpenseModal = (props) => {
             showValueError()
         }else if (balance<parseInt(value)) {
             setNotEnoughtBalance(true)
-        }else {
+        }else if(balanceAtDate - parseInt(value) <0){
+            setNotEnoughtBalanceAtDate(true)
+        }
+        else {
             fetch(BACKEND_URL + '/expense', {
                 method: 'POST',
                 headers: {
@@ -146,16 +191,19 @@ export const EditExpenseModal = (props) => {
     }
 
     const editExpense = (e) => {
-        console.log(balance)
+        getBalanceAtDate(date)
         e.preventDefault();
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
         else if (value < 0){
             showValueError()
-        }else if(balance<value){
+        }else if(balance<parseInt(value)){
             setNotEnoughtBalance(true)
-        }else {
+        }else if(balanceAtDate - parseInt(value) <0){
+            setNotEnoughtBalanceAtDate(true)
+        }
+        else {
             fetch(BACKEND_URL + '/expense', {
                 method: 'PATCH',
                 headers: {
@@ -202,7 +250,7 @@ export const EditExpenseModal = (props) => {
                     {props.action} Gasto
                 </Typography>
                 <TextField label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
-                <TextField label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
+                <TextField label="Monto" defaultValue={value} onChange={(e) => { getBalanceAtDate(date);setValue(e.target.value) }} />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                     <DesktopDatePicker
@@ -246,7 +294,7 @@ export const EditExpenseModal = (props) => {
         <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
         <CustomAlert text={"No tenes saldo suficiente"} severity={"warning"} open={notEnoughtBalance} closeAction={handleNotEnoughtClose} />
-
+        <CustomAlert text={"No tenes saldo suficiente en esa fecha"} severity={"warning"} open={notEnoughtBalanceAtDate} closeAction={handleNotEnoughtBalanceAtDateClose} />
         </>
     )
 }
