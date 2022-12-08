@@ -27,6 +27,7 @@ import EditIncome from './EditIncome';
 import SendMoney from './SendMoney';
 import "../assets/scss/moneyManager.scss";
 import Typography from '@mui/material/Typography';
+import { margin } from '@mui/system';
 
 
 const mdTheme = createTheme();
@@ -73,7 +74,8 @@ export default function DashboardContent(props) {
   const handleCloseIncome = () => { setOpenIncome(false); }
   const [sendMoney, setSendMoney] = useState(false);
   const handleCloseSendMoney = () => { setSendMoney(false); }
-  
+  const [userInformation, setUserInformation] = useState();
+
   const getSelectedCategoriesArray = (e) => {
     console.log(e)
     setSelected(e);
@@ -172,11 +174,12 @@ export default function DashboardContent(props) {
     })
       .then((res) => res.json())
       .then((transactions) => {
-        let expenses = transactions.filter((transaction) => transaction.type === "expense"|| transaction.type === "transfer_send")
+        let expenses = transactions.filter((transaction) => transaction.type === "expense" || transaction.type === "transfer_send")
         setTotalForMonth(expenses.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
         setLoading(false)
       })
   }
+
 
   const getAllCategoriesForMultiSelect = (historicalTransactions) => {
     let categories = {}
@@ -210,23 +213,27 @@ export default function DashboardContent(props) {
     transactions.map((transaction) => {
       categories[transaction.category.name] = transaction.category.id
     });
-    let expenses = transactions.filter((transaction) => transaction.type==="expense")
+    let expenses = transactions.filter((transaction) => transaction.type === "expense")
     setTotal(expenses.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
   }
 
   const calculateBalance = (transactions) => {
     let total = 0
     transactions.forEach(transaction => {
-      if (transaction.type === "income" ||  transaction.type ==="transfer_received"){
+      if (transaction.type === "income" || transaction.type === "transfer_received") {
         total = total + parseFloat(transaction.value)
-      }else{
+      } else {
         total = total - parseFloat(transaction.value)
       }
 
       setBalance(total)
-      
+
     });
   }
+
+
+
+
 
 
   const getTransactionsForMultiSelect = () => {
@@ -240,8 +247,24 @@ export default function DashboardContent(props) {
         setHistoricalTransactions(transactions)
 
         calculateBalance(actualData)
-        
+
         getAllCategoriesForMultiSelect(actualData)
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+
+  }
+
+  const getMyAlias = () => {
+    fetch(BACKEND_URL + '/users/currentUser', {
+      'headers': {
+        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+      }
+    })
+      .then((response) => response.json())
+      .then((actualData) => {
+        setUserInformation(actualData)
       })
       .catch((err) => {
         console.log(err.message);
@@ -251,9 +274,11 @@ export default function DashboardContent(props) {
 
 
 
+
   useEffect(() => {
     applyDateFilter()
     getCurrentBudget()
+    getMyAlias()
   }, [])
 
   useEffect(() => {
@@ -320,9 +345,6 @@ export default function DashboardContent(props) {
                     <div>
                       <Gastos total={totalForMonth} month={months[today.getMonth()] + " " + today.getFullYear()} />
                     </div>
-                    <div className='boton-agregar-gastos-dashboard'>
-
-                    </div>
                   </Stack>
 
                 </Paper>
@@ -336,42 +358,48 @@ export default function DashboardContent(props) {
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 180,
+                    height: 260,
                     textAlign: 'center'
                   }}
                 >
                   <Stack spacing={3}>
                     <div>
-                    <Typography color="text.secondary" sx={{ flex: 1 }}>
+                      <Typography color="text.secondary" sx={{ flex: 1 }}>
                         Saldo
                       </Typography>
                       <Typography component="p" variant="h4">
                         $ {addCommas(balance)}
                       </Typography>
                     </div>
-                    <div className='boton-agregar-gastos-dashboard'>
+                    <div className='boton-agregar-gastos-dashboard' style={{marginBottom:"20"}}>
                       <Button style={{ marginRight: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={handleAgregarGasto}>
                         AGREGAR GASTO
                       </Button>
-                      <Button style={{ marginRight: "10px", marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={()=>{setOpenIncome(true)}}>
+                      <Button style={{ marginRight: "10px", marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={() => { setOpenIncome(true) }}>
                         INGRESAR DINERO
                       </Button>
-                      <Button style={{ marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={() => {setSendMoney(true)}}>
+                      <Button style={{ marginLeft: "10px" }} sx={styles} className="add-expense-button" variant='outlined' onClick={() => { setSendMoney(true) }}>
                         ENVIAR DINERO
                       </Button>
                     </div>
+                    <Typography color="text.secondary" sx={{ flex: 1 }}>
+                        Para recibir transferencias utiliza el siguiente alias:
+                      </Typography>
+                      <Typography  component="p" variant="h6">
+                        {userInformation}
+                      </Typography>
                   </Stack>
                   <Modal
                     open={open} onClose={handleClose}>
                     <div className="add-expense-modal">
-                      <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={applyDateFilter} balance={balance}/>
+                      <EditExpenseModal action={'Nuevo'} handleCloseModal={handleClose} confirmAction={applyDateFilter} balance={balance} />
                     </div>
                   </Modal>
 
                   <Modal
                     open={sendMoney} onClose={handleCloseSendMoney}>
                     <div className="add-expense-modal">
-                      <SendMoney action={'Nuevo'} handleCloseModal={handleCloseSendMoney} confirmAction={applyDateFilter} balance={balance}/>
+                      <SendMoney action={'Nuevo'} handleCloseModal={handleCloseSendMoney} confirmAction={applyDateFilter} balance={balance} />
                     </div>
                   </Modal>
 
@@ -381,6 +409,7 @@ export default function DashboardContent(props) {
                       <EditIncome action={'Nuevo'} handleCloseModal={handleCloseIncome} confirmAction={applyDateFilter} />
                     </div>
                   </Modal>
+
 
                 </Paper>
               </Grid>
@@ -394,7 +423,7 @@ export default function DashboardContent(props) {
                     height: 320,
                   }}
                 >
-                  <GraficoPie transactions={transactions.filter(transaction => (transaction.type==="expense" || transaction.type==="transfer_send"))} total={total} />
+                  <GraficoPie transactions={transactions.filter(transaction => (transaction.type === "expense" || transaction.type === "transfer_send"))} total={total} />
                 </Paper>
               </Grid>
               {/* Filtro de Fecha */}
@@ -445,7 +474,7 @@ export default function DashboardContent(props) {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders transactions={transactions} confirmAction={applyDateFilter} balance={balance}/>
+                  <Orders transactions={transactions} confirmAction={applyDateFilter} balance={balance} />
                 </Paper>
               </Grid>
             </Grid>

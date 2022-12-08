@@ -8,7 +8,7 @@ export default function Gastos(props) {
   // Cambiar para que sean gastos del mes actual
   return (
     <React.Fragment>
-      <Title>Gastos</Title>
+      <Title>Gastos del mes</Title>
       <Typography component="p" variant="h4">
       $ {addCommas(props.total)}
       </Typography>

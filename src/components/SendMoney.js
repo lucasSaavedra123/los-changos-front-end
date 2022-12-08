@@ -45,6 +45,9 @@ export const EditExpenseModal = (props) => {
     const [categories, setCategories] = useState([]);
     const [notEnoughtBalance, setNotEnoughtBalance] = useState(false);
     const handleNotEnoughtClose = () => setNotEnoughtBalance(false);
+    const [userAlias, setUserAlias] = useState([]);
+    const [wrongAlias, setWrongAlias] = useState(false);
+    const handleWrongAliasClose = () => setWrongAlias(false);
 
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
@@ -85,8 +88,25 @@ export const EditExpenseModal = (props) => {
 
     }
 
+    const getAllAlias = () => {
+        fetch(BACKEND_URL + '/users', {
+          'headers': {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+          }
+        })
+          .then((response) => response.json())
+          .then((actualData) => {
+            setUserAlias(actualData)
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+    
+      }
+
     useEffect(() => {
         getCategorias()
+        getAllAlias()
     }, []);
 
 
@@ -102,18 +122,11 @@ export const EditExpenseModal = (props) => {
     }
 
     const createOrEditExpense = (e) => {
-/*         if (typeof props.id === "undefined") {
-            saveExpense(e)
-        } else {
-            editExpense(e)
-        } */
-
         saveExpense(e)
     }
 
     const saveExpense = (e) => {
         e.preventDefault();
-        //ACA HAY QUE CHEQUEAR EL BALANCES
         if(value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
@@ -122,6 +135,8 @@ export const EditExpenseModal = (props) => {
         }
         else if (props.balance - parseInt(value)<0){
             setNotEnoughtBalance(true)
+        }else if (userAlias.filter(alias => alias === name).length === 0){
+            setWrongAlias(true)
         }
         else {
             fetch(BACKEND_URL + '/expense', {
@@ -233,6 +248,7 @@ export const EditExpenseModal = (props) => {
         <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
         <CustomAlert text={"No tenes saldo suficiente"} severity={"warning"} open={notEnoughtBalance} closeAction={handleNotEnoughtClose} />
+        <CustomAlert text={"El alias ingresado no existe"} severity={"error"} open={wrongAlias} closeAction={handleWrongAliasClose} />
 
         </>
     )
