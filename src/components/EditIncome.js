@@ -48,6 +48,7 @@ export const EditExpenseModal = (props) => {
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
     const [balance, setBalance] = useState(props.balance - props.value)
+    const [balanceAtDate, setBalanceAtDate] = useState(props.balance - props.valu)
     const [negativeBalanceError, setNegativeBalanceError] = useState(false)
     const handleCloseNegativeBalanceError = () => { setNegativeBalanceError(false) }
     const onKeyDown = (e) => {
@@ -90,9 +91,47 @@ export const EditExpenseModal = (props) => {
         getCategorias()
     }, []);
 
+    const getBalanceAtDate = (newDate)=>{
+        
+        fetch(BACKEND_URL + '/expense/filter', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+    
+    
+            body: JSON.stringify({
+              timeline: ["2000-01-01", typeof date === '' ? new Date().toISOString().split('T')[0] : newDate.toISOString().split('T')[0],],
+              category_id: [],
+            })
+    
+    
+          })
+            .then((res) => res.json())
+            .then((transactions) => {
+                console.log(transactions)
+                let balance = 0
+                transactions.forEach((transaction) => {
+                    if(transaction.type === "income" || transaction.type === "transfer_receive"){
+                        balance += transaction.value
+                }else if(transaction.type === "expense" || transaction.type === "transfer_send"){
+                        balance -= transaction.value
+                }
+                
+                
+                
+            })
+            console.log("balance hasta la fecha: " + balance)
+            setBalanceAtDate(balance)
+            })
+    }
+
 
     const handleChange = (newValue) => {
         setDate(newValue);
+        getBalanceAtDate(newValue)
     };
     const handleChangeSelect = (event) => {
         setCategory(event.target.value);
@@ -145,7 +184,7 @@ export const EditExpenseModal = (props) => {
     }
 
     const editExpense = (e) => {
-        console.log(parseInt(balance) + parseInt(value)>=0)
+        
         e.preventDefault();
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
@@ -154,7 +193,10 @@ export const EditExpenseModal = (props) => {
             showValueError()
         }else if(parseInt(balance) + parseInt(value)<0){
             setNegativeBalanceError(true)
-        }else {
+        }else if(balanceAtDate - parseInt(props.value)+ parseInt(value)<0){
+            setNegativeBalanceError(true)
+        }
+        else {
             fetch(BACKEND_URL + '/expense', {
                 method: 'PATCH',
                 headers: {
@@ -201,7 +243,7 @@ export const EditExpenseModal = (props) => {
                     {props.action} Ingreso
                 </Typography>
                 <TextField label="Concepto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
-                <TextField label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
+                <TextField label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value);getBalanceAtDate(date) }} />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                     <DesktopDatePicker
