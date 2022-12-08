@@ -371,7 +371,7 @@ export default function DashboardContent(props) {
                   <Modal
                     open={sendMoney} onClose={handleCloseSendMoney}>
                     <div className="add-expense-modal">
-                      <SendMoney action={'Nuevo'} handleCloseModal={handleCloseSendMoney} confirmAction={applyDateFilter} />
+                      <SendMoney action={'Nuevo'} handleCloseModal={handleCloseSendMoney} confirmAction={applyDateFilter} balance={balance}/>
                     </div>
                   </Modal>
 

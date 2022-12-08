@@ -43,6 +43,8 @@ export const EditExpenseModal = (props) => {
     const [name, setName] = useState(typeof props.name === "undefined" ? '' : props.name)
     const [value, setValue] = useState(typeof props.value === "undefined" ? '' : props.value)
     const [categories, setCategories] = useState([]);
+    const [notEnoughtBalance, setNotEnoughtBalance] = useState(false);
+    const handleNotEnoughtClose = () => setNotEnoughtBalance(false);
 
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
@@ -117,6 +119,9 @@ export const EditExpenseModal = (props) => {
         }
         else if (value < 0){
             showValueError()
+        }
+        else if (props.balance - parseInt(value)<0){
+            setNotEnoughtBalance(true)
         }
         else {
             fetch(BACKEND_URL + '/expense', {
@@ -227,6 +232,7 @@ export const EditExpenseModal = (props) => {
         </Box>
         <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+        <CustomAlert text={"No tenes saldo suficiente"} severity={"warning"} open={notEnoughtBalance} closeAction={handleNotEnoughtClose} />
 
         </>
     )

@@ -59,6 +59,7 @@ export default function Chart(props) {
 
     })
     setOptions(dataAux)
+
   }
 
   useEffect(() => {
