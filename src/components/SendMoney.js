@@ -47,7 +47,11 @@ export const EditExpenseModal = (props) => {
     const handleNotEnoughtClose = () => setNotEnoughtBalance(false);
     const [userAlias, setUserAlias] = useState([]);
     const [wrongAlias, setWrongAlias] = useState(false);
+    const [ownAlias, setOwnAlias] = useState();
     const handleWrongAliasClose = () => setWrongAlias(false);
+
+    const [ownAliasError, setOwnAliasError] = useState(false);
+    const hanldeOwnAliasError = () => setOwnAliasError(false);
 
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
@@ -71,6 +75,22 @@ export const EditExpenseModal = (props) => {
     const closeValueError = () => {
         setopenValueError(false);
     };
+
+    const getMyAlias = () => {
+        fetch(BACKEND_URL + '/users/currentUser', {
+          'headers': {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+          }
+        })
+          .then((response) => response.json())
+          .then((actualData) => {
+            setOwnAlias(actualData)
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+    
+      }
 
     const getCategorias = () => {
         fetch(BACKEND_URL + '/category', {
@@ -107,6 +127,7 @@ export const EditExpenseModal = (props) => {
     useEffect(() => {
         getCategorias()
         getAllAlias()
+        getMyAlias()
     }, []);
 
 
@@ -126,6 +147,7 @@ export const EditExpenseModal = (props) => {
     }
 
     const saveExpense = (e) => {
+        let foundAlias = userAlias.filter(alias => alias === name)[0]
         e.preventDefault();
         if(value === '' || name === '' || category === '') {
             showCompleteAllFields()
@@ -137,6 +159,8 @@ export const EditExpenseModal = (props) => {
             setNotEnoughtBalance(true)
         }else if (userAlias.filter(alias => alias === name).length === 0){
             setWrongAlias(true)
+        }else if(foundAlias === ownAlias){
+            setOwnAliasError(true)
         }
         else {
             fetch(BACKEND_URL + '/expense', {
@@ -221,6 +245,7 @@ export const EditExpenseModal = (props) => {
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
                     <Select
+                        style={{height:"58px"}}
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"
                         value={category}
@@ -249,6 +274,7 @@ export const EditExpenseModal = (props) => {
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
         <CustomAlert text={"No tenes saldo suficiente"} severity={"warning"} open={notEnoughtBalance} closeAction={handleNotEnoughtClose} />
         <CustomAlert text={"El alias ingresado no existe"} severity={"error"} open={wrongAlias} closeAction={handleWrongAliasClose} />
+        <CustomAlert text={"No podes transferirte a vos mismo"} severity={"error"} open={ownAliasError} closeAction={hanldeOwnAliasError} />
 
         </>
     )

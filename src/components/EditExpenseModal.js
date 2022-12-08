@@ -219,6 +219,7 @@ export const EditExpenseModal = (props) => {
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
                     <Select
+                        style={{height:"58px"}}
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"
                         value={category}
