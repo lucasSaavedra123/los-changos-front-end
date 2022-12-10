@@ -200,13 +200,15 @@ const BudgetPage = () => {
 
 
                           </Grid>
-                          <Grid item xs={2} lg={2} md={2}>
+                          <Grid className='accept-button' item xs={6} lg={1} md={1}>
                           <Paper
                               sx={{
                                 p: 2,
                                 display: 'flex',
                                 flexDirection: 'row',
                                 height: 130,
+                                width:"100%",
+                                justifyContent:'center'
                               }}
                             >
                             {/* <div className='borrar-presupuesto'> */}
@@ -220,7 +222,21 @@ const BudgetPage = () => {
                               }
                               
                               }}><DeleteIcon sx={{ color: "green" }} /></Button>
-                            
+                              </Paper>
+                              </Grid>
+
+                              <Grid  className='accept-button' item xs={6} lg={1} md={1}>
+                          <Paper 
+                              sx={{
+                                p: 2,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                height: 130,
+                                width:"100%",
+                                justifyContent:'center'
+                                
+                              }}
+                            >
                             
                               <Button style={{marginLeft:'5px'}} onClick={()=>{
                                 if(new Date(budgetItem.initial_date + "T00:00:00") <= new Date()){
@@ -257,7 +273,7 @@ const BudgetPage = () => {
            
           </Container>
 
-          );
+          
         </Box>
       </Box>
       <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />

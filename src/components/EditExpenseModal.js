@@ -39,15 +39,27 @@ const style = {
 
 export const EditExpenseModal = (props) => {
 
+    //console.log(props.sharedUser.alias)
+    console.log(props.userToShare)
+
     const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
     const [date, setDate] = useState(typeof props.date === "undefined" ? new Date() : new Date(props.date + "T00:00:00"));
     const [name, setName] = useState(typeof props.name === "undefined" ? '' : props.name)
     const [value, setValue] = useState(typeof props.value === "undefined" ? '' : props.value)
+    const [sharedUser,setUser]= useState(typeof props.userToShare === "undefined" ? '' : props.userToShare.alias)
+    console.log(sharedUser)
     const [categories, setCategories] = useState([]);
     const [gastoCompartido,SetGastoCompartido]= useState(false); 
     const { currentUser } = useContext(AuthContext);
+    const [categoryFlag,setCategoryFlag]=useState(typeof props.categoryFlag === "undefined" ? false : props.categoryFlag);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
+    const [openAliasError, setopenAliasError] = useState(false);
+    const [openAliasError2, setopenAliasError2] = useState(false);
+    const [users , setUsers]= useState([])
+    const [myAlias, setAlias] = useState('')
+
+
     const onKeyDown = (e) => {
         e.preventDefault();
      };
@@ -64,9 +76,71 @@ export const EditExpenseModal = (props) => {
         setopenValueError(true);
     };
 
+    const showAliasError = () => {
+        setopenAliasError(true);
+    };
+    const showAliasError2 = () => {
+        setopenAliasError2(true);
+    };
     const closeValueError = () => {
         setopenValueError(false);
     };
+    const closeAliasError=()=>{
+        setopenAliasError(false);
+    }
+    const closeAliasError2=()=>{
+        setopenAliasError2(false);
+    }
+    
+    const validateAlias = (alias) => {
+        
+        if (users.includes(alias)){
+            return true;
+        }
+        return false
+    }
+    const validateMyAlias = (alias) => {
+        console.log(alias)
+        console.log(myAlias)
+        if (alias === myAlias){
+            return true;
+        }
+        return false
+    }
+    const getUser = () => {
+        fetch(BACKEND_URL + '/user/getUsers', {
+            headers: { 'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken }
+        })
+            .then((response) => response.json())
+            .then((actualData) => {
+                setUsers(actualData);
+            }
+            )
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }
+
+    const getAlias = () => {
+        fetch(BACKEND_URL + '/user',{
+          headers: {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          setAlias(data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      }
+
+    useEffect(() => {
+        getUser()
+        getAlias()
+    }, []);
+
 
     const getCategorias = () => {
         fetch(BACKEND_URL + '/category', {
@@ -94,6 +168,11 @@ export const EditExpenseModal = (props) => {
     };
     const handleChangeSelect = (event) => {
         setCategory(event.target.value);
+        if(event.target.value=== 6){
+            setCategoryFlag(true);
+        }else{
+            setCategoryFlag(false);
+        }
     };
 
     const cancelChanges = () => {
@@ -110,6 +189,48 @@ export const EditExpenseModal = (props) => {
 
     const saveExpense = (e) => {
         e.preventDefault();
+        if(categoryFlag === true){
+            
+            if (value === '' || name === '' || category === '' || sharedUser ==='') {
+                showCompleteAllFields()
+            }
+            else if (value < 0){
+                showValueError()
+            }
+            else if(validateAlias(sharedUser) === false ){
+                showAliasError()
+            }
+            else if(validateMyAlias(sharedUser) === true ){
+                showAliasError2()
+            }
+            else {
+                fetch(BACKEND_URL + '/sharedExpense', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+    
+    
+                    body: JSON.stringify({
+                        value: value/2,
+                        category_id: category,
+                        date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
+                        name: name,
+                        userToShare: sharedUser
+                    })
+    
+    
+                }).finally(() => { props.confirmAction();props.handleCloseModal()})
+    
+                }
+        
+        
+        }
+        else{
+
+        console.log("ENTRE al gasto normal")
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
@@ -136,12 +257,57 @@ export const EditExpenseModal = (props) => {
 
             }).finally(() => { props.confirmAction();props.handleCloseModal()})
 
+            }
         }
 
     }
 
     const editExpense = (e) => {
         e.preventDefault();
+        
+        if(categoryFlag === true){
+            
+            if (value === '' || name === '' || category === '' || sharedUser ==='') {
+                showCompleteAllFields()
+            }
+            else if (value < 0){
+                showValueError()
+            }
+            else if( validateAlias(sharedUser)===false)
+            
+            {
+
+                showAliasError()
+            }
+            else {
+                fetch(BACKEND_URL + '/sharedExpense', {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+    
+    
+                    body: JSON.stringify({
+                        value: value/2,
+                        category_id: category,
+                        date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
+                        name: name,
+                        userToShare: sharedUser,
+                        aceptedTransaction: false,
+                    })
+    
+    
+                }).finally(() => { props.confirmAction();props.handleCloseModal()})
+    
+                }
+        
+        
+        }
+        else{
+
+
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
@@ -159,23 +325,21 @@ export const EditExpenseModal = (props) => {
 
 
                 body: JSON.stringify({
-                    id: props.id,
                     value: value,
                     category_id: category,
-                    date: typeof date === '' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
+                    date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
                     name: name
                 })
 
 
-            }).finally(() => { props.confirmAction();props.handleCloseModal();})
+            }).finally(() => { props.confirmAction();props.handleCloseModal()})
 
+            }
         }
-
-        
 
 
     }
-
+    
     const validateDate = (date) => {
         const today = new Date();
         const dateToValidate = new Date(date);
@@ -226,6 +390,15 @@ export const EditExpenseModal = (props) => {
                     ))}
                     </Select>
                 </FormControl>
+                {categoryFlag ? (
+                    
+                    <TextField label="Usuario a Compartir" defaultValue={sharedUser} onChange={(e) => { setUser(e.target.value) }} />
+                    
+                ):(
+
+                    <div></div>)
+
+                }
                 <Grid container spacing={0.5}>
                     <Grid item xs={6} className="boton-cancelar" >
                         <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
@@ -240,7 +413,8 @@ export const EditExpenseModal = (props) => {
         </Box>
         <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
-
+        <CustomAlert text= {"No existe el alias ingresado!"} severity={"error"} open={openAliasError} closeAction={closeAliasError} />
+        <CustomAlert text= {"No podes compartir un gasto con vos mismo!"} severity={"error"} open={openAliasError2} closeAction={closeAliasError2} />
         </>
     )
 }

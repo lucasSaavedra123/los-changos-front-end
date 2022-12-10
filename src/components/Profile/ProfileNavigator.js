@@ -20,16 +20,22 @@ import SavingsIcon from '@mui/icons-material/Savings'
 import CategorySharpIcon from '@mui/icons-material/CategorySharp';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ProfileNavigatorItem } from "./ProfileNavigatorItem";
+import { BACKEND_URL } from "../../CONSTANTS";
 import { auth } from "../../firebase"
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { RequestQuote } from "@mui/icons-material";
+import { useEffect } from "react";
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import { Link } from "@mui/material";
 
 
 export const ProfileNavigator = () => {
 
     const { dispatch } = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
+    const [pendingTransactions, setPendingTransactions] = React.useState([])
 
     const logOut = () => {
         signOut(auth).then(() => {
@@ -40,6 +46,26 @@ export const ProfileNavigator = () => {
         });
     }
 
+    const getPendingTransactions = () => {
+        fetch(BACKEND_URL + '/sharedExpense/pending', {
+            headers: { 'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken }
+        }).then((response) => response.json())
+            .then((data) => {
+                setPendingTransactions(data)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+    }
+
+
+    useEffect(() => {
+        getPendingTransactions()
+    }, [])
+    
+
+    
     const [state, setState] = React.useState({
         left: false,
     });
@@ -78,7 +104,8 @@ export const ProfileNavigator = () => {
                 <ProfileNavigatorItem style={{ width: 100 }} name={"Home"} icon={<HomeIcon sx={{ color: "white" }} />} path={"/profile/home"} />
                 <ProfileNavigatorItem name={"Categorias"} icon={<CategorySharpIcon sx={{ color: "white" }} />} path={"/profile/categories"} />
                 <ProfileNavigatorItem name={"Configuración"} icon={<SettingsIcon sx={{ color: "white" }} />} path={"/profile/settings"} />
-                <ProfileNavigatorItem name={"Mis Presupuestos"} icon={<RequestQuote sx={{color:"white"}}/>} path={"/profile/budget"}/>
+                <ProfileNavigatorItem name={"Mis Presupuestos"} icon={<RequestQuote sx={{ color: "white" }} />} path={"/profile/budget"} />
+                <ProfileNavigatorItem name={"Notificaciones"} icon={<NotificationsActiveIcon sx={{ color: "white" }} />} path={"/profile/notifications"} />
             </List>
 
             <Divider sx={{ color: "white" }} />
@@ -107,6 +134,24 @@ export const ProfileNavigator = () => {
                             {list("left")}
                         </Drawer>
                     </React.Fragment>
+                    <React.Fragment key={"right"}  >
+                        <Button style={{ marginLeft: "auto" }}>
+                            {pendingTransactions.length > 0 ?( 
+                            <Link style={{color:"white",textDecoration:"none" }} href={"/profile/notifications"}>
+                            <NotificationsActiveIcon sx={{ color: "orange" }}/>
+                            </Link>
+                            
+                            )
+                            :(
+                                <Link style={{color:"white",textDecoration:"none" }} href={"/profile/notifications"}>
+                            <NotificationsActiveIcon sx={{ color: "white" }} />
+                                </Link>
+                                
+                                )  
+                           
+                            }
+                        </Button>
+                    </React.Fragment>
 
                     <Navbar.Brand>
                         <img
@@ -117,6 +162,7 @@ export const ProfileNavigator = () => {
                             style={{ "marginRight": "15px", "marginLeft": "15px" }}
                             alt="logo"
                         />
+
                         <span className="custom-font-light">Walletify</span>
                     </Navbar.Brand>
                 </Container>

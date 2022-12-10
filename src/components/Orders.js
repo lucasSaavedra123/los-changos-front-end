@@ -34,6 +34,9 @@ export default function Orders(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(0);
 
+    console.log(props)
+    
+
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -66,10 +69,11 @@ export default function Orders(props) {
         </TableHead>
         <TableBody>
         {props.transactions
+        
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((transaction) => (
-
-            <ExpendCard id={transaction.id} name ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction}  />
+        .map((transaction ) => (
+          
+            <ExpendCard id={transaction.id} name ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} userToShareFlag={transaction.userToShareFlag} aceptedTransaction={transaction.aceptedTransaction} userToShare={transaction.userToShare} confirmAction={props.confirmAction}  />
             
           ))}
         </TableBody>

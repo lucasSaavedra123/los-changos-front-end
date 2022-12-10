@@ -64,6 +64,9 @@ export default function DashboardContent(props) {
   const handleAgregarGasto = () => setOpen(true)
   const handleClose = () => {setOpen(false);}
 
+  console.log(transactions)
+  console.log(historicalTransactions)
+
   const getSelectedCategoriesArray = (e) => {
     console.log(e)
     setSelected(e);
@@ -208,6 +211,7 @@ export default function DashboardContent(props) {
         'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
       }
     })
+      
       .then((response) => response.json())
       .then((actualData) => {
         setHistoricalTransactions(transactions)

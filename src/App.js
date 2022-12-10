@@ -10,6 +10,7 @@ import { useContext } from "react";
 import Forgot from "./components/Forgot";
 import CategoriesPage from "./components/CategoriesPage";
 import BudgetPage from "./components/BudgetPage";
+import NotificationsPage from "./components/NotificationsPage";
 
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/profile/settings'><RequireAuth><ProfileNavigator /><Settings /></RequireAuth></Route>
         <Route path='/profile/categories'><RequireAuth><ProfileNavigator/><CategoriesPage/> </RequireAuth></Route>
         <Route path='/profile/budget'><RequireAuth><ProfileNavigator/> <BudgetPage/> </RequireAuth></Route>
+        <Route path='/profile/notifications'><RequireAuth><ProfileNavigator/> <NotificationsPage/>  </RequireAuth></Route>
         <Redirect to="/" />
       </Switch>
     </Router>

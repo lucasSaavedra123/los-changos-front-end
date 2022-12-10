@@ -1,7 +1,7 @@
 import "../assets/scss/expenseCard.scss"
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from '@mui/material';
 import ModalDetailedExpenseCard from './ModalDetailedExpenseCard';
 import EditExpenseModal from './EditExpenseModal';
@@ -13,6 +13,9 @@ import { BACKEND_URL } from "../CONSTANTS";
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
 export const ExpendCard = (props) => {
     const [open, setOpen] = useState(false);
@@ -22,8 +25,26 @@ export const ExpendCard = (props) => {
     }
     const handleClose = () => setOpen(false)
     const { currentUser } = useContext(AuthContext);
+    const [alias, setAlias] = useState("")
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    const getAlias = () => {
+        fetch(BACKEND_URL + '/user',{
+          headers: {
+            'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          setAlias(data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      }
+    
 
     const deleteExpenseCard = (e) => {
         e.preventDefault();
@@ -44,6 +65,47 @@ export const ExpendCard = (props) => {
         }
 
     }
+    const rejectExpenseCard = (e) => {
+        e.preventDefault();
+        if (window.confirm("¿Estas seguro que queres rechazar este gasto?")) {
+            fetch(BACKEND_URL + '/sharedExpense', {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+                },
+                body: JSON.stringify({
+                    id: props.id,
+                    userToShare: props.userToShare
+                })
+            }).then(() => { props.confirmAction() })
+        }
+    }
+    const acceptExpenseCard = (e) => {
+        e.preventDefault();
+        if (window.confirm("¿Estas seguro que queres aceptar este gasto?")) {
+            fetch(BACKEND_URL + '/sharedExpense/edit', {
+                method: 'PATCH',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
+                },
+                body: JSON.stringify({
+                    id: props.id,
+                    userToshare: props.userToShare,
+                    aceptedTransaction: true,
+
+                })
+            }).then(() => { props.confirmAction() })
+        }
+    }
+
+    useEffect(() => {
+        getAlias();
+    }, [])
+
 
     return (
 
@@ -53,29 +115,93 @@ export const ExpendCard = (props) => {
             <TableCell>${addCommas(props.value)}</TableCell>
             <TableCell>
                 <div className='buttons-transactions-table'>
-                    
-                        <Button className='view-detailed-expense' onClick={() => setOpen(!open)}>
-                        <VisibilityIcon sx={{ color: "black" }} />
-                        </Button>
-                    
-                    
-                        <Button className='delete-button' onClick={deleteExpenseCard}>
-                        <DeleteIcon sx={{ color: "black" }} />
-                        </Button>
-                    
-                    
-                        <Button className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
-                        <EditIcon sx={{ color: "black" }} />
-                        </Button>
-                    
 
+                    <Button className='view-detailed-expense' onClick={() => setOpen(!open)}>
+                        <VisibilityIcon sx={{ color: "black" }} />
+                    </Button>
+                    {props.userToShareFlag?(   
+                        props.aceptedTransaction ?
+                        (alias === props.userToShare.alias ? (
+                            <>
+                                <Button className='delete-button' disabled={true} onClick={deleteExpenseCard}>
+                                    <DeleteIcon sx={{ color: "grey" }} />
+                                </Button>
+
+
+                                <Button className='edit-button' disabled={true} onClick={() => setCategoryOpen(!openCategory)}>
+                                    <EditIcon sx={{ color: "grey" }} />
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Button className='delete-button' onClick={deleteExpenseCard}>
+                                    <DeleteIcon sx={{ color: "black" }} />
+                                </Button>
+
+
+                                <Button className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
+                                    <EditIcon sx={{ color: "black" }} />
+                                </Button>
+
+                                
+                            </>
+                        )
+                        ) : (
+                            alias === props.userToShare.alias ? (
+
+                                <>
+                                    <Button className='delete-button' onClick={acceptExpenseCard}>
+                                        <CheckIcon sx={{ color: "black" }} />
+                                    </Button>
+
+
+                                    <Button className='edit-button' onClick={rejectExpenseCard}>
+                                        <ClearIcon sx={{ color: "black" }} />
+                                    </Button>
+
+
+                                </>
+                            ) : (
+                                <>
+                                    <Button className='delete-button' onClick={deleteExpenseCard}>
+                                        <DeleteIcon sx={{ color: "black" }} />
+                                    </Button>
+
+
+                                    <Button className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
+                                        <EditIcon sx={{ color: "black" }} />
+                                    </Button>
+
+                                    <HourglassTopIcon sx={{ color: "black" }} />
+
+                                    
+
+
+                                </>
+                            )
+                        )):(
+                        <>
+                        <Button className='delete-button' onClick={deleteExpenseCard}>
+                            <DeleteIcon sx={{ color: "black" }} />
+                        </Button>
+
+
+                        <Button className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
+                            <EditIcon sx={{ color: "black" }} />
+                        </Button>
+                    
+                        </>
+                        )
+                    }
+                    
+                   
                     <Modal open={open} onClose={handleClose} >
                         <ModalDetailedExpenseCard name={props.name} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon size={'60px'} name={props.category.material_ui_icon_name} />} />
                     </Modal>
 
                     <Modal open={openCategory}
                         onClose={handleCategoryClose} disableBackdropClick>
-                        <EditExpenseModal action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} />
+                        <EditExpenseModal action={'Editar'} confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} categoryFlag={true} userToShare={props.userToShare} handleCloseModal={handleCategoryClose} />
 
                     </Modal>
 
