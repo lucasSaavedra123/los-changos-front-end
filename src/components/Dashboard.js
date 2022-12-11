@@ -220,7 +220,7 @@ export default function DashboardContent(props) {
   const calculateBalance = (transactions) => {
     let total = 0
     transactions.forEach(transaction => {
-      if (transaction.type === "income" || transaction.type === "transfer_received") {
+      if (transaction.type === "income" || transaction.type === "transfer_receive") {
         total = total + parseFloat(transaction.value)
       } else {
         total = total - parseFloat(transaction.value)
