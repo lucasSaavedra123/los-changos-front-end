@@ -64,9 +64,6 @@ export default function DashboardContent(props) {
   const handleAgregarGasto = () => setOpen(true)
   const handleClose = () => {setOpen(false);}
 
-  console.log(transactions)
-  console.log(historicalTransactions)
-
   const getSelectedCategoriesArray = (e) => {
     console.log(e)
     setSelected(e);
@@ -76,6 +73,13 @@ export default function DashboardContent(props) {
     })
     setSelectedCategoriesArray(selectedCategory)
   }
+  const removeSpecificTransactionFromArray = (transactions) => {
+    let newTransactions = transactions.filter((transaction) => 
+    transaction.aceptedTransaction !== false)
+
+    return newTransactions
+  }
+
   const applyDateFilter = () => {
     if (selected.length === 0) {
       setLoading(true)
@@ -98,7 +102,10 @@ export default function DashboardContent(props) {
         .then((res) => res.json())
         .then((transactions) => {
           setTransactions(transactions)
-          setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
+          
+          let newTransactions=removeSpecificTransactionFromArray(transactions)
+          
+          setTotal(newTransactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
           setLoading(false)
         })
     } else {
@@ -164,7 +171,8 @@ export default function DashboardContent(props) {
     })
       .then((res) => res.json())
       .then((transactions) => {
-        setTotalForMonth(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
+        let newTransactions = removeSpecificTransactionFromArray(transactions)
+        setTotalForMonth(newTransactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
         setLoading(false)
       })
   }
@@ -201,7 +209,8 @@ export default function DashboardContent(props) {
     transactions.map((transaction) => {
       categories[transaction.category.name] = transaction.category.id
     });
-    setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
+    let newTransactions = removeSpecificTransactionFromArray(transactions)
+    setTotal(newTransactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
   }
 
 

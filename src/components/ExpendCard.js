@@ -37,7 +37,6 @@ export const ExpendCard = (props) => {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
           setAlias(data);
         })
         .catch(error => {

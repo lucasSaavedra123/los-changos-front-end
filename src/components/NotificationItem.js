@@ -70,7 +70,7 @@ export default function NotificationItem(props) {
             }).then(() => { props.confirmAction() })
         }
     }
-
+    
    
 
 
@@ -91,7 +91,9 @@ export default function NotificationItem(props) {
                         
                             
                                     <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" ,display:'flex',justifyContent:'center'}}>
-                                        Gasto Compartido de ${addCommas(props.expense.value)} de {props.expense.userToShare.alias}
+                                        Gasto Compartido de ${addCommas(props.expense.value)} de {props.expense.user.name} {props.expense.user.lastname} 
+                                        {/* {props.expense.userToShare.alias} */}
+                                        
                                     </Typography>
                                     <div style={{display:'flex',justifyContent:'center'}}>
                                         {props.expense.name} - {props.expense.date}

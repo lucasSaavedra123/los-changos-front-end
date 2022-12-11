@@ -56,7 +56,7 @@ const NotificationsPage = () => {
   }, [])
 
 
-
+  console.log(pendingTransactions)
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>

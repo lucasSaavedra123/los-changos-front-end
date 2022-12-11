@@ -218,7 +218,8 @@ export const EditExpenseModal = (props) => {
                         category_id: category,
                         date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
                         name: name,
-                        userToShare: sharedUser
+                        userToShare: sharedUser,
+                        aceptedTransaction: false
                     })
     
     

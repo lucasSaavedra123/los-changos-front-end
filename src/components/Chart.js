@@ -19,9 +19,13 @@ export default function Chart(props) {
     },
   });
 
+  const removeSpecificTransactionFromArray = (transactions) => {
+    let newTransactions = transactions.filter((transaction) => 
+    transaction.aceptedTransaction !== false)
+    return newTransactions
+  }
+
   const [options, setOptions] = useState([])
-
-
   const getTransactions = () =>{
     fetch(BACKEND_URL+'/expense', {
      'headers': {
@@ -36,12 +40,17 @@ export default function Chart(props) {
             console.log(err.message);
         });
 
-}
+} 
+  
+    
+
 
   const cargarGrafico = (tr) =>{  
+    
     let totalPorMes = {}
     let nombreDeMeses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dec"]
-    tr.map((transaction) => {
+    let transactions = removeSpecificTransactionFromArray(tr)
+    transactions.map((transaction) => {
       let mes = new Date(transaction.date+"T00:00:00").getMonth()
       totalPorMes[mes] = typeof totalPorMes[mes] === 'undefined' ? transaction.value : totalPorMes[mes] + transaction.value
     
@@ -49,10 +58,12 @@ export default function Chart(props) {
     let meses = Object.keys(totalPorMes);
     let dataAux = []
     meses.map((mes)=>{
+    
     let option = {
         month: nombreDeMeses[mes],
         amount: totalPorMes[mes]
         }
+    
     dataAux.push(option)
 
 

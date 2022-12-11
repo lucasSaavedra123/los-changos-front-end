@@ -39,7 +39,7 @@ export const MoneyManager = () => {
   }
 
   const updateFilterTransactions = (newTransactions) =>{
-    console.log("MeEjecute")
+    
     setTransactions(newTransactions)
     let categories = {}
     newTransactions.map((transaction) => {

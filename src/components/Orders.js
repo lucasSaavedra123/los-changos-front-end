@@ -34,7 +34,7 @@ export default function Orders(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(0);
 
-    console.log(props)
+    
     
 
     const handleChangePage = (event, newPage) => {
