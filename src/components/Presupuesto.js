@@ -119,8 +119,11 @@ export default function Presupuesto(props) {
                                     <Typography component="h6" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
                                         {"Gastos Futuros"}
                                     </Typography>
+                                    
+                                    
+                                    {(budget.details.filter(detail => detail.value != undefined).length === 0) ? (<div>No hay gastos futuros agregados</div>) : (
 
-                                    {budget.details.filter(detail => detail.value != undefined).map((categoryBudget) => {
+                                    budget.details.filter(detail => detail.value != undefined).map((categoryBudget) => {
                                         let spent = Math.round(categoryBudget.spent)
                                         let value = Math.round(categoryBudget.value)
                                         let categoryName = categoryBudget.category.name;
@@ -145,8 +148,8 @@ export default function Presupuesto(props) {
                                                 </Grid>
                                             </Stack>
                                         )
-                                    })}
-
+                                    }))}
+       
                                 </Stack>
 
 

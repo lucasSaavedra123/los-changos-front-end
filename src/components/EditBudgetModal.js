@@ -30,6 +30,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { DataGrid } from '@mui/x-data-grid';
 
 const budgetModal = {
     position: 'absolute',
@@ -45,7 +46,7 @@ const budgetModal = {
 }
 
 export const EditBudgetModal = (props) => {
-    let detail_index = 0
+    var detail_index = 0
     let categories = []
 
     while (detail_index < props.budget.details.length) {
@@ -61,7 +62,10 @@ export const EditBudgetModal = (props) => {
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [dateFrom, setDateFrom] = useState(new Date(props.budget.initial_date + "T00:00:00"));
     const [dateTo, setDateTo] = useState(new Date(props.budget.final_date + "T00:00:00"));
+    const [expirationDate, setExpirationDate] = useState();
     const [budget, setBudget] = useState(props.budget);
+
+    const [someDummyArray, setDummyArray] = useState([]);
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
@@ -70,6 +74,12 @@ export const EditBudgetModal = (props) => {
     const [invalidCategoryValue, setInvalidCategoryValue] = useState(false);
     const [overlapping, setOverlapping] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
+
+    const columns = [
+        { field: 'id', headerName: 'ID' },
+        { field: 'name', headerName: 'Nombre', width: 130 },
+        { field: 'value', headerName: 'Valor', width: 130 },
+    ];
 
     const onKeyDown = (e) => {
         e.preventDefault();
@@ -118,6 +128,10 @@ export const EditBudgetModal = (props) => {
         return !overlapping;
     }
 
+    const addSomethingToDummyArray = () => {
+        setDummyArray((prevRows) => [...prevRows, { 'id': someDummyArray.length + 1, 'value': 1000, 'name': "Plata al Tranza", }]);
+    }
+
     const checkCategoryValue = () => {
 
         var sum_value = budget.details.reduce((accumulator, currentValue) => accumulator + currentValue.limit, 0)
@@ -159,6 +173,10 @@ export const EditBudgetModal = (props) => {
         setopenCompleteAllFields(false);
     };
 
+    const handleChangeExpirationDate = (newValue) => {
+        setExpirationDate(newValue);
+    };
+
     const handleChangeFrom = (newValue) => {
         setDateFrom(newValue);
     };
@@ -184,7 +202,7 @@ export const EditBudgetModal = (props) => {
 
     useEffect(() => {
         //getCategorias()
-    }, [invalidCategoryValue]);
+    }, [invalidCategoryValue, someDummyArray]);
 
     const cancelChanges = () => {
         props.handleCloseModal()
@@ -237,7 +255,7 @@ export const EditBudgetModal = (props) => {
                                                     return (
                                                         <TableRow key={detail.category.id}>
                                                             <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
-                                                            <TableCell> <TextField defaultValue={detail.limit} onChange={(e) => { changeLimit(e, detail) }}></TextField> </TableCell>
+                                                            <TableCell><TextField defaultValue={detail.limit} onChange={(e) => { changeLimit(e, detail) }}></TextField> </TableCell>
                                                         </TableRow>
                                                     )
 
@@ -279,6 +297,8 @@ export const EditBudgetModal = (props) => {
                             <DesktopDatePicker
                                 label="Fecha de caducidad"
                                 inputFormat="MM/DD/YYYY"
+                                onChange={handleChangeExpirationDate}
+                                value={expirationDate}
                                 sx={{ color: '#9CE37D;' }}
                                 renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                             />
@@ -298,48 +318,18 @@ export const EditBudgetModal = (props) => {
                             </Select>
                         </FormControl>
 
-                        <Button style={{ backgroundColor: '#9CE37D' }}> <AddIcon sx={{ color: 'white' }} /> </Button>
+                        <Button style={{ backgroundColor: '#9CE37D' }} onClick={addSomethingToDummyArray}> <AddIcon sx={{ color: 'white' }} /> </Button>
 
-                        <TableContainer>
-                            <Table size='small'>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell >Nombre</TableCell>
-                                        <TableCell >Valor</TableCell>
-                                        <TableCell >Categoria</TableCell>
-                                        <TableCell >¿Eliminar?</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {
 
-                                        budget.details
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map((detail) => {
-                                                return (
-                                                    <TableRow key={detail.category.id}>
-                                                        <TableCell>Valor</TableCell>
-                                                        <TableCell> 564 </TableCell>
-                                                        <TableCell value={detail.category.id}><CategoryIcon name={detail.category.material_ui_icon_name}></CategoryIcon>{detail.category.name}</TableCell>
-                                                        <TableCell> Boton </TableCell>
-                                                    </TableRow>
-                                                )
+                        <Box sx={{ height: 400, mt: 1 }}>
+                            <DataGrid
+                                rows={someDummyArray}
+                                columns={columns}
+                                pageSize={5}
+                                rowsPerPageOptions={[5]}
+                            />
+                        </Box>
 
-                                            })
-                                    }
-
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <TablePagination
-                            component="div"
-                            rowsPerPageOptions={[5, 10]}
-                            count={budget.details.length}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            rowsPerPage={rowsPerPage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
 
                         <Grid container spacing={0.5}>
                             <Grid item xs={6} className="boton-atras" >
