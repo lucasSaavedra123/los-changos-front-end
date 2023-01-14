@@ -31,6 +31,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { DataGrid } from '@mui/x-data-grid';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const budgetModal = {
     position: 'absolute',
@@ -107,7 +108,6 @@ export const EditBudgetModal = (props) => {
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
-
     const handleDeleteRow = (detail_id) => {
 
         if (window.confirm("¿Estas seguro de borrar el gasto futuro?")) {
@@ -130,11 +130,12 @@ export const EditBudgetModal = (props) => {
         { field: 'expiration_date', headerName: 'Fecha de Vencimiento', flex: 0.3 },
         {
             field: "action",
-            headerName: "¿Borrar?",
+            headerName: "",
             sortable: false,
             renderCell: (params) => {
-                return <Button onClick={() => handleDeleteRow(params.row.id)}>Borrar</Button>;
+                return <Button onClick={() => handleDeleteRow(params.row.id)}><DeleteIcon sx={{color:'gray'}}/></Button>;
             }
+
         }
     ];
 
