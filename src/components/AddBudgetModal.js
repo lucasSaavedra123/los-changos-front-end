@@ -103,8 +103,6 @@ export const AddBudgetModal = (props) => {
 
         })
 
-        console.log(overlapping)
-
         setOverlapping(overlapping);
         return !overlapping;
     }
