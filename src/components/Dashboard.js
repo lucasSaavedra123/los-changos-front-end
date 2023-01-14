@@ -65,7 +65,6 @@ export default function DashboardContent(props) {
   const handleClose = () => {setOpen(false);}
 
   const getSelectedCategoriesArray = (e) => {
-    console.log(e)
     setSelected(e);
     let selectedCategory = []
     e.map((category) => {

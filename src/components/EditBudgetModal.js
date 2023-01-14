@@ -51,8 +51,6 @@ export const EditBudgetModal = (props) => {
     var detail_index = 0
     let categories = []
 
-    console.log("Detalles:", props.budget.details)
-
     while (detail_index < props.budget.details.length) {
         props.budget.details[detail_index].category_id = props.budget.details[detail_index].category.id
 
@@ -64,8 +62,6 @@ export const EditBudgetModal = (props) => {
     }
 
     let future_expenses_details = props.budget.details.filter(detail => detail.value !== undefined)
-
-    console.log("Future Expenses:", future_expenses_details)
 
     detail_index = 0
 
@@ -203,7 +199,6 @@ export const EditBudgetModal = (props) => {
 
     const addSomethingToDummyArray = () => {
         setLastId(lastId+1)
-        console.log("Se agrega con este id:", lastId)
         setDummyArray((prevRows) => [...prevRows, { 'id': lastId, 'value': parseFloat(future_expense_value), 'name': future_expense_name, 'expiration_date': expirationDate.toISOString().split('T')[0], 'category_id': category }]);
     }
 
@@ -361,7 +356,7 @@ export const EditBudgetModal = (props) => {
                                 <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                             <Grid item xs={6} className="boton-adelante">
-                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { console.log("Se hace"); setActiveStep(1); console.log(activeStep); }}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { setActiveStep(1); }}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                         </Grid>
                     </Stack>

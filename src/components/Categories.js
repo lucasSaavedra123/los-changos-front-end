@@ -48,8 +48,6 @@ export const Categories = () => {
         })
             .then((response) => response.json())
             .then((actualData) => {
-                console.log("New Categories:", actualData)
-                console.log("Current Categories:", categories)
                 if (JSON.stringify(actualData) != JSON.stringify(categories)) {
                     setCategories(actualData);
                 }

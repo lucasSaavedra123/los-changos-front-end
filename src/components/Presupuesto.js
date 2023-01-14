@@ -31,7 +31,6 @@ export default function Presupuesto(props) {
     const funcion = () => {
         let newHeight = 130 + (quantityOfCategorys + 1) * 48
         setBudgetOpen(!openBudget)
-        console.log(newHeight)
         setHeight(newHeight)
 
     }
@@ -127,7 +126,6 @@ export default function Presupuesto(props) {
                                         let spent = Math.round(categoryBudget.spent)
                                         let value = Math.round(categoryBudget.value)
                                         let categoryName = categoryBudget.category.name;
-                                        console.log(categoryBudget)
                                         return (
                                             <Stack>
                                                 <Grid><div style={{ marginLeft: 10 }}> {categoryName} </div></Grid>

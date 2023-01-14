@@ -45,8 +45,6 @@ export const EditCategoryModal = (props) => {
         setopenCompleteAllFields(false);
     };
 
-
-    console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
         setIcon(event.target.value);
     };
