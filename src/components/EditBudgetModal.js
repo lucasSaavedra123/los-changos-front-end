@@ -45,9 +45,13 @@ const budgetModal = {
 
 }
 
+
+
 export const EditBudgetModal = (props) => {
     var detail_index = 0
     let categories = []
+
+    console.log("Detalles:", props.budget.details)
 
     while (detail_index < props.budget.details.length) {
         props.budget.details[detail_index].category_id = props.budget.details[detail_index].category.id
@@ -55,7 +59,32 @@ export const EditBudgetModal = (props) => {
         if (props.budget.details[detail_index].limit !== undefined) {
             categories.push(props.budget.details[detail_index].category)
         }
+
         detail_index += 1
+    }
+
+    let future_expenses_details = props.budget.details.filter(detail => detail.value !== undefined)
+
+    console.log("Future Expenses:", future_expenses_details)
+
+    detail_index = 0
+
+    while (detail_index < future_expenses_details.length) {
+        future_expenses_details[detail_index].id = detail_index
+        detail_index += 1
+    }
+
+    const get_category_from_id = (id) => {
+        let index = 0
+
+        while (index < categories.length) {
+
+            if (categories[index].id == id) {
+                return categories[index]
+            }
+
+            index += 1
+        }
     }
 
     const { currentUser } = useContext(AuthContext);
@@ -64,11 +93,12 @@ export const EditBudgetModal = (props) => {
     const [dateTo, setDateTo] = useState(new Date(props.budget.final_date + "T00:00:00"));
     const [expirationDate, setExpirationDate] = useState();
     const [budget, setBudget] = useState(props.budget);
+    const [lastId, setLastId] = useState(detail_index);
 
     const [future_expense_value, setFutureExpenseValue] = useState(0);
     const [future_expense_name, setFutureExpenseName] = useState();
 
-    const [someDummyArray, setDummyArray] = useState([]);
+    const [someDummyArray, setDummyArray] = useState(future_expenses_details);
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
@@ -81,11 +111,35 @@ export const EditBudgetModal = (props) => {
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
+
+    const handleDeleteRow = (detail_id) => {
+
+        if (window.confirm("¿Estas seguro de borrar el gasto futuro?")) {
+
+            var row_to_delete = someDummyArray.findIndex((future_expense_detail) => future_expense_detail.id == detail_id)
+
+            setDummyArray((prevRows) => {
+                return [
+                    ...someDummyArray.slice(0, row_to_delete),
+                    ...someDummyArray.slice(row_to_delete + 1),
+                ];
+            });
+        }
+    };
+
     const columns = [
-        { field: 'name', headerName: 'Nombre', flex: 0.1},
-        { field: 'value', headerName: 'Valor', flex: 0.1},
-        { field: 'category_id', headerName: 'Categoria', renderCell: (params) => {return(<><CategoryIcon name={categories[params.value-1].material_ui_icon_name}></CategoryIcon>{categories[params.value-1].name}</>)}, flex:0.4},
-        { field: 'expiration_date', headerName: 'Fecha de Vencimiento', flex: 0.3},
+        { field: 'name', headerName: 'Nombre', flex: 0.1 },
+        { field: 'value', headerName: 'Valor', flex: 0.1 },
+        { field: 'category_id', headerName: 'Categoria', renderCell: (params) => { return (<><CategoryIcon name={get_category_from_id(params.value).material_ui_icon_name}></CategoryIcon>{get_category_from_id(params.value).name}</>) }, flex: 0.4 },
+        { field: 'expiration_date', headerName: 'Fecha de Vencimiento', flex: 0.3 },
+        {
+            field: "action",
+            headerName: "¿Borrar?",
+            sortable: false,
+            renderCell: (params) => {
+                return <Button onClick={() => handleDeleteRow(params.row.id)}>Borrar</Button>;
+            }
+        }
     ];
 
     const onKeyDown = (e) => {
@@ -101,11 +155,11 @@ export const EditBudgetModal = (props) => {
     };
 
     const handleChangeName = (event) => {
-        setFutureExpenseName(event.target.value)    
+        setFutureExpenseName(event.target.value)
     };
 
     const handleChangeValue = (event) => {
-        setFutureExpenseValue(event.target.value)    
+        setFutureExpenseValue(event.target.value)
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -148,7 +202,9 @@ export const EditBudgetModal = (props) => {
     }
 
     const addSomethingToDummyArray = () => {
-        setDummyArray((prevRows) => [...prevRows, { 'id': someDummyArray.length + 1, 'value': future_expense_value, 'name': future_expense_name, 'expiration_date': expirationDate, 'category_id': category}]);
+        setLastId(lastId+1)
+        console.log("Se agrega con este id:", lastId)
+        setDummyArray((prevRows) => [...prevRows, { 'id': lastId, 'value': parseFloat(future_expense_value), 'name': future_expense_name, 'expiration_date': expirationDate.toISOString().split('T')[0], 'category_id': category }]);
     }
 
     const checkCategoryValue = () => {
@@ -167,6 +223,7 @@ export const EditBudgetModal = (props) => {
 
     const editBudget = (e) => {
         e.preventDefault();
+
         if (checkDates() && checkCategoryValue() && checkOverlapping()) {
             fetch(BACKEND_URL + '/budget', {
                 method: 'PATCH',
@@ -178,7 +235,7 @@ export const EditBudgetModal = (props) => {
                 body: JSON.stringify({
                     initial_date: dateFrom.toISOString().split('T')[0],
                     final_date: dateTo.toISOString().split('T')[0],
-                    details: Object.values(budget.details),
+                    details: Object.values(budget.details.concat(someDummyArray)),
                     id: props.budget.id,
                 })
 
@@ -268,7 +325,7 @@ export const EditBudgetModal = (props) => {
                                     <TableBody>
                                         {
 
-                                            budget.details
+                                            budget.details.filter(detail => detail.limit !== undefined)
                                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                                 .map((detail) => {
                                                     return (
@@ -354,7 +411,7 @@ export const EditBudgetModal = (props) => {
 
                         <Grid container spacing={0.5}>
                             <Grid item xs={6} className="boton-atras" >
-                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { console.log("Se hace"); setActiveStep(0) }}> <ArrowBackIcon sx={{ color: 'white' }} /> </Button>
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { setActiveStep(0) }}> <ArrowBackIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                             <Grid item xs={6} className="boton-aceptar">
                                 <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { editBudget(e) }}><DoneIcon sx={{ color: 'white' }} /> </Button>
