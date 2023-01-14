@@ -65,6 +65,9 @@ export const EditBudgetModal = (props) => {
     const [expirationDate, setExpirationDate] = useState();
     const [budget, setBudget] = useState(props.budget);
 
+    const [future_expense_value, setFutureExpenseValue] = useState(0);
+    const [future_expense_name, setFutureExpenseName] = useState();
+
     const [someDummyArray, setDummyArray] = useState([]);
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -74,19 +77,35 @@ export const EditBudgetModal = (props) => {
     const [invalidCategoryValue, setInvalidCategoryValue] = useState(false);
     const [overlapping, setOverlapping] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
+    const [category, setCategory] = useState();
+
+    const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
     const columns = [
-        { field: 'id', headerName: 'ID' },
-        { field: 'name', headerName: 'Nombre', width: 130 },
-        { field: 'value', headerName: 'Valor', width: 130 },
+        { field: 'name', headerName: 'Nombre', flex: 0.1},
+        { field: 'value', headerName: 'Valor', flex: 0.1},
+        { field: 'category_id', headerName: 'Categoria', renderCell: (params) => {return(<><CategoryIcon name={categories[params.value-1].material_ui_icon_name}></CategoryIcon>{categories[params.value-1].name}</>)}, flex:0.4},
+        { field: 'expiration_date', headerName: 'Fecha de Vencimiento', flex: 0.3},
     ];
 
     const onKeyDown = (e) => {
         e.preventDefault();
     };
 
+    const handleChangeSelect = (event) => {
+        setCategory(event.target.value);
+    };
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+    };
+
+    const handleChangeName = (event) => {
+        setFutureExpenseName(event.target.value)    
+    };
+
+    const handleChangeValue = (event) => {
+        setFutureExpenseValue(event.target.value)    
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -129,7 +148,7 @@ export const EditBudgetModal = (props) => {
     }
 
     const addSomethingToDummyArray = () => {
-        setDummyArray((prevRows) => [...prevRows, { 'id': someDummyArray.length + 1, 'value': 1000, 'name': "Plata al Tranza", }]);
+        setDummyArray((prevRows) => [...prevRows, { 'id': someDummyArray.length + 1, 'value': future_expense_value, 'name': future_expense_name, 'expiration_date': expirationDate, 'category_id': category}]);
     }
 
     const checkCategoryValue = () => {
@@ -303,7 +322,8 @@ export const EditBudgetModal = (props) => {
                                 renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                             />
                         </LocalizationProvider>
-                        <TextField label="Nombre"></TextField>
+                        <TextField onChange={handleChangeName} label="Nombre"></TextField>
+                        <TextField onChange={handleChangeValue} label="Valor"></TextField>
 
                         <FormControl sx={{ m: 1, minWidth: 120 }}>
                             <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
@@ -311,6 +331,7 @@ export const EditBudgetModal = (props) => {
                                 labelId="demo-simple-select-helper-label"
                                 id="demo-simple-select-helper"
                                 label="Categoria"
+                                onChange={handleChangeSelect}
                             >
                                 {categories.map((category) => (
                                     <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
