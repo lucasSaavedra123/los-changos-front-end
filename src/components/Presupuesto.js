@@ -7,9 +7,10 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import Stack from '@mui/material/Stack';
-import { BACKEND_URL } from "../CONSTANTS";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { Button } from '@mui/material';
+import Divider from '@mui/material/Divider';
 
 
 //Hay que cambiar que en vez de pasar cada valor, pasarle el presupuesto y uqe itere cada categoria y los totales
@@ -24,6 +25,24 @@ export default function Presupuesto(props) {
     const variant = percentage > 100 ? "danger" : percentage > 70 ? "warning" : "success";
     const quantityOfCategorys = typeof budget.details === "undefined" ? 0 : budget.details.filter(detail => detail.limit > 0);
 
+    const handlePayExecution = (future_expense_id) => {
+        console.log(future_expense_id)
+    }
+
+    const styles = {
+        "&.MuiButton-root": {
+            border: "2px green solid"
+        },
+        "&.MuiButton-text": {
+            color: "green"
+        },
+        "&.MuiButton-contained": {
+            color: "green"
+        },
+        "&.MuiButton-outlined": {
+            color: "green"
+        }
+    };
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -118,36 +137,40 @@ export default function Presupuesto(props) {
                                     <Typography component="h6" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
                                         {"Gastos Futuros"}
                                     </Typography>
-                                    
-                                    
+
+
                                     {(budget.details.filter(detail => detail.value != undefined).length === 0) ? (<div>No hay gastos futuros agregados</div>) : (
 
-                                    budget.details.filter(detail => detail.value != undefined).map((categoryBudget) => {
-                                        let spent = Math.round(categoryBudget.spent)
-                                        let value = Math.round(categoryBudget.value)
-                                        let categoryName = categoryBudget.category.name;
-                                        return (
-                                            <Stack>
-                                                <Grid><div style={{ marginLeft: 10 }}> {categoryName} </div></Grid>
-                                                <Grid container spacing={0.5} style={{ marginLeft: 'auto' }}>
-                                                    <Grid item lg={10} xs={10} md={10}>
-                                                        {value}
+                                        budget.details.filter(detail => detail.value != undefined).map((categoryBudget) => {
+                                            let value = Math.round(categoryBudget.value)
+                                            let categoryName = categoryBudget.category.name;
+                                            return (
+                                                <Stack>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={6}>
+                                                            <div style={{ marginLeft: 10 }}> Nombre: {addCommas(categoryBudget.name)} </div>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <div style={{ marginLeft: 10 }}> Valor: ${addCommas(categoryBudget.value)} </div>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <div style={{ marginLeft: 10 }}> Fecha de vencimiento: {categoryBudget.expiration_date} </div>
+                                                        </Grid>
+                                                        <Grid item xs={6}>
+                                                            <div style={{ marginLeft: 10 }}> Categoria: {categoryName} </div>
+                                                        </Grid>
                                                     </Grid>
-                                                    <Grid item lg={2} xd={2} md={2}>
-                                                        <div style={{ marginTop: 'auto' }}>
-                                                            {categoryName}
-                                                        </div>
-                                                    </Grid>
-                                                    <Grid item lg={2} xd={2} md={2}>
-                                                        <div style={{ marginTop: 'auto' }}>
-                                                            {categoryBudget.expiration_date}
-                                                        </div>
-                                                    </Grid>
-                                                </Grid>
-                                            </Stack>
-                                        )
-                                    }))}
-       
+                                                    <Button disabled={categoryBudget.expended} sx={styles} className="add-expense-button" variant='outlined' onClick={() => handlePayExecution(categoryBudget.id)}>
+                                                        EJECUTAR PAGO
+                                                    </Button>
+                                                    <Divider variant="middle" />
+
+                                                </Stack>
+
+
+                                            )
+                                        }))}
+
                                 </Stack>
 
 

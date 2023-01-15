@@ -85,8 +85,6 @@ export const AddBudgetModal = (props) => {
         setExpirationDate(newValue);
     };
 
-
-
     const handleChangeName = (event) => {
         setFutureExpenseName(event.target.value)
     };
@@ -200,6 +198,8 @@ export const AddBudgetModal = (props) => {
             detail_index += 1
         }
 
+        console.log(categories)
+
         if (checkDates() && checkCategoryValue() && checkOverlapping()) {
 
             fetch(BACKEND_URL + '/budget', {
@@ -213,7 +213,7 @@ export const AddBudgetModal = (props) => {
                 body: JSON.stringify({
                     initial_date: dateFrom.toISOString().split('T')[0],
                     final_date: dateTo.toISOString().split('T')[0],
-                    details: Object.values(categories),
+                    details: Object.values(categories.concat(someDummyArray)),
                 })
 
 
