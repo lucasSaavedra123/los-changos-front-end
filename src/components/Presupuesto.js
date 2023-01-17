@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import "../assets/scss/moneyManager.scss";
 import Typography from '@mui/material/Typography';
@@ -11,6 +11,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
+import { Modal } from '@mui/material';
+import EditExpenseModal from './EditExpenseModal';
 
 
 //Hay que cambiar que en vez de pasar cada valor, pasarle el presupuesto y uqe itere cada categoria y los totales
@@ -24,9 +26,23 @@ export default function Presupuesto(props) {
     const percentage = Math.round(budget.total_spent * 100 / budget.total_limit);
     const variant = percentage > 100 ? "danger" : percentage > 70 ? "warning" : "success";
     const quantityOfCategorys = typeof budget.details === "undefined" ? 0 : budget.details.filter(detail => detail.limit > 0);
+    const [open, setOpen] = useState(false);
+    const handleAgregarGasto = () => setOpen(true)
+    const [selected_future_expense, setFutureExpense] = useState({})
+    const handleCloseModal = () => setOpen(false)
 
-    const handlePayExecution = (future_expense_id) => {
-        console.log(future_expense_id)
+    const handlePayExecution = (future_expense) => {
+
+        if (future_expense.expended) {
+            alert("Ya fue ejecutado este pago.")
+        }
+        else if (!budget.active) {
+            alert("El presupuesto no se encuentra activo. Intentelo mas tarde.")
+        }
+        else {
+            handleAgregarGasto()
+            setFutureExpense(future_expense)
+        }
     }
 
     const styles = {
@@ -87,7 +103,7 @@ export default function Presupuesto(props) {
                         <div className='table-title'>
                             <div className='titulo-principal'>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
-                                    {"Presupuesto del periodo " + budget.initial_date + " " + budget.final_date}
+                                    {"Presupuesto del periodo " + budget.initial_date + " al " + budget.final_date}
                                 </Typography>
                             </div>
 
@@ -160,16 +176,22 @@ export default function Presupuesto(props) {
                                                             <div style={{ marginLeft: 10 }}> Categoria: {categoryName} </div>
                                                         </Grid>
                                                     </Grid>
-                                                    <Button disabled={categoryBudget.expended} sx={styles} className="add-expense-button" variant='outlined' onClick={() => handlePayExecution(categoryBudget.id)}>
+                                                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => handlePayExecution(categoryBudget)}>
                                                         EJECUTAR PAGO
                                                     </Button>
-                                                    <Divider variant="middle" />
+                                                    <Divider variant="middle" /> {/*Hay que ver esto como hacerlo visualizar*/}
 
                                                 </Stack>
-
-
                                             )
                                         }))}
+
+<Modal
+                                        open={open} onClose={handleCloseModal}>
+                                        <div className="add-expense-modal">
+                                            <EditExpenseModal action={'Nuevo'} future_expense={selected_future_expense} handleCloseModal={handleCloseModal} confirmAction={() => {alert("Se subio gasto futuro!")}} />
+                                        </div>
+                                    </Modal>
+                                    
 
                                 </Stack>
 

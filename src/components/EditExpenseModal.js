@@ -38,12 +38,26 @@ const style = {
 
 export const EditExpenseModal = (props) => {
 
-    const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
-    const [date, setDate] = useState(typeof props.date === "undefined" ? new Date() : new Date(props.date + "T00:00:00"));
-    const [name, setName] = useState(typeof props.name === "undefined" ? '' : props.name)
-    const [value, setValue] = useState(typeof props.value === "undefined" ? '' : props.value)
-    const [categories, setCategories] = useState([]);
+    const block_input = props.future_expense !== undefined
 
+    if(block_input){
+        var default_category = props.future_expense.category.id
+        var default_value = props.future_expense.value
+        var default_name = props.future_expense.name
+    }
+    else{
+        var default_category = typeof props.category === "undefined" ? '' : props.category.id
+        var default_value = typeof props.value === "undefined" ? '' : props.value
+        var default_name = typeof props.name === "undefined" ? '' : props.name
+    }
+
+    const [category, setCategory] = useState(default_category);
+    const [date, setDate] = useState(typeof props.date === "undefined" ? new Date() : new Date(props.date + "T00:00:00"));
+    const [name, setName] = useState(default_name)
+    const [value, setValue] = useState(default_value)
+
+
+    const [categories, setCategories] = useState([]);
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
@@ -84,7 +98,7 @@ export const EditExpenseModal = (props) => {
     }
 
     useEffect(() => {
-        getCategorias()
+        if(!block_input){getCategorias()}
     }, []);
 
 
@@ -116,6 +130,7 @@ export const EditExpenseModal = (props) => {
             showValueError()
         }
         else {
+            if(!block_input){
             fetch(BACKEND_URL + '/expense', {
                 method: 'POST',
                 headers: {
@@ -134,7 +149,28 @@ export const EditExpenseModal = (props) => {
 
 
             }).finally(() => { props.confirmAction();props.handleCloseModal()})
+        }
+        else{
+            fetch(BACKEND_URL + '/budget/expended', {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
 
+
+                body: JSON.stringify({
+                    future_expense_id: props.future_expense.id,
+                    value: value,
+                    category_id: category,
+                    expense_done_date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
+                    name: name
+                })
+
+
+            }).finally(() => { props.confirmAction();props.handleCloseModal()})    
+        }
         }
 
     }
@@ -192,8 +228,8 @@ export const EditExpenseModal = (props) => {
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {props.action} Gasto
                 </Typography>
-                <TextField label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
-                <TextField label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
+                <TextField disabled={block_input} label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
+                <TextField disabled={block_input} label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                     <DesktopDatePicker
@@ -215,7 +251,7 @@ export const EditExpenseModal = (props) => {
                         value={category}
                         label="Categoria"
                         onChange={handleChangeSelect}
-                        
+                        disabled={block_input}
                     >
                     {categories.map((category)=>(
                         <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>

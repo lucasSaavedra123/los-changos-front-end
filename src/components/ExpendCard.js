@@ -15,6 +15,9 @@ import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
 
 export const ExpendCard = (props) => {
+
+    console.log(props)
+
     const [open, setOpen] = useState(false);
     const [openCategory, setCategoryOpen] = useState(false)
     const handleCategoryClose = () => {
@@ -53,21 +56,25 @@ export const ExpendCard = (props) => {
             <TableCell>${addCommas(props.value)}</TableCell>
             <TableCell>
                 <div className='buttons-transactions-table'>
-                    
-                        <Button className='view-detailed-expense' onClick={() => setOpen(!open)}>
+
+                    <Button className='view-detailed-expense' onClick={() => setOpen(!open)}>
                         <VisibilityIcon sx={{ color: "black" }} />
-                        </Button>
-                    
-                    
-                        <Button className='delete-button' onClick={deleteExpenseCard}>
+                    </Button>
+
+                    {!props.future_expense ? null :
+                    <>
+                    <Button className='delete-button' onClick={deleteExpenseCard}>
                         <DeleteIcon sx={{ color: "black" }} />
-                        </Button>
-                    
-                    
-                        <Button className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
+                    </Button>
+
+
+                    <Button className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
                         <EditIcon sx={{ color: "black" }} />
-                        </Button>
-                    
+                    </Button>
+                    </>
+                    }
+
+
 
                     <Modal open={open} onClose={handleClose} >
                         <ModalDetailedExpenseCard name={props.name} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon size={'60px'} name={props.category.material_ui_icon_name} />} />
@@ -75,7 +82,7 @@ export const ExpendCard = (props) => {
 
                     <Modal open={openCategory}
                         onClose={handleCategoryClose} disableBackdropClick>
-                        <EditExpenseModal action={'Editar'}confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} />
+                        <EditExpenseModal action={'Editar'} confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} />
 
                     </Modal>
 
