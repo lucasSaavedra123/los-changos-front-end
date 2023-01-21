@@ -231,7 +231,7 @@ export const EditBudgetModal = (props) => {
                 body: JSON.stringify({
                     initial_date: dateFrom.toISOString().split('T')[0],
                     final_date: dateTo.toISOString().split('T')[0],
-                    details: Object.values(budget.details.concat(someDummyArray)),
+                    details: Object.values(budget.details.filter((detail) => detail.limit !== undefined).concat(someDummyArray)),
                     id: props.budget.id,
                 })
 
