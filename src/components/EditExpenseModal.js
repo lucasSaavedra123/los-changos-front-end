@@ -61,6 +61,7 @@ export const EditExpenseModal = (props) => {
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
+    const [dateOutOfRange, setDateOutOfRange] = useState(false);
     const onKeyDown = (e) => {
         e.preventDefault();
      };
@@ -96,6 +97,30 @@ export const EditExpenseModal = (props) => {
 
 
     }
+
+
+    const validateDateInBudget = () => {
+        const budget = props.budget
+        const budget_start = new Date(budget.initial_date)
+        const budget_end = new Date(budget.final_date)
+        const expense_date = date.toDate()
+
+        console.log(budget_start)
+        console.log(budget_end)
+        console.log(expense_date)
+
+        console.log(expense_date >= budget_start)
+        console.log(expense_date <= budget_end)
+
+        if (expense_date >= budget_start && expense_date <= budget_end){
+            return true
+        }
+        else{
+            setDateOutOfRange(true)
+            return false
+        }
+    }
+
 
     useEffect(() => {
         if(!block_input){getCategorias()}
@@ -151,6 +176,7 @@ export const EditExpenseModal = (props) => {
             }).finally(() => { props.confirmAction();props.handleCloseModal()})
         }
         else{
+            if(validateDateInBudget()){
             fetch(BACKEND_URL + '/budget/expended', {
                 method: 'PATCH',
                 headers: {
@@ -170,7 +196,7 @@ export const EditExpenseModal = (props) => {
 
 
             }).finally(() => { props.confirmAction();props.handleCloseModal()})    
-        }
+        }}
         }
 
     }
@@ -271,6 +297,7 @@ export const EditExpenseModal = (props) => {
         </Box>
         <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
         <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+        <CustomAlert text={"La fecha tiene que estar dentro del rango del presupuesto"} severity={"error"} open={dateOutOfRange} closeAction={setDateOutOfRange} />
 
         </>
     )

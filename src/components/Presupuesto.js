@@ -13,13 +13,13 @@ import { Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import { Modal } from '@mui/material';
 import EditExpenseModal from './EditExpenseModal';
+import CustomAlert from "./CustomAlert";
 
 
 //Hay que cambiar que en vez de pasar cada valor, pasarle el presupuesto y uqe itere cada categoria y los totales
 
 
 export default function Presupuesto(props) {
-    const { currentUser } = useContext(AuthContext);
     const [openBudget, setBudgetOpen] = useState(false);
     const [height, setHeight] = useState(130);
     const budget = props.budget;
@@ -31,13 +31,16 @@ export default function Presupuesto(props) {
     const [selected_future_expense, setFutureExpense] = useState({})
     const handleCloseModal = () => setOpen(false)
 
+    const [alreadyExecuted, setAlreadyExecuted] = useState(false)
+    const [payExecutionNotPossible, setPayExecutionNotPossible] = useState(false)
+
     const handlePayExecution = (future_expense) => {
 
         if (future_expense.expended) {
-            alert("Ya fue ejecutado este pago.")
+            setAlreadyExecuted(true)
         }
         else if (!budget.active) {
-            alert("El presupuesto no se encuentra activo. Intentelo mas tarde.")
+            setPayExecutionNotPossible(true)
         }
         else {
             handleAgregarGasto()
@@ -77,7 +80,7 @@ export default function Presupuesto(props) {
 
 
     return (
-
+<>
         <Grid item xs={12} md={12} lg={12}>
             <Paper
                 sx={{
@@ -188,7 +191,7 @@ export default function Presupuesto(props) {
 <Modal
                                         open={open} onClose={handleCloseModal}>
                                         <div className="add-expense-modal">
-                                            <EditExpenseModal action={'Nuevo'} future_expense={selected_future_expense} handleCloseModal={handleCloseModal} confirmAction={() => {alert("Se subio gasto futuro!")}} />
+                                            <EditExpenseModal action={'Nuevo'} future_expense={selected_future_expense} budget={budget} handleCloseModal={handleCloseModal} confirmAction={props.confirmAction} />
                                         </div>
                                     </Modal>
                                     
@@ -228,11 +231,10 @@ export default function Presupuesto(props) {
             </Paper>
         </Grid>
 
+            <CustomAlert text={"El pago ya se realizó"} severity={"warning"} open={alreadyExecuted} closeAction={setAlreadyExecuted} />
+            <CustomAlert text={"Solo se pueden ejecutar pagos futuros de presupuestos actuales"} severity={"warning"} open={payExecutionNotPossible} closeAction={setPayExecutionNotPossible} />
 
-
-
-
-
+        </>
 
 
     )

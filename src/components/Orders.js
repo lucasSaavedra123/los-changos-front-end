@@ -69,7 +69,7 @@ export default function Orders(props) {
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((transaction) => (
 
-            <ExpendCard id={transaction.id} name ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction}  />
+            <ExpendCard id={transaction.id} name ={transaction.name} future_expense={transaction.future_expense} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction}  />
             
           ))}
         </TableBody>

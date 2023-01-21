@@ -15,9 +15,6 @@ import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
 
 export const ExpendCard = (props) => {
-
-    console.log(props)
-
     const [open, setOpen] = useState(false);
     const [openCategory, setCategoryOpen] = useState(false)
     const handleCategoryClose = () => {
@@ -61,7 +58,7 @@ export const ExpendCard = (props) => {
                         <VisibilityIcon sx={{ color: "black" }} />
                     </Button>
 
-                    {!props.future_expense ? null :
+                    {props.future_expense ? null :
                     <>
                     <Button className='delete-button' onClick={deleteExpenseCard}>
                         <DeleteIcon sx={{ color: "black" }} />

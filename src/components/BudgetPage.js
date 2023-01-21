@@ -196,7 +196,7 @@ const BudgetPage = () => {
                           <Grid container spacing={3} style={{marginBottom:'10px'}}>
                           <Grid item xs={12} lg={10} md={10}>
 
-                            <Presupuesto budget={budgetItem} />
+                            <Presupuesto budget={budgetItem} confirmAction={() => {getBudgets()}} />
 
 
                           </Grid>
