@@ -88,12 +88,12 @@ export const EditBudgetModal = (props) => {
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [dateFrom, setDateFrom] = useState(new Date(props.budget.initial_date + "T00:00:00"));
     const [dateTo, setDateTo] = useState(new Date(props.budget.final_date + "T00:00:00"));
-    const [expirationDate, setExpirationDate] = useState();
+    const [expirationDate, setExpirationDate] = useState(null);
     const [budget, setBudget] = useState(props.budget);
     const [lastId, setLastId] = useState(detail_index);
 
     const [future_expense_value, setFutureExpenseValue] = useState(0);
-    const [future_expense_name, setFutureExpenseName] = useState();
+    const [future_expense_name, setFutureExpenseName] = useState("");
 
     const [someDummyArray, setDummyArray] = useState(future_expenses_details);
 
@@ -105,6 +105,13 @@ export const EditBudgetModal = (props) => {
     const [overlapping, setOverlapping] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
     const [category, setCategory] = useState();
+
+    const [invalidFutureExpenseDate, setInvalidFutureExpenseDate] = useState(false);
+    const [invalidFutureExpenseName, setInvalidFutureExpenseName] = useState(false);
+    const [invalidFutureExpenseDateOutOfBudget, setInvalidFutureExpenseDateOutOfBudget] = useState(false);
+    const [futureExpensesExceedsBudget, setFutureExpensesExceedsBudget] = useState(false);
+    const [invalidFutureExpenseValue, setInvalidFutureExpenseValue] = useState(false);
+    const [invalidFutureExpenseCategory, setInvalidFutureExpenseCategory] = useState(false);
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
@@ -198,9 +205,45 @@ export const EditBudgetModal = (props) => {
         return !overlapping;
     }
 
+    const validFutureExpense = () => {
+        if(expirationDate == null){
+            setInvalidFutureExpenseDate(true)
+            return false
+        }
+
+        //Verificar que expiration date este dentro del presupuesto asignado
+        let dateToParsed = new Date(dateTo.toISOString().split('T')[0] + "T00:00:00")
+        let dateFromParsed = new Date(dateFrom.toISOString().split('T')[0] + "T00:00:00")
+        let expirationDateParsed = new Date(expirationDate.toISOString().split('T')[0] + "T00:00:00")
+
+        if (expirationDateParsed <  dateFromParsed || expirationDateParsed > dateToParsed){
+            setInvalidFutureExpenseDateOutOfBudget(true)
+            return false
+        }
+
+        if (future_expense_name == ""){
+            setInvalidFutureExpenseName(true)
+            return false
+        }
+
+        if (parseFloat(future_expense_value) <= 0){
+            setInvalidFutureExpenseValue(true)
+            return false
+        }
+
+        if(category == 0){
+            setInvalidFutureExpenseCategory(true)
+            return false
+        }
+
+        return true;
+    }
+
     const addSomethingToDummyArray = () => {
+        if (validFutureExpense()){
         setLastId(lastId+1)
         setDummyArray((prevRows) => [...prevRows, { 'id': lastId, 'value': parseFloat(future_expense_value), 'name': future_expense_name, 'expiration_date': expirationDate.toISOString().split('T')[0], 'category_id': category }]);
+        }
     }
 
     const checkCategoryValue = () => {
@@ -217,10 +260,32 @@ export const EditBudgetModal = (props) => {
 
     }
 
+    const checkFutureExpenses = () => {
+        var details = categories.concat(someDummyArray)
+        var future_expenses = details.filter( (detail) => detail.value !== undefined )
+        var categories_limits = details.filter( (detail) => detail.limit !== undefined )
+
+        for(let i = 0; i < categories_limits.length; i++){
+            let sum = 0
+            for(let j = 0; j < future_expenses.length; j++){
+                if(categories_limits[i].id == future_expenses[j].category_id){
+                    sum += future_expenses[j].value
+                }
+            }
+            
+            if(sum > categories_limits[i].limit){
+                setFutureExpensesExceedsBudget(true)
+                return false
+            }
+        }
+
+        return true
+    }
+
     const editBudget = (e) => {
         e.preventDefault();
 
-        if (checkDates() && checkCategoryValue() && checkOverlapping()) {
+        if (checkDates() && checkCategoryValue() && checkOverlapping() && checkFutureExpenses()) {
             fetch(BACKEND_URL + '/budget', {
                 method: 'PATCH',
                 headers: {
@@ -423,6 +488,12 @@ export const EditBudgetModal = (props) => {
             <CustomAlert text={"Ya existe un presupuesto para ese periodo"} severity={"error"} open={overlapping} closeAction={() => setOverlapping(false)} />
             <CustomAlert text={"Ingrese un valor valido para al menos una categoria"} severity={"warning"} open={invalidCategoryValue} closeAction={() => setInvalidCategoryValue(false)} />
 
+            <CustomAlert text={"Ingresa una fecha para el gasto futuro"} severity={"error"} open={invalidFutureExpenseDate} closeAction={() => setInvalidFutureExpenseDate(false)} />
+            <CustomAlert text={"Ingresa un nombre para el gasto futuro"} severity={"error"} open={invalidFutureExpenseName} closeAction={() => setInvalidFutureExpenseName(false)} />
+            <CustomAlert text={"El gasto futuro no puede ocurrir fuera del presupuesto"} severity={"error"} open={invalidFutureExpenseDateOutOfBudget} closeAction={() => setInvalidFutureExpenseDateOutOfBudget(false)} />
+            <CustomAlert text={"El gasto futuro no puede ser cero como tampoco negativo"} severity={"error"} open={invalidFutureExpenseValue} closeAction={() => setInvalidFutureExpenseValue(false)} />
+            <CustomAlert text={"El gasto futuro tiene que tener una categoria. Por favor, selecciona una"} severity={"error"} open={invalidFutureExpenseCategory} closeAction={() => setInvalidFutureExpenseCategory(false)} />
+            <CustomAlert text={"Los gastos futuros exceden el presupuesto. Por favor, extendelo o borrá gastos futuros."} severity={"error"} open={futureExpensesExceedsBudget} closeAction={() => setFutureExpensesExceedsBudget(false)} />
         </>
     )
 }
