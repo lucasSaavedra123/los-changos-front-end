@@ -65,7 +65,7 @@ export const AddBudgetModal = (props) => {
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [dateFrom, setDateFrom] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
     const [dateTo, setDateTo] = useState(today);
-    const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
+    const [category, setCategory] = useState('');
     const [categories, setCategories] = useState([]);
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -475,10 +475,11 @@ export const AddBudgetModal = (props) => {
                                 labelId="demo-simple-select-helper-label"
                                 id="demo-simple-select-helper"
                                 label="Categoria"
+                                defaultValue={''}
                                 onChange={handleChangeSelect}
                             >
                                 {categories.map((category) => (
-                                    <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                                    <MenuItem key={category.id} value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>

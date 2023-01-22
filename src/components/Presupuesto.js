@@ -34,6 +34,13 @@ export default function Presupuesto(props) {
     const [alreadyExecuted, setAlreadyExecuted] = useState(false)
     const [payExecutionNotPossible, setPayExecutionNotPossible] = useState(false)
 
+    if(budget.details !== undefined)
+{
+    for(let i = 0; i < budget.details.length; i++){
+        budget.details[i].id = i;
+    }
+}
+
     const handlePayExecution = (future_expense) => {
 
         if (future_expense.expended) {
@@ -50,7 +57,7 @@ export default function Presupuesto(props) {
 
     const styles = {
         "&.MuiButton-root": {
-            border: "2px green solid"
+            border: "2px greenf solid"
         },
         "&.MuiButton-text": {
             color: "green"
@@ -102,7 +109,7 @@ export default function Presupuesto(props) {
                     </div>)
                     :
 
-                    (<React.Fragment style={{ color: "green" }}>
+                    (<React.Fragment>
                         <div className='table-title'>
                             <div className='titulo-principal'>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
@@ -136,8 +143,9 @@ export default function Presupuesto(props) {
                                         let categoryPercentage = Math.round((spent * 100 / limit))
                                         let categoryName = categoryBudget.category.name;
                                         let categoryVariant = categoryPercentage > 100 ? "danger" : categoryPercentage > 70 ? "warning" : "success";
+
                                         return (
-                                            <Stack>
+                                            <Stack key={categoryBudget.id}>
                                                 <Grid><div style={{ marginLeft: 10 }}> {categoryName} </div></Grid>
                                                 <Grid container spacing={0.5} style={{ marginLeft: 'auto' }}>
                                                     <Grid item lg={10} xs={10} md={10}>
@@ -163,8 +171,9 @@ export default function Presupuesto(props) {
                                         budget.details.filter(detail => detail.value != undefined).map((categoryBudget) => {
                                             let value = Math.round(categoryBudget.value)
                                             let categoryName = categoryBudget.category.name;
+
                                             return (
-                                                <Stack>
+                                                <Stack key={categoryBudget.id}>
                                                     <Grid container spacing={2}>
                                                         <Grid item xs={6}>
                                                             <div style={{ marginLeft: 10 }}> Nombre: {addCommas(categoryBudget.name)} </div>

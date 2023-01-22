@@ -185,15 +185,12 @@ const BudgetPage = () => {
                   <TableContainer>
                   <Table >
                     <TableHead>
-                      <TableRow>
-
-                      </TableRow>
                     </TableHead>
                     <TableBody>
                       {budgets
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((budgetItem) => (
-                          <Grid container spacing={3} style={{marginBottom:'10px'}}>
+                          <Grid key={budgetItem.id} container spacing={3} style={{marginBottom:'10px'}}>
                           <Grid item xs={12} lg={10} md={10}>
 
                             <Presupuesto budget={budgetItem} confirmAction={() => {getBudgets()}} />

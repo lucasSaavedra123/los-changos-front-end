@@ -78,53 +78,14 @@ export const ExpendCard = (props) => {
                     </Modal>
 
                     <Modal open={openCategory}
-                        onClose={handleCategoryClose} disableBackdropClick>
+                        onClose={handleCategoryClose}>
                         <EditExpenseModal action={'Editar'} confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.name} value={props.value} handleCloseModal={handleCategoryClose} />
-
                     </Modal>
 
 
                 </div>
             </TableCell>
-            {/* <ExpendCard id={transaction.id} title ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction} ></ExpendCard> */}
         </TableRow>
-        // <div className="card-wrapper">{//Aca cambie el color del fondo de las cartas
-        // }
-        //     <div className="left-side"  >
-
-        //         <CategoryIcon name={props.category.material_ui_icon_name} color={'white'}/>
-
-        //         <div className="expense-title" >{props.title}</div>
-        //     </div>
-
-        //     <Modal open={open} onClose={handleClose} >
-        //         <ModalDetailedExpenseCard title={props.title} value={props.value} category={props.category.name} date={props.date} icon={<CategoryIcon sx={{fontSize: 90, color:'black'}} name={props.category.material_ui_icon_name}/>}/>
-        //     </Modal>
-        //     <div className="right-side">
-        //         <div className="expense-value">${addCommas(props.value)}</div>
-        //         <div className='buttons-transactions-table'>
-        //             <div className='view-detailed-expense' onClick={() => setOpen(!open)}> 
-        //                 <VisibilityIcon sx={{ color: "white" }}/>
-        //             </div>
-        //             <div className='delete-button' onClick={deleteExpenseCard}>
-        //                 <DeleteIcon sx={{ color: "white" }}/>
-        //             </div>
-        //             <div className='edit-button' onClick={() => setCategoryOpen(!openCategory)}>
-        //                 <EditIcon sx={{ color: "white" }} />
-
-        //             </div>
-
-        //             <Modal open={openCategory}
-        //                 onClose={handleCategoryClose} disableBackdropClick>
-        //                 <EditExpenseModal confirmAction={props.confirmAction} category={props.category} id={props.id} date={props.date} name={props.title} value={props.value} handleCloseModal={handleCategoryClose}/>
-
-        //             </Modal>
-
-        //         </div>
-        //     </div>
-
-        // </div>
-        //</div>
 
     )
 

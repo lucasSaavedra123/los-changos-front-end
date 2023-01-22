@@ -98,17 +98,17 @@ export const Categories = () => {
                 </TableHead>
                 <TableBody>
                     {categories.map((category) => {
-                        if (category.static === true) {
+                        if (category.static) {
                             return (
                                 //<TableRow hover key={category.id} value={category}>
-                                <ExpenseCategory category={category} name={category.name} id={category.id} icon={category.material_ui_icon_name} color={'black'} />
+                                <ExpenseCategory key={category.id} category={category} name={category.name} id={category.id} icon={category.material_ui_icon_name} color={'black'} />
                                 //</TableRow>
                             )
                         }
                         else {
                             return (
                                 //<TableRow value={category} style={{ borderRadius: 5, border: "1px solid #9CE37D", backgroundColor: "black" }}>
-                                    <ExpenseDynamicCategory category={category } name={category.name} id={category.id} icon={category.material_ui_icon_name} color={'black'} confirmAction={() => { getCategories(); }} />
+                                    <ExpenseDynamicCategory key={category.id} category={category } name={category.name} id={category.id} icon={category.material_ui_icon_name} color={'black'} confirmAction={() => { getCategories(); }} />
                                 //</TableRow>
                             )
                         }

@@ -104,7 +104,7 @@ export const EditBudgetModal = (props) => {
     const [invalidCategoryValue, setInvalidCategoryValue] = useState(false);
     const [overlapping, setOverlapping] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
-    const [category, setCategory] = useState();
+    const [category, setCategory] = useState('');
 
     const [invalidFutureExpenseDate, setInvalidFutureExpenseDate] = useState(false);
     const [invalidFutureExpenseName, setInvalidFutureExpenseName] = useState(false);
@@ -457,10 +457,11 @@ export const EditBudgetModal = (props) => {
                                 labelId="demo-simple-select-helper-label"
                                 id="demo-simple-select-helper"
                                 label="Categoria"
+                                defaultValue={''}
                                 onChange={handleChangeSelect}
                             >
                                 {categories.map((category) => (
-                                    <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                                    <MenuItem key={category.id} value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>

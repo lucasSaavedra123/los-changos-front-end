@@ -105,13 +105,6 @@ export const EditExpenseModal = (props) => {
         const budget_end = new Date(budget.final_date)
         const expense_date = date.toDate()
 
-        console.log(budget_start)
-        console.log(budget_end)
-        console.log(expense_date)
-
-        console.log(expense_date >= budget_start)
-        console.log(expense_date <= budget_end)
-
         if (expense_date >= budget_start && expense_date <= budget_end){
             return true
         }
@@ -264,7 +257,7 @@ export const EditExpenseModal = (props) => {
                         value={date}
                         onChange={handleChange}
                         sx={{ color: '#9CE37D;' }}
-                        disableFuture='true'
+                        disableFuture={true}
                         renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params}/>}
                     />
 
@@ -280,7 +273,7 @@ export const EditExpenseModal = (props) => {
                         disabled={block_input}
                     >
                     {categories.map((category)=>(
-                        <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                        <MenuItem key={category.id} value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
                     ))}
                     </Select>
                 </FormControl>

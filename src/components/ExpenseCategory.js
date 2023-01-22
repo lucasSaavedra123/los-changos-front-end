@@ -23,13 +23,11 @@ export const ExpenseCategory = (props) => {
       }
 
     return (
-        <>
         <TableRow hover key={props.id} value={props.category}>
           <TableCell> <CategoryIcon name={props.icon} color={props.color}></CategoryIcon> </TableCell>
           <TableCell>{props.name}</TableCell>
           <TableCell></TableCell>
         </TableRow>
-        </>
     );
 
 }

@@ -338,7 +338,7 @@ export default function DashboardContent(props) {
                         value={dateFrom}
                         onChange={handleChangeFrom}
                         sx={{ color: '#9CE37D;' }}
-                        disableFuture='true'
+                        disableFuture={true}
                         renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                       />
                       <DesktopDatePicker
@@ -346,7 +346,7 @@ export default function DashboardContent(props) {
                         inputFormat="MM/DD/YYYY"
                         value={dateTo}
                         onChange={handleChangeTo}
-                        disableFuture='true'
+                        disableFuture={true}
                         renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                       />
                       <MultiSelect

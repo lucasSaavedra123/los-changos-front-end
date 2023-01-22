@@ -153,6 +153,7 @@ const Login = () => {
           id="outlined-start-adornment"
           sx={{ m: 1, width: '25ch' }}
           className={classes.root}
+          autoComplete="on"
           onChange={(e) => { setEmail(e.target.value) }}
         />
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" className={classes.root}>
@@ -161,6 +162,7 @@ const Login = () => {
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
             value={password}
+            autoComplete="on"
             onChange={(e) => setPassword(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
