@@ -112,6 +112,7 @@ export const EditBudgetModal = (props) => {
     const [futureExpensesExceedsBudget, setFutureExpensesExceedsBudget] = useState(false);
     const [invalidFutureExpenseValue, setInvalidFutureExpenseValue] = useState(false);
     const [invalidFutureExpenseCategory, setInvalidFutureExpenseCategory] = useState(false);
+    const [futureExpensesWereExceedingBudgetTime, setFutureExpensesWereExceedingBudgetTime] = useState(false);
 
     const addCommas = num => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
@@ -261,15 +262,22 @@ export const EditBudgetModal = (props) => {
     }
 
     const checkFutureExpenses = () => {
-        var details = categories.concat(someDummyArray)
+        var details = budget.details.filter((detail) => detail.limit !== undefined).concat(someDummyArray)
         var future_expenses = details.filter( (detail) => detail.value !== undefined )
         var categories_limits = details.filter( (detail) => detail.limit !== undefined )
+
+        console.log(categories_limits)
 
         for(let i = 0; i < categories_limits.length; i++){
             let sum = 0
             for(let j = 0; j < future_expenses.length; j++){
                 if(categories_limits[i].id == future_expenses[j].category_id){
                     sum += future_expenses[j].value
+                }
+
+                if( new Date(future_expenses[j].expiration_date+ "T00:00:00") < new Date(dateFrom.toISOString().split('T')[0] + "T00:00:00") || new Date(future_expenses[j].expiration_date+ "T00:00:00") > new Date(dateTo.toISOString().split('T')[0] + "T00:00:00") ){
+                    setFutureExpensesWereExceedingBudgetTime(true)
+                    return false
                 }
             }
             
@@ -494,6 +502,8 @@ export const EditBudgetModal = (props) => {
             <CustomAlert text={"El gasto futuro no puede ser cero como tampoco negativo"} severity={"error"} open={invalidFutureExpenseValue} closeAction={() => setInvalidFutureExpenseValue(false)} />
             <CustomAlert text={"El gasto futuro tiene que tener una categoria. Por favor, selecciona una"} severity={"error"} open={invalidFutureExpenseCategory} closeAction={() => setInvalidFutureExpenseCategory(false)} />
             <CustomAlert text={"Los gastos futuros exceden el presupuesto. Por favor, extendelo o borrá gastos futuros."} severity={"error"} open={futureExpensesExceedsBudget} closeAction={() => setFutureExpensesExceedsBudget(false)} />
+            <CustomAlert text={"Hay gastos que estan fuera del presupuesto. Por favor, extendelo o modifica gastos futuros."} severity={"error"} open={futureExpensesWereExceedingBudgetTime} closeAction={() => setFutureExpensesWereExceedingBudgetTime(false)} />
+
         </>
     )
 }
