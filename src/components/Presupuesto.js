@@ -14,6 +14,8 @@ import Divider from '@mui/material/Divider';
 import { Modal } from '@mui/material';
 import EditExpenseModal from './EditExpenseModal';
 import CustomAlert from "./CustomAlert";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 //Hay que cambiar que en vez de pasar cada valor, pasarle el presupuesto y uqe itere cada categoria y los totales
@@ -88,7 +90,7 @@ export default function Presupuesto(props) {
 
     return (
 <>
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={12} md={12} lg={12} paddingBottom={5}>
             <Paper
                 sx={{
                     p: 2,
@@ -114,6 +116,8 @@ export default function Presupuesto(props) {
                             <div className='titulo-principal'>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
                                     {"Presupuesto del periodo " + budget.initial_date + " al " + budget.final_date}
+                                    <Button style={{marginLeft:'5px'}} onClick={(e) => {props.deleteBudgetAction(e)}}><DeleteIcon sx={{ color: "green" }} /></Button>
+                                    <Button style={{marginLeft:'5px'}} onClick={(e) => {props.editBudgetAction(e)}}><EditIcon sx={{ color: "green" }} /></Button>
                                 </Typography>
                             </div>
 
