@@ -36,11 +36,9 @@ export const Categories = () => {
     const [categories, setCategories] = useState([]);
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
-    const [loading, setLoading] = useState(true);
 
     const { currentUser } = useContext(AuthContext);
     const getCategories = () => {
-        setLoading(true)
         fetch(BACKEND_URL + '/category', {
             headers: {
                 'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken
@@ -59,12 +57,10 @@ export const Categories = () => {
 
     useEffect(() => {
         getCategories()
-        setLoading(false)
     }, [categories]);
 
 
     let page = false ?
-    //ACA VA EL LOADING
     <div></div>
     :
     <React.Fragment>

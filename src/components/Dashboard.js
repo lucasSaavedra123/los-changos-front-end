@@ -60,7 +60,6 @@ export default function DashboardContent(props) {
   const [selected, setSelected] = useState([]);
   const [selectedCategoriesArray, setSelectedCategoriesArray] = useState([]);
   const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(true);
   const handleAgregarGasto = () => setOpen(true)
   const handleClose = () => {setOpen(false);}
 
@@ -74,7 +73,6 @@ export default function DashboardContent(props) {
   }
   const applyDateFilter = () => {
     if (selected.length === 0) {
-      setLoading(true)
       fetch(BACKEND_URL + '/expense/filter', {
         method: 'POST',
         headers: {
@@ -95,10 +93,8 @@ export default function DashboardContent(props) {
         .then((transactions) => {
           setTransactions(transactions)
           setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
-          setLoading(false)
         })
     } else {
-      setLoading(true)
       fetch(BACKEND_URL + '/expense/filter', {
         method: 'POST',
         headers: {
@@ -117,7 +113,6 @@ export default function DashboardContent(props) {
       })
         .then((res) => res.json())
         .then((data) => {
-          setLoading(false)
           updateFilterTransactions(data)
         })
     }
@@ -161,7 +156,6 @@ export default function DashboardContent(props) {
       .then((res) => res.json())
       .then((transactions) => {
         setTotalForMonth(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
-        setLoading(false)
       })
   }
 
@@ -226,7 +220,6 @@ export default function DashboardContent(props) {
   }, [])
 
   useEffect(() => {
-    setLoading(true)
     getTransactionsForMultiSelect()
     getAllMonthTransactionsForTotal()
     getCurrentBudget()
