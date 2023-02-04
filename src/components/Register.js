@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import { auth } from '../firebase'
-import LoadingButton from '@mui/lab/LoadingButton';
 
 import { createUserWithEmailAndPassword, updateProfile, getAuth, sendEmailVerification } from 'firebase/auth'
 import NavigatorWithButton from "./NavigatorWithButton";
@@ -15,12 +14,11 @@ import { THEME, useStyles } from '../CONSTANTS'
 import CustomAlert from "./CustomAlert";
 
 import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Button } from "@mui/material";
+import '../assets/scss/auth.scss'
 
 
 function sleep(ms) {
@@ -33,15 +31,23 @@ const Register = () => {
     const [lastname, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = React.useState(false);
     const [showPassword, setShowPassword]=useState(false);
 
     const [openCompleteAllFieldsError, setopenCompleteAllFieldsError] = React.useState(false);
     const [openRepeatedEmailMessage, setopenRepeatedEmailMessage] = React.useState(false);
     const [openSuccessfulRegister, setOpenSuccessfulRegister] = React.useState(false);
     const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
+    const [openDoingRegister, setopenDoingRegister] = React.useState(false);
 
     const classes = useStyles();
+
+    const showDoingRegister = () => {
+        setopenDoingRegister(true);
+    };
+
+    const closeDoingRegister = (event, reason) => {
+        setopenDoingRegister(false);
+    };
 
     const showInvalidEmailError = () => {
         setopenInvalidEmailError(true);
@@ -87,14 +93,13 @@ const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        setLoading(true);
 
         if (email === '' || password === '' || name === '' || lastname === '') {
             showCompleteAllFieldMessage()
-            setLoading(false);
 
         }
         else {
+            showDoingRegister()
             createUserWithEmailAndPassword(auth, email, password)
                 .then((res) => {
                     const updated_auth = getAuth();
@@ -104,14 +109,13 @@ const Register = () => {
 
                         sendEmailVerification(updated_auth.currentUser)
                             .then(async () => {
-                                setLoading(false);
+                                closeDoingRegister();
                                 showSuccessfulRegister();
                                 await sleep(2000);
                                 window.location.href = "/"
                             });
 
                     }).catch((error) => {
-                        setLoading(false);
                         alert("El servicio no esta funcionando. Intenta mas tarde.");
                     });
                 })
@@ -125,7 +129,6 @@ const Register = () => {
                     else {
                         alert("El servicio no esta funcionando. Intenta mas tarde.");
                     }
-                    setLoading(false);
 
                 })
         }
@@ -159,38 +162,40 @@ const Register = () => {
                             <TextField label="Apellido" color="primary" className={classes.root} fullWidth onChange={(e) => setLastName(e.target.value)} />
                             <TextField label="Correo electronico" color="primary" className={classes.root} fullWidth onChange={(e) => setEmail(e.target.value)} />
                             
-                            <FormControl fullWidth className={classes.root}  >
-                            <InputLabel style={{color:'white'}} variant='outlined'>Contraseña</InputLabel>
-                            <OutlinedInput
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                                sx={{color:'white'}}
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    
-                                />
-                            </FormControl>
+                            {/* <FormControl fullWidth className={classes.root}  >
+                            <InputLabel style={{color:'white'}} variant='outlined'>Contraseña</InputLabel> */}
+                            <TextField
+                                className={classes.root}
+                                label="Contraseña"
+                                color="primary"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                InputProps={{
+                                    endAdornment: 
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                            sx={{ color: 'white' }}
+                                        >
+                                            {showPassword ? <Visibility /> : <VisibilityOff /> }
+                                        </IconButton>
+                                    </InputAdornment>
+                                }}
+                            />
+                            {/* </FormControl> */}
                             <div className="text-center">
                                 <ThemeProvider theme={THEME}>
 
-                                    <LoadingButton
+                                    <Button
                                         size="medium"
                                         onClick={handleRegister}
-                                        loading={loading}
                                         variant="contained"
                                     >
                                         Registrar
-                                    </LoadingButton>
+                                    </Button>
                                 </ThemeProvider>
                             </div>
                             <div className="auth-option text-center pt-2 white-font">¿Ya tenes cuenta? <Link style={{ color: '#5cb377' }} className="text-link" to="/login" >Iniciar Sesión</Link></div>
@@ -204,6 +209,7 @@ const Register = () => {
             <CustomAlert text={"Un usuario ya se registro con ese mail. Intenta otro."} severity={"error"} open={openRepeatedEmailMessage} closeAction={closeRepeatedEmailMessage} />
             <CustomAlert text={"Registro Exitoso. Revisa tu mail!"} severity={"success"} open={openSuccessfulRegister} closeAction={closeSuccessfulRegister} />
             <CustomAlert text={"Ingresa un mail valido!"} severity={"error"} open={openInvalidEmailError} closeAction={closeInvalidEmailError} />
+            <CustomAlert text={"Creando nueva cuenta..."} severity={"info"} open={openDoingRegister} closeAction={closeDoingRegister} />
         </div>
     );
 }

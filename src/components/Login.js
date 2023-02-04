@@ -13,7 +13,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import NavigatorWithButton from "./NavigatorWithButton";
-import LoadingButton from '@mui/lab/LoadingButton';
 import CustomAlert from './CustomAlert'
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -22,6 +21,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Button } from "@mui/material";
 
 
 const Login = () => {
@@ -32,10 +32,18 @@ const Login = () => {
     const [openCompleteAllFieldMessage, setopenCompleteAllFieldsError] = React.useState(false);
     const [openInvalidEmailError, setopenInvalidEmailError] = React.useState(false);
     const [openInvalidUserError, setopenInvalidUserError] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
     const [showPassword, setShowPassword]=useState(false);
+    const [openDoingRegister, setopenDoingRegister] = React.useState(false);
 
     const classes = useStyles();
+
+    const showDoingLogin = () => {
+        setopenDoingRegister(true);
+    };
+
+    const closeDoingLogin = (event, reason) => {
+        setopenDoingRegister(false);
+    };
     
     const showVerifyEmailMessage = () => {
         setopenVerifyEmailMessage(true);
@@ -81,13 +89,11 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault()
-        setLoading(true);
         if (email === '' || password === '') {
             showCompleteAllFieldError()
-            setLoading(false);
         }
         else {
-
+            showDoingLogin()
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user
@@ -97,21 +103,22 @@ const Login = () => {
                         window.location.href = "/profile/home"
                     }
                     else {
+                        closeDoingLogin()
                         showVerifyEmailMessage()
                     }
 
-                    setLoading(false)
 
                 })
                 .catch((error) => {
 
                     if (error.code === 'auth/invalid-email') {
+                        closeDoingLogin()
                         showInvalidEmailError()
                     }
                     if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                        closeDoingLogin()
                         showInvalidUserError()
                     }
-                    setLoading(false)
 
                 });
 
@@ -126,6 +133,7 @@ const Login = () => {
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <img
+                            alt="Walletify Logo"
                             src="/logo192.png"
                             className="d-inline-block align-top logo"
                         />
@@ -147,20 +155,25 @@ const Login = () => {
                                 }}
                             >
 
-<div>
+<div id="leave-all-inputs-black">
         <TextField
+          autoComplete="on"
+          htmlFor="email"
           label="Correo Electrónico"
-          id="outlined-start-adornment"
+          id="email"
           sx={{ m: 1, width: '25ch' }}
           className={classes.root}
           onChange={(e) => { setEmail(e.target.value) }}
+          onFocus={(e) => { e.target.value = email }}
         />
+
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" className={classes.root}>
-          <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+          <InputLabel >Contraseña</InputLabel>
           <OutlinedInput
-            id="outlined-adornment-password"
+            
             type={showPassword ? 'text' : 'password'}
             value={password}
+            autoComplete="off"
             onChange={(e) => setPassword(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
@@ -180,48 +193,16 @@ const Login = () => {
         </FormControl>
         </div>
 
-                                {/* <div>
-                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%"}} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
-                                </div>
-                                <div>
-
-                                    <FormControl fullWidth className={classes.root}  >
-                            <InputLabel style={{color:'black'}}>Contraseña</InputLabel>
-                            <OutlinedInput
-                                    id="outlined-adornment-password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    style={{color:'black'}}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                                
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    
-                                />
-                            </FormControl>
-                                </div> */}
-
                                 <div className="text-center">
                                     <ThemeProvider theme={THEME}>
 
-                                        <LoadingButton
+                                        <Button
                                             size="medium"
                                             onClick={handleLogin}
-                                            loading={loading}
                                             variant="contained"
                                         >
                                             Iniciar Sesión
-                                        </LoadingButton>
+                                        </Button>
                                     </ThemeProvider>
                                 </div>
 
@@ -236,6 +217,7 @@ const Login = () => {
             <CustomAlert text={"¡Completa todos los campos!"} severity={"error"} open={openCompleteAllFieldMessage} closeAction={closeCompleteAllFieldError} />
             <CustomAlert text={"¡Ingresa un mail valido!"} severity={"error"} open={openInvalidEmailError} closeAction={closeInvalidEmailError} />
             <CustomAlert text={"Contraseña o Mail no correcto"} severity={"error"} open={openInvalidUserError} closeAction={closeInvalidUserError} />
+            <CustomAlert text={"Iniciando Sesión..."} severity={"info"} open={openDoingRegister} closeAction={closeDoingLogin} />
 
         </div>
     );

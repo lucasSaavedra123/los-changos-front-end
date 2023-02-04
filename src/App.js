@@ -10,6 +10,7 @@ import { useContext } from "react";
 import Forgot from "./components/Forgot";
 import CategoriesPage from "./components/CategoriesPage";
 import BudgetPage from "./components/BudgetPage";
+import "./assets/scss/root.scss"
 
 const App = () => {
 

@@ -38,15 +38,36 @@ const style = {
 
 export const EditExpenseModal = (props) => {
 
-    const [category, setCategory] = useState(typeof props.category === "undefined" ? '' : props.category.id);
-    const [date, setDate] = useState(typeof props.date === "undefined" ? new Date() : new Date(props.date + "T00:00:00"));
-    const [name, setName] = useState(typeof props.name === "undefined" ? '' : props.name)
-    const [value, setValue] = useState(typeof props.value === "undefined" ? '' : props.value)
-    const [categories, setCategories] = useState([]);
+    const block_input = props.future_expense !== undefined
 
+    console.log(props.future_expense)
+
+    var default_category;
+    var default_value;
+    var default_name;
+
+    if(block_input){
+        default_category = props.future_expense.category.id
+        default_value = props.future_expense.value
+        default_name = props.future_expense.name
+    }
+    else{
+        default_category = typeof props.category === "undefined" ? '' : props.category.id
+        default_value = typeof props.value === "undefined" ? '' : props.value
+        default_name = typeof props.name === "undefined" ? '' : props.name
+    }
+
+    const [category, setCategory] = useState(default_category);
+    const [date, setDate] = useState(typeof props.date === "undefined" ? new Date() : new Date(props.date + "T00:00:00"));
+    const [name, setName] = useState(default_name)
+    const [value, setValue] = useState(default_value)
+
+
+    const [categories, setCategories] = useState([]);
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [openValueError, setopenValueError] = useState(false);
+    const [dateOutOfRange, setDateOutOfRange] = useState(false);
     const onKeyDown = (e) => {
         e.preventDefault();
      };
@@ -83,8 +104,25 @@ export const EditExpenseModal = (props) => {
 
     }
 
+
+    const validateDateInBudget = () => {
+        const budget = props.budget
+        const budget_start = new Date(budget.initial_date)
+        const budget_end = new Date(budget.final_date)
+        const expense_date = date.toDate()
+
+        if (expense_date >= budget_start && expense_date <= budget_end){
+            return true
+        }
+        else{
+            setDateOutOfRange(true)
+            return false
+        }
+    }
+
+
     useEffect(() => {
-        getCategorias()
+        if(!block_input){getCategorias()}
     }, []);
 
 
@@ -116,6 +154,7 @@ export const EditExpenseModal = (props) => {
             showValueError()
         }
         else {
+            if(!block_input){
             fetch(BACKEND_URL + '/expense', {
                 method: 'POST',
                 headers: {
@@ -134,7 +173,29 @@ export const EditExpenseModal = (props) => {
 
 
             }).finally(() => { props.confirmAction();props.handleCloseModal()})
+        }
+        else{
+            if(validateDateInBudget()){
+            fetch(BACKEND_URL + '/budget/expended', {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': 'Bearer ' + currentUser.stsTokenManager.accessToken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
 
+
+                body: JSON.stringify({
+                    future_expense_id: props.future_expense.id,
+                    value: value,
+                    category_id: category,
+                    expense_done_date: typeof date === 'undefined' ? new Date().toISOString().split('T')[0] : date.toISOString().split('T')[0],
+                    name: name
+                })
+
+
+            }).finally(() => { props.confirmAction();props.handleCloseModal()})    
+        }}
         }
 
     }
@@ -175,16 +236,6 @@ export const EditExpenseModal = (props) => {
 
     }
 
-    const validateDate = (date) => {
-        const today = new Date();
-        const dateToValidate = new Date(date);
-        if (dateToValidate < today) {
-          return false;
-        }
-        return true;
-      }
-
-
     return (
         <>
         <Box sx={style}>
@@ -192,8 +243,8 @@ export const EditExpenseModal = (props) => {
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {props.action} Gasto
                 </Typography>
-                <TextField label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
-                <TextField label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
+                <TextField disabled={block_input} label="Nombre del gasto" defaultValue={name} onChange={(e) => { setName(e.target.value) }} />
+                <TextField disabled={block_input} label="Monto" defaultValue={value} onChange={(e) => { setValue(e.target.value) }} />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
 
                     <DesktopDatePicker
@@ -202,12 +253,21 @@ export const EditExpenseModal = (props) => {
                         value={date}
                         onChange={handleChange}
                         sx={{ color: '#9CE37D;' }}
-                        disableFuture='true'
+                        disableFuture={true}
+                        shouldDisableDate={(e) => {
+                            if(props.budget === undefined){
+                                return true
+                            }
+                            else{
+                                return !(new Date(props.budget.initial_date) < e.toDate() && e.toDate() < new Date(props.budget.final_date))
+                            }
+                        }}
                         renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params}/>}
                     />
 
                 </LocalizationProvider>
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                { block_input ? <Typography>La categoria asociada va a ser la elegida en el gasto futuro</Typography> : null }
+                <FormControl sx={{ m: 1, minWidth: 120 }} sx={{ visibility: (block_input ? 'hidden' : 'visible')  }}>
                     <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
                     <Select
                         labelId="demo-simple-select-helper-label"
@@ -215,10 +275,10 @@ export const EditExpenseModal = (props) => {
                         value={category}
                         label="Categoria"
                         onChange={handleChangeSelect}
-                        
+                        disabled={block_input}
                     >
                     {categories.map((category)=>(
-                        <MenuItem value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
+                        <MenuItem key={category.id} value={category.id}><CategoryIcon name={category.material_ui_icon_name}></CategoryIcon>{category.name}</MenuItem>
                     ))}
                     </Select>
                 </FormControl>
@@ -233,8 +293,9 @@ export const EditExpenseModal = (props) => {
             </Stack>
 
         </Box>
-        <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
-        <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+        <CustomAlert text={"¡Completá todos los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
+        <CustomAlert text={"¡El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+        <CustomAlert text={"La fecha tiene que estar dentro del rango del presupuesto"} severity={"error"} open={dateOutOfRange} closeAction={setDateOutOfRange} />
 
         </>
     )

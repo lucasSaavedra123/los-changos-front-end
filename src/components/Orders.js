@@ -45,7 +45,7 @@ export default function Orders(props) {
 
 
   return (
-    <React.Fragment style={{color: "green"}}>
+    <React.Fragment>
       <div className='table-title'>
         <div className='titulo-principal'>
         <Typography component="h2" variant="h6" color="primary" gutterBottom style={{color: "green"}}>
@@ -69,7 +69,7 @@ export default function Orders(props) {
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((transaction) => (
 
-            <ExpendCard id={transaction.id} name ={transaction.name} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction}  />
+            <ExpendCard key={transaction.id} id={transaction.id} name ={transaction.name} future_expense={transaction.future_expense} value={transaction.value} date={transaction.date} category={transaction.category} confirmAction={props.confirmAction}  />
             
           ))}
         </TableBody>

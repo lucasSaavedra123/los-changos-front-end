@@ -60,12 +60,10 @@ export default function DashboardContent(props) {
   const [selected, setSelected] = useState([]);
   const [selectedCategoriesArray, setSelectedCategoriesArray] = useState([]);
   const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(true);
   const handleAgregarGasto = () => setOpen(true)
   const handleClose = () => {setOpen(false);}
 
   const getSelectedCategoriesArray = (e) => {
-    console.log(e)
     setSelected(e);
     let selectedCategory = []
     e.map((category) => {
@@ -75,7 +73,6 @@ export default function DashboardContent(props) {
   }
   const applyDateFilter = () => {
     if (selected.length === 0) {
-      setLoading(true)
       fetch(BACKEND_URL + '/expense/filter', {
         method: 'POST',
         headers: {
@@ -96,10 +93,8 @@ export default function DashboardContent(props) {
         .then((transactions) => {
           setTransactions(transactions)
           setTotal(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0));
-          setLoading(false)
         })
     } else {
-      setLoading(true)
       fetch(BACKEND_URL + '/expense/filter', {
         method: 'POST',
         headers: {
@@ -118,7 +113,6 @@ export default function DashboardContent(props) {
       })
         .then((res) => res.json())
         .then((data) => {
-          setLoading(false)
           updateFilterTransactions(data)
         })
     }
@@ -162,7 +156,6 @@ export default function DashboardContent(props) {
       .then((res) => res.json())
       .then((transactions) => {
         setTotalForMonth(transactions.reduce((total, transaction) => total = total + parseFloat(transaction.value), 0))
-        setLoading(false)
       })
   }
 
@@ -227,7 +220,6 @@ export default function DashboardContent(props) {
   }, [])
 
   useEffect(() => {
-    setLoading(true)
     getTransactionsForMultiSelect()
     getAllMonthTransactionsForTotal()
     getCurrentBudget()
@@ -258,11 +250,11 @@ export default function DashboardContent(props) {
           }}
         >
 
-          <Toolbar />
+          {/* <Toolbar /> */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Presupuesto */}
-              <Presupuesto budget={budget}/>
+              <Presupuesto budget={budget} onClick={() => { applyDateFilter() }} confirmAction={() => applyDateFilter()}/>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
@@ -339,7 +331,7 @@ export default function DashboardContent(props) {
                         value={dateFrom}
                         onChange={handleChangeFrom}
                         sx={{ color: '#9CE37D;' }}
-                        disableFuture='true'
+                        disableFuture={true}
                         renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                       />
                       <DesktopDatePicker
@@ -347,7 +339,7 @@ export default function DashboardContent(props) {
                         inputFormat="MM/DD/YYYY"
                         value={dateTo}
                         onChange={handleChangeTo}
-                        disableFuture='true'
+                        disableFuture={true}
                         renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
                       />
                       <MultiSelect
@@ -365,8 +357,8 @@ export default function DashboardContent(props) {
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders transactions={transactions} confirmAction={applyDateFilter} />
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{marginBottom: "10%"}}>
+                  <Orders transactions={transactions} confirmAction={applyDateFilter}/>
                 </Paper>
               </Grid>
             </Grid>

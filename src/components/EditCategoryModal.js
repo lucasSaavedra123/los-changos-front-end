@@ -45,8 +45,6 @@ export const EditCategoryModal = (props) => {
         setopenCompleteAllFields(false);
     };
 
-
-    console.log(ALLOWS_ICONS_FOR_CATEGORY)
     const handleChange = (event) => {
         setIcon(event.target.value);
     };
@@ -147,7 +145,7 @@ export const EditCategoryModal = (props) => {
 
     </Box>
 
-    <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
+    <CustomAlert text={"¡Completá todos los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
 
     </>
 
