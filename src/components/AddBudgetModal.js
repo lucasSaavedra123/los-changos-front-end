@@ -184,10 +184,17 @@ export const AddBudgetModal = (props) => {
         if (sum_value == 0) {
             setInvalidCategoryValue(true);
             return false
-        } else {
-            setInvalidCategoryValue(false);
-            return true
         }
+        
+        for(let i = 0; i < categories.length; i++){
+            if(categories[i].limit < 0){
+                setInvalidCategoryValue(true);
+                return false
+            }
+        }
+        
+        setInvalidCategoryValue(false);
+        return true
 
     }
 
@@ -341,8 +348,7 @@ export const AddBudgetModal = (props) => {
     }
 
     const addLimit = (e, category) => {
-        category.limit = (isNaN(parseInt(e.target.value))) ? 0 : parseInt(e.target.value);
-
+        category.limit = (isNaN(parseFloat(parseFloat(e.target.value).toFixed(2)))) ? 0 : parseFloat(parseFloat(e.target.value).toFixed(2));
     }
 
     useEffect(() => {
@@ -448,7 +454,7 @@ export const AddBudgetModal = (props) => {
                                 <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                             <Grid item xs={6} className="boton-adelante">
-                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => {setActiveStep(1);}}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => {if(checkDates() && checkCategoryValue() && checkOverlapping()){setActiveStep(1);}}}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                         </Grid>
                     </Stack>

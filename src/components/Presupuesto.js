@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import "../assets/scss/moneyManager.scss";
 import Typography from '@mui/material/Typography';
@@ -16,12 +16,13 @@ import EditExpenseModal from './EditExpenseModal';
 import CustomAlert from "./CustomAlert";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
+import useWindowSize from '../useWIndowSize';
 
 //Hay que cambiar que en vez de pasar cada valor, pasarle el presupuesto y uqe itere cada categoria y los totales
 
 
 export default function Presupuesto(props) {
+    const size = useWindowSize();
     const [openBudget, setBudgetOpen] = useState(false);
     const [height, setHeight] = useState(130);
     const budget = props.budget;
@@ -39,9 +40,11 @@ export default function Presupuesto(props) {
     if(budget.details !== undefined)
 {
     for(let i = 0; i < budget.details.length; i++){
-        budget.details[i].id = i;
+        budget.details[i].key_id = i;
     }
 }
+
+    console.log("Action:", props.confirmAction)
 
     const handlePayExecution = (future_expense) => {
 
@@ -59,7 +62,11 @@ export default function Presupuesto(props) {
 
     const styles = {
         "&.MuiButton-root": {
-            border: "2px greenf solid"
+            border: "2px green solid"
+        },
+        "&.MuiButton-root:disabled": {
+            border: "2px gray solid",
+            backgroundColor: "white"
         },
         "&.MuiButton-text": {
             color: "green"
@@ -69,6 +76,9 @@ export default function Presupuesto(props) {
         },
         "&.MuiButton-outlined": {
             color: "green"
+        },
+        "&.MuiButton-outlined:disabled": {
+            color: "gray"
         }
     };
 
@@ -116,8 +126,10 @@ export default function Presupuesto(props) {
                             <div className='titulo-principal'>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
                                     {"Presupuesto del periodo " + budget.initial_date + " al " + budget.final_date}
-                                    <Button style={{marginLeft:'5px'}} onClick={(e) => {props.deleteBudgetAction(e)}}><DeleteIcon sx={{ color: "green" }} /></Button>
-                                    <Button style={{marginLeft:'5px'}} onClick={(e) => {props.editBudgetAction(e)}}><EditIcon sx={{ color: "green" }} /></Button>
+                                    {console.log("Activo?:", budget.active)}
+                                    { !budget.active ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.deleteBudgetAction(e)}}><DeleteIcon sx={{ color: "green" }} /></Button> : null }
+                                    { !budget.active && size.width > 800 ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.editBudgetAction(e)}}><EditIcon sx={{ color: "green" }} /></Button> : null }
+
                                 </Typography>
                             </div>
 
@@ -149,7 +161,7 @@ export default function Presupuesto(props) {
                                         let categoryVariant = categoryPercentage > 100 ? "danger" : categoryPercentage > 70 ? "warning" : "success";
 
                                         return (
-                                            <Stack key={categoryBudget.id}>
+                                            <Stack key={categoryBudget.key_id}>
                                                 <Grid><div style={{ marginLeft: 10 }}> {categoryName} </div></Grid>
                                                 <Grid container spacing={0.5} style={{ marginLeft: 'auto' }}>
                                                     <Grid item lg={10} xs={10} md={10}>
@@ -170,14 +182,13 @@ export default function Presupuesto(props) {
                                     </Typography>
 
 
-                                    {(budget.details.filter(detail => detail.value != undefined).length === 0) ? (<div>No hay gastos futuros agregados</div>) : (
+                                    {(budget.details.filter(detail => detail.value !== undefined).length === 0) ? (<div>No hay gastos futuros agregados</div>) : (
 
-                                        budget.details.filter(detail => detail.value != undefined).map((categoryBudget) => {
-                                            let value = Math.round(categoryBudget.value)
+                                        budget.details.filter(detail => detail.value !== undefined).map((categoryBudget) => {
                                             let categoryName = categoryBudget.category.name;
 
                                             return (
-                                                <Stack key={categoryBudget.id}>
+                                                <Stack key={categoryBudget.key_id}>
                                                     <Grid container spacing={2}>
                                                         <Grid item xs={6}>
                                                             <div style={{ marginLeft: 10 }}> Nombre: {addCommas(categoryBudget.name)} </div>
@@ -192,7 +203,7 @@ export default function Presupuesto(props) {
                                                             <div style={{ marginLeft: 10 }}> Categoria: {categoryName} </div>
                                                         </Grid>
                                                     </Grid>
-                                                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => handlePayExecution(categoryBudget)}>
+                                                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => handlePayExecution(categoryBudget)} disabled={categoryBudget.expended}>
                                                         EJECUTAR PAGO
                                                     </Button>
                                                     <Divider variant="middle" /> {/*Hay que ver esto como hacerlo visualizar*/}

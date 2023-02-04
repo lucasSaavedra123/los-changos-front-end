@@ -250,11 +250,11 @@ export default function DashboardContent(props) {
           }}
         >
 
-          <Toolbar />
+          {/* <Toolbar /> */}
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               {/* Presupuesto */}
-              <Presupuesto budget={budget} onClick={() => { applyDateFilter() }}/>
+              <Presupuesto budget={budget} onClick={() => { applyDateFilter() }} confirmAction={() => applyDateFilter()}/>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
@@ -357,8 +357,8 @@ export default function DashboardContent(props) {
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders transactions={transactions} confirmAction={applyDateFilter} />
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{marginBottom: "10%"}}>
+                  <Orders transactions={transactions} confirmAction={applyDateFilter}/>
                 </Paper>
               </Grid>
             </Grid>

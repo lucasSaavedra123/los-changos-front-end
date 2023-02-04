@@ -5,9 +5,9 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import "../assets/scss/settings.scss"
 import Paper from '@mui/material/Paper';
-import "../assets/scss/expenseCard.scss"
+import "../assets/scss/expenseCard.scss";
+import "../assets/scss/settings.scss";
 import AddBudgetModal from './AddBudgetModal';
 import EditBudgetModal from './EditBudgetModal';
 import { useState, useContext, useEffect } from 'react';
@@ -28,6 +28,9 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { TableContainer, TablePagination } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import "../assets/scss/root.scss";
+import useWindowSize from '../useWIndowSize';
+
 
 const mdTheme = createTheme();
 
@@ -46,6 +49,8 @@ const BudgetPage = () => {
       color: "green"
     }
   };
+
+  const size = useWindowSize();
 
   const [open, setOpen] = useState(false);
   const handleClose = () => { setOpen(false); }
@@ -157,11 +162,13 @@ const BudgetPage = () => {
                           Mis Presupuestos
                         </Title>
                       </div>
-                      <div className='boton-principal'>
+
+                      {!(size.width > 800) ? null : <div className='boton-principal'>
                         <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => setOpen(!open)}>
                           AGREGAR PRESUPUESTO
                         </Button>
-                      </div>
+                      </div>}
+
                       <Modal
                         open={open} onClose={handleClose}>
                         <div className="add-expense-modal">
@@ -190,24 +197,24 @@ const BudgetPage = () => {
                       {budgets
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((budgetItem) => (
-                              <Presupuesto key={budgetItem.id} container budget={budgetItem} confirmAction={() => { getBudgets() }} deleteBudgetAction={(e) => {
-                                if (budgetItem.active) {
-                                  setopenValueError(true);
-                                } else {
-                                  deleteBudget(budgetItem, e);
-                                }
-                              }} 
-                              
-                              editBudgetAction={() => {
-                                if (new Date(budgetItem.initial_date + "T00:00:00") <= new Date()) {
-                                  setOpenEditError(true);
-                                } else {
-                                  openBudgetModal(budgetItem)
-                                }
+                          <Presupuesto key={budgetItem.id} container budget={budgetItem} confirmAction={() => { getBudgets() }} deleteBudgetAction={(e) => {
+                            if (budgetItem.active) {
+                              setopenValueError(true);
+                            } else {
+                              deleteBudget(budgetItem, e);
+                            }
+                          }}
 
-                              }}
+                            editBudgetAction={() => {
+                              if (new Date(budgetItem.initial_date + "T00:00:00") <= new Date()) {
+                                setOpenEditError(true);
+                              } else {
+                                openBudgetModal(budgetItem)
+                              }
 
-                              />
+                            }}
+
+                          />
 
                         ))}
                     </TableBody>
@@ -229,7 +236,6 @@ const BudgetPage = () => {
 
           </Container>
 
-          );
         </Box>
       </Box>
       <CustomAlert text={"No se puede eliminar un presupuesto en curso"} severity={"error"} open={openValueError} closeAction={closeValueError} />

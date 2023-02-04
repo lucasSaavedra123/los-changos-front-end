@@ -40,15 +40,21 @@ export const EditExpenseModal = (props) => {
 
     const block_input = props.future_expense !== undefined
 
+    console.log(props.future_expense)
+
+    var default_category;
+    var default_value;
+    var default_name;
+
     if(block_input){
-        var default_category = props.future_expense.category.id
-        var default_value = props.future_expense.value
-        var default_name = props.future_expense.name
+        default_category = props.future_expense.category.id
+        default_value = props.future_expense.value
+        default_name = props.future_expense.name
     }
     else{
-        var default_category = typeof props.category === "undefined" ? '' : props.category.id
-        var default_value = typeof props.value === "undefined" ? '' : props.value
-        var default_name = typeof props.name === "undefined" ? '' : props.name
+        default_category = typeof props.category === "undefined" ? '' : props.category.id
+        default_value = typeof props.value === "undefined" ? '' : props.value
+        default_name = typeof props.name === "undefined" ? '' : props.name
     }
 
     const [category, setCategory] = useState(default_category);
@@ -230,16 +236,6 @@ export const EditExpenseModal = (props) => {
 
     }
 
-    const validateDate = (date) => {
-        const today = new Date();
-        const dateToValidate = new Date(date);
-        if (dateToValidate < today) {
-          return false;
-        }
-        return true;
-      }
-
-
     return (
         <>
         <Box sx={style}>
@@ -258,11 +254,20 @@ export const EditExpenseModal = (props) => {
                         onChange={handleChange}
                         sx={{ color: '#9CE37D;' }}
                         disableFuture={true}
+                        shouldDisableDate={(e) => {
+                            if(props.budget === undefined){
+                                return true
+                            }
+                            else{
+                                return !(new Date(props.budget.initial_date) < e.toDate() && e.toDate() < new Date(props.budget.final_date))
+                            }
+                        }}
                         renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params}/>}
                     />
 
                 </LocalizationProvider>
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                { block_input ? <Typography>La categoria asociada va a ser la elegida en el gasto futuro</Typography> : null }
+                <FormControl sx={{ m: 1, minWidth: 120 }} sx={{ visibility: (block_input ? 'hidden' : 'visible')  }}>
                     <InputLabel id="demo-simple-select-helper-label">Categoria</InputLabel>
                     <Select
                         labelId="demo-simple-select-helper-label"
@@ -288,8 +293,8 @@ export const EditExpenseModal = (props) => {
             </Stack>
 
         </Box>
-        <CustomAlert text={"Completá todo los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
-        <CustomAlert text={"El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
+        <CustomAlert text={"¡Completá todos los campos!"} severity={"error"} open={openCompleteAllFields} closeAction={closeCompleteAllFields} />
+        <CustomAlert text={"¡El monto tiene que ser positivo!"} severity={"error"} open={openValueError} closeAction={closeValueError} />
         <CustomAlert text={"La fecha tiene que estar dentro del rango del presupuesto"} severity={"error"} open={dateOutOfRange} closeAction={setDateOutOfRange} />
 
         </>

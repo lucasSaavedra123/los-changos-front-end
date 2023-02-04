@@ -76,7 +76,7 @@ export const EditBudgetModal = (props) => {
 
         while (index < categories.length) {
 
-            if (categories[index].id == id) {
+            if (categories[index].id === id) {
                 return categories[index]
             }
 
@@ -99,7 +99,6 @@ export const EditBudgetModal = (props) => {
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [page, setPage] = useState(0);
-    const refValue = useRef({});
     const [invalidDates, setInvalidDates] = useState(false);
     const [invalidCategoryValue, setInvalidCategoryValue] = useState(false);
     const [overlapping, setOverlapping] = useState(false);
@@ -249,32 +248,40 @@ export const EditBudgetModal = (props) => {
 
     const checkCategoryValue = () => {
 
-        var sum_value = budget.details.reduce((accumulator, currentValue) => accumulator + currentValue.limit, 0)
+        var limits =  budget.details.filter(detail => detail.limit !== undefined)
+
+        var sum_value = limits.reduce((accumulator, category) => accumulator + category.limit, 0)
 
         if (sum_value == 0) {
             setInvalidCategoryValue(true);
             return false
-        } else {
-            setInvalidCategoryValue(false);
-            return true
         }
+        
+        for(let i = 0; i < limits.length; i++){
+            if(budget.details[i].limit < 0){
+                setInvalidCategoryValue(true);
+                return false
+            }
+        }
+        
+        setInvalidCategoryValue(false);
+        return true
 
     }
 
     const checkFutureExpenses = () => {
-        var details = budget.details.filter((detail) => detail.limit !== undefined).concat(someDummyArray)
-        var future_expenses = details.filter( (detail) => detail.value !== undefined )
-        var categories_limits = details.filter( (detail) => detail.limit !== undefined )
-
+        var future_expenses = someDummyArray
+        var categories_limits = budget.details.filter((detail) => detail.limit !== undefined)
+        
+        console.log(future_expenses)
         console.log(categories_limits)
 
         for(let i = 0; i < categories_limits.length; i++){
             let sum = 0
             for(let j = 0; j < future_expenses.length; j++){
-                if(categories_limits[i].id == future_expenses[j].category_id){
+                if(categories_limits[i].category_id == future_expenses[j].category_id){
                     sum += future_expenses[j].value
                 }
-
                 if( new Date(future_expenses[j].expiration_date+ "T00:00:00") < new Date(dateFrom.toISOString().split('T')[0] + "T00:00:00") || new Date(future_expenses[j].expiration_date+ "T00:00:00") > new Date(dateTo.toISOString().split('T')[0] + "T00:00:00") ){
                     setFutureExpensesWereExceedingBudgetTime(true)
                     return false
@@ -331,14 +338,8 @@ export const EditBudgetModal = (props) => {
     };
 
     const changeLimit = (e, detail) => {
-
-        let re = /^[0-9\b]+$/;
-        if (!re.test(e.target.value)) {
-            e.target.value = '';
-        }
-
-        budget.details[budget.details.indexOf(detail)].limit = parseInt(e.target.value)
-
+        var newLimit = (isNaN(parseFloat(parseFloat(e.target.value).toFixed(2)))) ? budget.details[budget.details.indexOf(detail)].limit : parseFloat(parseFloat(e.target.value).toFixed(2));
+        budget.details[budget.details.indexOf(detail)].limit = newLimit;
     }
 
     useEffect(() => {
@@ -413,7 +414,7 @@ export const EditBudgetModal = (props) => {
                             <TablePagination
                                 component="div"
                                 rowsPerPageOptions={[5, 10]}
-                                count={budget.details.length}
+                                count={budget.details.filter(detail => detail.limit !== undefined).length}
                                 page={page}
                                 onPageChange={handleChangePage}
                                 rowsPerPage={rowsPerPage}
@@ -430,7 +431,7 @@ export const EditBudgetModal = (props) => {
                                 <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                             <Grid item xs={6} className="boton-adelante">
-                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => { setActiveStep(1); }}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => {if(checkDates() && checkCategoryValue() && checkOverlapping()){setActiveStep(1);}}}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                         </Grid>
                     </Stack>

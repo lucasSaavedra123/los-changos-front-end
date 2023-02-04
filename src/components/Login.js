@@ -35,8 +35,6 @@ const Login = () => {
     const [showPassword, setShowPassword]=useState(false);
     const [openDoingRegister, setopenDoingRegister] = React.useState(false);
 
-    const [mouseInListBox, setMouseInListBox] = React.useState(false);
-
     const classes = useStyles();
 
     const showDoingLogin = () => {
@@ -135,6 +133,7 @@ const Login = () => {
                 <div className="d-flex flex-column align-content-end">
                     <div className="auth-body mx-auto">
                         <img
+                            alt="Walletify Logo"
                             src="/logo192.png"
                             className="d-inline-block align-top logo"
                         />
@@ -169,9 +168,9 @@ const Login = () => {
         />
 
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" className={classes.root}>
-          <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+          <InputLabel >Contraseña</InputLabel>
           <OutlinedInput
-            id="outlined-adornment-password"
+            
             type={showPassword ? 'text' : 'password'}
             value={password}
             autoComplete="off"
@@ -193,37 +192,6 @@ const Login = () => {
           />
         </FormControl>
         </div>
-
-                                {/* <div>
-                                    <TextField label="Correo electronico" color="primary" style={{ width: "100%"}} className={classes.root} onChange={(e) => { setEmail(e.target.value) }}/>
-                                </div>
-                                <div>
-
-                                    <FormControl fullWidth className={classes.root}  >
-                            <InputLabel style={{color:'black'}}>Contraseña</InputLabel>
-                            <OutlinedInput
-                                    id="outlined-adornment-password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    value={password}
-                                    style={{color:'black'}}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                                
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    
-                                />
-                            </FormControl>
-                                </div> */}
 
                                 <div className="text-center">
                                     <ThemeProvider theme={THEME}>
