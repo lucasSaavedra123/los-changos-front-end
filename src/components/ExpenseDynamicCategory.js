@@ -21,7 +21,7 @@ export const ExpenseDynamicCategory = (props) => {
     const deleteCategory= (e) => {
         e.preventDefault();
 
-        if(window.confirm("Si borras una categoria, se eliminan todas las transacciones pertenecientes a ella. ¿Estas seguro?")){
+        if(window.confirm("Si borras una categoria, se eliminan todas las transacciones a ella. Si tenias algun detalle de presupuesto asociado a esta categoria, quedará eliminada tambien. ¿Estas seguro?")){
 
         fetch(BACKEND_URL+'/category', {
         method: 'DELETE', 
