@@ -456,7 +456,7 @@ export const AddBudgetModal = (props) => {
                                 <Button style={{ backgroundColor: '#9CE37D' }} onClick={cancelChanges}> <CancelIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                             <Grid item xs={6} className="boton-adelante">
-                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => {if(checkDates() && checkCategoryValue() && checkOverlapping()){setActiveStep(1);}}}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
+                                <Button style={{ backgroundColor: '#9CE37D' }} onClick={(e) => {if(checkDates() && checkCategoryValue() && checkOverlapping()){setExpirationDate(dateFrom);setActiveStep(1);}}}><ArrowForwardIcon sx={{ color: 'white' }} /> </Button>
                             </Grid>
                         </Grid>
                     </Stack>
