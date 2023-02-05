@@ -2,7 +2,6 @@ import * as React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -24,6 +23,7 @@ import EditExpenseModal from './EditExpenseModal';
 import { Modal } from '@mui/material';
 import Presupuesto from './Presupuesto';
 import "../assets/scss/moneyManager.scss";
+import CustomAlert from "./CustomAlert";
 
 const mdTheme = createTheme();
 
@@ -62,6 +62,17 @@ export default function DashboardContent(props) {
   const [options, setOptions] = useState([]);
   const handleAgregarGasto = () => setOpen(true)
   const handleClose = () => {setOpen(false);}
+  const [invalidDates, setInvalidDates] = useState(false);
+
+  const valid_filter_dates = () => {
+    if(dateFrom > dateTo){
+      setInvalidDates(true);
+      return false
+    }
+    else{
+      return true
+    }
+  }
 
   const getSelectedCategoriesArray = (e) => {
     setSelected(e);
@@ -72,6 +83,7 @@ export default function DashboardContent(props) {
     setSelectedCategoriesArray(selectedCategory)
   }
   const applyDateFilter = () => {
+    if(valid_filter_dates()){
     if (selected.length === 0) {
       fetch(BACKEND_URL + '/expense/filter', {
         method: 'POST',
@@ -116,6 +128,7 @@ export default function DashboardContent(props) {
           updateFilterTransactions(data)
         })
     }
+  }
   }
 
   const getCurrentBudget = () =>{
@@ -365,6 +378,9 @@ export default function DashboardContent(props) {
           </Container>
         </Box>
       </Box>
+
+      <CustomAlert text={"Las fechas del filtro tienen que estar en orden"} severity={"error"} open={invalidDates} closeAction={() => {setInvalidDates(false)}} />
+
     </ThemeProvider>
   return (
     page
