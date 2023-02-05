@@ -327,7 +327,7 @@ export default function DashboardContent(props) {
                     <Stack spacing={3}>
                       <DesktopDatePicker
                         label="Desde"
-                        inputFormat="MM/DD/YYYY"
+                        inputFormat="DD/MM/YYYY"
                         value={dateFrom}
                         onChange={handleChangeFrom}
                         sx={{ color: '#9CE37D;' }}
@@ -336,7 +336,7 @@ export default function DashboardContent(props) {
                       />
                       <DesktopDatePicker
                         label="Hasta"
-                        inputFormat="MM/DD/YYYY"
+                        inputFormat="DD/MM/YYYY"
                         value={dateTo}
                         onChange={handleChangeTo}
                         disableFuture={true}
