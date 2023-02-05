@@ -167,7 +167,7 @@ export const AddBudgetModal = (props) => {
             let dateToParsed = new Date(dateTo.toISOString().split('T')[0] + "T00:00:00")
             let dateFromParsed = new Date(dateFrom.toISOString().split('T')[0] + "T00:00:00")
 
-            if ((initial_date <= dateToParsed && dateToParsed <= final_date) || (initial_date <= dateFromParsed && dateFromParsed <= final_date)) {
+            if ((initial_date <= dateToParsed && dateToParsed <= final_date) || (initial_date <= dateFromParsed && dateFromParsed <= final_date) || (initial_date <= dateFromParsed && dateToParsed <= final_date)) {
                 overlapping = true;
             }
 
