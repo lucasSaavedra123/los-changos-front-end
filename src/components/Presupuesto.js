@@ -127,8 +127,8 @@ export default function Presupuesto(props) {
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
                                     {"Presupuesto del periodo " + budget.initial_date + " al " + budget.final_date}
                                     {console.log("Activo?:", budget.active)}
-                                    { !budget.active ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.deleteBudgetAction(e)}}><DeleteIcon sx={{ color: "green" }} /></Button> : null }
-                                    { !budget.active && size.width > 800 ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.editBudgetAction(e)}}><EditIcon sx={{ color: "green" }} /></Button> : null }
+                                    { !budget.active && !budget.has_finished ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.deleteBudgetAction(e)}}><DeleteIcon sx={{ color: "green" }} /></Button> : null }
+                                    { !budget.active && !budget.has_finished && size.width > 800 ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.editBudgetAction(e)}}><EditIcon sx={{ color: "green" }} /></Button> : null }
 
                                 </Typography>
                             </div>
@@ -203,7 +203,7 @@ export default function Presupuesto(props) {
                                                             <div style={{ marginLeft: 10 }}> Categoria: {categoryName} </div>
                                                         </Grid>
                                                     </Grid>
-                                                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => handlePayExecution(categoryBudget)} disabled={categoryBudget.expended}>
+                                                    <Button sx={styles} className="add-expense-button" variant='outlined' onClick={() => handlePayExecution(categoryBudget)} disabled={categoryBudget.expended || budget.has_finished}>
                                                         EJECUTAR PAGO
                                                     </Button>
                                                     <Divider variant="middle" /> {/*Hay que ver esto como hacerlo visualizar*/}

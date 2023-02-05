@@ -109,7 +109,7 @@ export const EditExpenseModal = (props) => {
         const budget = props.budget
         const budget_start = new Date(budget.initial_date)
         const budget_end = new Date(budget.final_date)
-        const expense_date = date.toDate()
+        const expense_date = date
 
         if (expense_date >= budget_start && expense_date <= budget_end){
             return true
@@ -256,7 +256,7 @@ export const EditExpenseModal = (props) => {
                         disableFuture={true}
                         shouldDisableDate={(e) => {
                             if(props.budget === undefined){
-                                return true
+                                return false
                             }
                             else{
                                 return !(new Date(props.budget.initial_date) < e.toDate() && e.toDate() < new Date(props.budget.final_date))

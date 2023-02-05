@@ -84,6 +84,7 @@ export const EditBudgetModal = (props) => {
         }
     }
 
+    let today = new Date();
     const { currentUser } = useContext(AuthContext);
     const [openCompleteAllFields, setopenCompleteAllFields] = useState(false);
     const [dateFrom, setDateFrom] = useState(new Date(props.budget.initial_date + "T00:00:00"));
@@ -174,8 +175,9 @@ export const EditBudgetModal = (props) => {
     const showCompleteAllFields = () => {
         setopenCompleteAllFields(true);
     };
+
     const checkDates = () => {
-        if (dateFrom > dateTo) {
+        if (dateFrom == null || dateTo == null || isNaN(dateFrom) || isNaN(dateTo) || dateFrom > dateTo || dateTo < today) {
             setInvalidDates(true);
             return false;
         } else {
@@ -226,7 +228,7 @@ export const EditBudgetModal = (props) => {
             return false
         }
 
-        if (parseFloat(future_expense_value) <= 0){
+        if (parseFloat(future_expense_value) <= 0 || isNaN(parseFloat(future_expense_value))){
             setInvalidFutureExpenseValue(true)
             return false
         }
@@ -367,7 +369,7 @@ export const EditBudgetModal = (props) => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                                 label="Desde"
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="MM/DD/YYYY"
                                 value={dateFrom}
                                 onChange={handleChangeFrom}
                                 sx={{ color: '#9CE37D;' }}
@@ -375,7 +377,7 @@ export const EditBudgetModal = (props) => {
                             />
                             <DesktopDatePicker
                                 label="Hasta"
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="MM/DD/YYYY"
                                 value={dateTo}
                                 onChange={handleChangeTo}
                                 renderInput={(params) => <TextField onKeyDown={onKeyDown} {...params} />}
@@ -442,7 +444,7 @@ export const EditBudgetModal = (props) => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                                 label="Fecha de caducidad"
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="MM/DD/YYYY"
                                 onChange={handleChangeExpirationDate}
                                 value={expirationDate}
                                 sx={{ color: '#9CE37D;' }}

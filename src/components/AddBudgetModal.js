@@ -150,7 +150,7 @@ export const AddBudgetModal = (props) => {
     };
 
     const checkDates = () => {
-        if (dateFrom > dateTo) {
+        if (dateFrom == null || dateTo == null || isNaN(dateFrom) || isNaN(dateTo) || dateFrom > dateTo || dateTo < today) {
             setInvalidDates(true);
             return false;
         } else {
@@ -240,7 +240,6 @@ export const AddBudgetModal = (props) => {
 
 
 
-
         if (expirationDateParsed <  dateFromParsed || expirationDateParsed > dateToParsed){
             setInvalidFutureExpenseDateOutOfBudget(true)
             return false
@@ -251,8 +250,9 @@ export const AddBudgetModal = (props) => {
             return false
         }
 
-        if (parseFloat(future_expense_value) <= 0){
+        if (parseFloat(future_expense_value) <= 0 || isNaN(parseFloat(future_expense_value))){
             setInvalidFutureExpenseValue(true)
+            
             return false
         }
 
@@ -266,6 +266,7 @@ export const AddBudgetModal = (props) => {
 
 
     const addSomethingToDummyArray = () => {
+
         if (validFutureExpense()){
             setLastId(lastId+1)
             setDummyArray((prevRows) => [...prevRows, { 'id': lastId, 'value': parseFloat(future_expense_value), 'name': future_expense_name, 'expiration_date': expirationDate.toISOString().split('T')[0], 'category_id': category }]);
@@ -392,7 +393,7 @@ export const AddBudgetModal = (props) => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                                 label="Desde"
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="MM/DD/YYYY"
                                 value={dateFrom}
                                 onChange={handleChangeFrom}
                                 sx={{ color: '#9CE37D;' }}
@@ -400,7 +401,7 @@ export const AddBudgetModal = (props) => {
                             />
                             <DesktopDatePicker
                                 label="Hasta"
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="MM/DD/YYYY"
                                 value={dateTo}
                                 onChange={handleChangeTo}
                                 renderInput={(params) => <TextField {...params} />}
@@ -465,7 +466,7 @@ export const AddBudgetModal = (props) => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                                 label="Fecha de caducidad"
-                                inputFormat="DD/MM/YYYY"
+                                inputFormat="MM/DD/YYYY"
                                 onChange={handleChangeExpirationDate}
                                 value={expirationDate}
                                 sx={{ color: '#9CE37D;' }}
