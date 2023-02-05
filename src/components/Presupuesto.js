@@ -44,8 +44,6 @@ export default function Presupuesto(props) {
     }
 }
 
-    console.log("Action:", props.confirmAction)
-
     const handlePayExecution = (future_expense) => {
 
         if (future_expense.expended) {
@@ -126,7 +124,6 @@ export default function Presupuesto(props) {
                             <div className='titulo-principal'>
                                 <Typography component="h2" variant="h6" color="primary" gutterBottom style={{ color: "green" }}>
                                     {"Presupuesto del periodo " + budget.initial_date + " al " + budget.final_date}
-                                    {console.log("Activo?:", budget.active)}
                                     { !budget.active && !budget.has_finished ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.deleteBudgetAction(e)}}><DeleteIcon sx={{ color: "green" }} /></Button> : null }
                                     { !budget.active && !budget.has_finished && size.width > 800 ? <Button style={{marginLeft:'5px'}} onClick={(e) => {props.editBudgetAction(e)}}><EditIcon sx={{ color: "green" }} /></Button> : null }
 
