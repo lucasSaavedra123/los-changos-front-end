@@ -150,7 +150,7 @@ export const EditExpenseModal = (props) => {
         if (value === '' || name === '' || category === '') {
             showCompleteAllFields()
         }
-        else if (value < 0){
+        else if (isNaN(parseFloat(value)) || value < 0){
             showValueError()
         }
         else {
